@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="border-4 rounded-xl w-fit z-20">
     <TheChessboard
       :board-config="boardConfig"
       :reactive-config="true"

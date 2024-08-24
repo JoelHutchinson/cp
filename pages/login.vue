@@ -41,14 +41,10 @@ const state = reactive({
 });
 
 const onSubmit = async (event: FormSubmitEvent<Schema>) => {
-  console.log("Registering: ", event.data);
-
-  const { data, error } = await supabase.auth.signInWithPassword({
+  await supabase.auth.signInWithPassword({
     email: event.data.email,
     password: event.data.password,
   });
-
-  if (error) console.log(error);
 };
 
 const navigateToSignUp = async () => {

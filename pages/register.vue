@@ -60,8 +60,6 @@ const state = reactive({
 const supabase = useSupabaseClient();
 
 const onSubmit = async (event: FormSubmitEvent<Schema>) => {
-  console.log("Registering: ", event.data);
-
   const { data, error } = await supabase.auth.signUp({
     email: event.data.email,
     password: event.data.password,
@@ -75,9 +73,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
     },
   });
 
-  console.log("Registered: ", data);
-
-  if (error) console.log(error);
+  if (error) console.error(error);
 };
 
 const navigateToSignIn = async () => {

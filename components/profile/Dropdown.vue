@@ -4,13 +4,15 @@
     :ui="{ item: { disabled: 'cursor-text select-text' } }"
     :popper="{ placement: 'bottom-start' }"
   >
-    <UAvatar :alt="props.name" />
+    <UAvatar :alt="fullName" />
 
     <template #account="{ item }">
       <div class="text-left">
-        <p>Signed in as</p>
         <p class="truncate font-medium text-gray-900 dark:text-white">
-          {{ item.label }}
+          <strong>{{ item.name }}</strong>
+        </p>
+        <p class="truncate text-gray-900 dark:text-white">
+          {{ item.email }}
         </p>
       </div>
     </template>
@@ -27,20 +29,18 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{ name: string; username: string; email: string }>();
+const props = defineProps<{ profile: Profile }>();
+const fullName = computed(
+  () => `${props.profile.first_name} ${props.profile.last_name}`
+);
 
 const items = [
   [
     {
-      label: props.email,
+      email: props.profile.email,
+      name: fullName,
       slot: "account",
       disabled: true,
-    },
-  ],
-  [
-    {
-      label: "Settings",
-      icon: "i-heroicons-cog-8-tooth",
     },
   ],
   [
