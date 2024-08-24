@@ -1,12 +1,10 @@
 <template>
-  <div class="border-4 rounded-xl w-fit z-20">
-    <TheChessboard
-      :board-config="boardConfig"
-      :reactive-config="true"
-      @board-created="handleBoardCreated"
-      :style="{ width: '600px', height: '600px' }"
-    />
-  </div>
+  <TheChessboard
+    :board-config="mergedBoardConfig"
+    :reactive-config="true"
+    @board-created="handleBoardCreated"
+    :style="{ width: '600px', height: '600px' }"
+  />
 </template>
 
 <script setup lang="ts">
@@ -21,7 +19,13 @@ import type {
   PromotionEvent,
 } from "vue3-chessboard";
 
-const boardConfig: Ref<BoardConfig> = ref({
+import merge from "deepmerge";
+
+const props = defineProps<{
+  boardConfig?: BoardConfig;
+}>();
+
+const defaultBoardConfig: Ref<BoardConfig> = ref({
   coordinates: true,
   autoCastle: false,
   orientation: "white",
@@ -48,6 +52,12 @@ const boardConfig: Ref<BoardConfig> = ref({
       },
     },
   },
+});
+
+const mergedBoardConfig = computed(() => {
+  return props.boardConfig
+    ? merge(defaultBoardConfig.value, props.boardConfig)
+    : defaultBoardConfig.value;
 });
 
 const emit = defineEmits<{

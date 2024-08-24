@@ -1,6 +1,9 @@
 export default defineAppConfig({
   ui: {
-    primary: "green",
+    primary: "indigo",
     gray: "neutral",
+    card: {
+      background: "bg-white dark:bg-gray-800",
+    },
   },
 });

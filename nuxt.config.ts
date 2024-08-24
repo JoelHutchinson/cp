@@ -14,7 +14,7 @@ export default defineNuxtConfig({
   supabase: {
     redirectOptions: {
       login: "/login",
-      callback: "/solve",
+      callback: "/puzzle",
       include: [],
       cookieRedirect: false,
     },

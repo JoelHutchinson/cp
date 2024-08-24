@@ -4,7 +4,7 @@
     <div class="flex flex-row grow h-full">
       <AppSidebar />
       <main
-        class="w-full p-6 overflow-hidden border-l-[1px] border-t-[1px] rounded-l-xl dark:border-gray-800 bg-gray-50 dark:bg-gray-900 h-full"
+        class="w-full p-6 overflow-hidden shadow-lg border-l-[1px] border-t-[1px] rounded-l-xl dark:border-gray-800 bg-gray-50 dark:bg-gray-900 h-full"
       >
         <slot />
       </main>

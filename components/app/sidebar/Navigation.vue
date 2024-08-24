@@ -13,12 +13,24 @@
 <script setup lang="ts">
 const linkSections = [
   {
-    sectionTitle: "Puzzles",
-    links: [{ label: "Woodpecker Method", to: "/solve" }],
+    sectionTitle: "Training",
+    links: [
+      {
+        label: "Woodpecker",
+        to: "/puzzle",
+        icon: "i-heroicons-puzzle-piece-20-solid",
+      },
+    ],
   },
   {
     sectionTitle: "Settings",
-    links: [{ label: "Profile", to: "/profile" }],
+    links: [
+      {
+        label: "Profile",
+        to: "/profile",
+        icon: "i-heroicons-user-circle-20-solid",
+      },
+    ],
   },
 ];
 </script>
