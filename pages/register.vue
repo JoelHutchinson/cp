@@ -1,39 +1,41 @@
 <template>
-  <div>
-    <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
-      <UFormGroup label="Email">
-        <UInput
-          v-model="state.email"
-          placeholder="you@example.com"
-          icon="i-heroicons-envelope"
-        />
-      </UFormGroup>
+  <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
+    <UFormGroup label="Email">
+      <UInput
+        v-model="state.email"
+        placeholder="you@example.com"
+        icon="i-heroicons-envelope"
+      />
+    </UFormGroup>
 
-      <UFormGroup label="Password">
-        <UInput v-model="state.password" type="password" />
-      </UFormGroup>
+    <UFormGroup label="Password">
+      <UInput v-model="state.password" type="password" />
+    </UFormGroup>
 
-      <UFormGroup label="Username">
-        <UInput v-model="state.username" />
-      </UFormGroup>
+    <UFormGroup label="Username">
+      <UInput v-model="state.username" />
+    </UFormGroup>
 
-      <UFormGroup label="First Name">
-        <UInput v-model="state.firstName" />
-      </UFormGroup>
+    <UFormGroup label="First Name">
+      <UInput v-model="state.firstName" />
+    </UFormGroup>
 
-      <UFormGroup label="Last Name">
-        <UInput v-model="state.lastName" />
-      </UFormGroup>
+    <UFormGroup label="Last Name">
+      <UInput v-model="state.lastName" />
+    </UFormGroup>
 
-      <UButtonGroup>
-        <UButton type="submit"> Sign Up </UButton>
-        <UButton @click="navigateToSignIn"> Sign In </UButton>
-      </UButtonGroup>
-    </UForm>
-  </div>
+    <UButtonGroup>
+      <UButton type="submit"> Sign Up </UButton>
+      <UButton @click="navigateToSignIn"> Sign In </UButton>
+    </UButtonGroup>
+  </UForm>
 </template>
 
 <script setup lang="ts">
+definePageMeta({
+  layout: "userform",
+});
+
 import type { FormSubmitEvent } from "#ui/types";
 import { z } from "zod";
 
@@ -72,6 +74,9 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
       },
     },
   });
+
+  console.log("Registered: ", data);
+
   if (error) console.log(error);
 };
 

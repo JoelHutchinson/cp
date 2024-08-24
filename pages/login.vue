@@ -1,27 +1,29 @@
 <template>
-  <div>
-    <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
-      <UFormGroup label="Email">
-        <UInput
-          v-model="state.email"
-          placeholder="you@example.com"
-          icon="i-heroicons-envelope"
-        />
-      </UFormGroup>
+  <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
+    <UFormGroup label="Email">
+      <UInput
+        v-model="state.email"
+        placeholder="you@example.com"
+        icon="i-heroicons-envelope"
+      />
+    </UFormGroup>
 
-      <UFormGroup label="Password">
-        <UInput v-model="state.password" type="password" />
-      </UFormGroup>
+    <UFormGroup label="Password">
+      <UInput v-model="state.password" type="password" />
+    </UFormGroup>
 
-      <UButtonGroup>
-        <UButton type="submit"> Sign In </UButton>
-        <UButton @click="navigateToSignUp"> Sign Up </UButton>
-      </UButtonGroup>
-    </UForm>
-  </div>
+    <UButtonGroup>
+      <UButton type="submit"> Sign In </UButton>
+      <UButton @click="navigateToSignUp"> Sign Up </UButton>
+    </UButtonGroup>
+  </UForm>
 </template>
 
 <script setup lang="ts">
+definePageMeta({
+  layout: "userform",
+});
+
 const supabase = useSupabaseClient();
 import type { FormSubmitEvent } from "#ui/types";
 import { z } from "zod";

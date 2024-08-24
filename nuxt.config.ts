@@ -4,12 +4,17 @@ export default defineNuxtConfig({
   imports: {
     dirs: ["types"],
   },
+  nitro: {
+    imports: {
+      dirs: ["types"],
+    },
+  },
   devtools: { enabled: true },
   modules: ["@nuxt/ui", "@nuxtjs/supabase"],
   supabase: {
     redirectOptions: {
       login: "/login",
-      callback: "/",
+      callback: "/solve",
       include: undefined,
       exclude: ["/register"],
       cookieRedirect: false,

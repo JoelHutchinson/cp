@@ -1,7 +1,9 @@
 <template>
-  <div>
+  <div class="flex flex-col h-screen">
     <AppHeader :profile="profile" />
-    <slot />
+    <main class="p-6 mt-0 grow">
+      <slot />
+    </main>
   </div>
 </template>
 

@@ -1,21 +1,25 @@
+const key = "profile";
+
 export const useProfile = () => {
   const user = useSupabaseUser();
   const supabase = useSupabaseClient<Database>();
 
-  // get the profile associated with the user
-  const { data: profile, error } = useAsyncData(async () => {
+  const { error, refresh } = useAsyncData(key, async () => {
     const { data, error } = await supabase
       .from("profiles")
       .select("*")
-      .match({ id: user.value.id })
-      .single();
+      .match({ id: user.value?.id });
 
     if (error) {
       throw createError(error.message);
     }
 
-    return data;
+    return data[0];
   });
 
-  return { profile };
+  if (error.value) {
+    throw createError(error.value.message);
+  }
+
+  return { profile: useNuxtData<Profile | null>(key).data, refresh };
 };
