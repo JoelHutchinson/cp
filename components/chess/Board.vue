@@ -3,7 +3,7 @@
     :board-config="mergedBoardConfig"
     :reactive-config="true"
     @board-created="handleBoardCreated"
-    :style="{ width: '600px', height: '600px' }"
+    :style="{ width: `${width}px`, height: `${height}px` }"
   />
 </template>
 
@@ -23,6 +23,8 @@ import merge from "deepmerge";
 
 const props = defineProps<{
   boardConfig?: BoardConfig;
+  width: number;
+  height: number;
 }>();
 
 const defaultBoardConfig: Ref<BoardConfig> = ref({

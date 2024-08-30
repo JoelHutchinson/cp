@@ -34,26 +34,55 @@ export type Database = {
           last_name?: string;
           username?: string;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "profiles_id_fkey";
+            columns: ["id"];
+            isOneToOne: true;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          }
+        ];
       };
       puzzles: {
         Row: {
-          fen: string;
+          FEN: string;
+          GameUrl: string;
           id: string;
-          moves: string;
-          rating: number;
+          Moves: string;
+          NbPlays: number;
+          OpeningTags: string | null;
+          Popularity: number;
+          PuzzleId: string;
+          Rating: number;
+          RatingDeviation: number;
+          Themes: string;
         };
         Insert: {
-          fen: string;
+          FEN: string;
+          GameUrl: string;
           id?: string;
-          moves: string;
-          rating: number;
+          Moves: string;
+          NbPlays: number;
+          OpeningTags?: string | null;
+          Popularity: number;
+          PuzzleId: string;
+          Rating: number;
+          RatingDeviation: number;
+          Themes: string;
         };
         Update: {
-          fen?: string;
+          FEN?: string;
+          GameUrl?: string;
           id?: string;
-          moves?: string;
-          rating?: number;
+          Moves?: string;
+          NbPlays?: number;
+          OpeningTags?: string | null;
+          Popularity?: number;
+          PuzzleId?: string;
+          Rating?: number;
+          RatingDeviation?: number;
+          Themes?: string;
         };
         Relationships: [];
       };

@@ -1,13 +1,9 @@
 <template>
-  <ChessPuzzleInterface :puzzle="testPuzzle" />
+  <ChessPuzzleInterface v-if="puzzle" :puzzle="puzzle" />
 </template>
 
 <script setup lang="ts">
-const testPuzzle: Puzzle = {
-  id: "puzzleId",
-  fen: "initialFen",
-  solution: "puzzleSolution",
-  rating: 5,
-  tags: ["tag1", "tag2"],
-};
+const { id } = useRoute().params as { id: string };
+const { puzzle, fetch: fetchPuzzle } = usePuzzle(id);
+fetchPuzzle();
 </script>
