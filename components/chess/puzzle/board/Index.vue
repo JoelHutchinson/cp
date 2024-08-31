@@ -8,15 +8,16 @@
       :height="400"
       @board-created="(api) => (boardApi = api)"
     />
-    <div class="flex flex-row gap-1">
-      <UButton icon="i-heroicons-arrow-long-left" @click="prevViewMove" />
-      <UButton icon="i-heroicons-arrow-long-right" @click="nextViewMove" />
+    <div class="flex flex-row justify-between">
+      <ChessPuzzleBoardButton
+        icon="i-heroicons-arrow-long-left"
+        @click="prevViewMove"
+      />
+      <ChessPuzzleBoardButton
+        icon="i-heroicons-arrow-long-right"
+        @click="nextViewMove"
+      />
     </div>
-    <pre>
-      <p>Solution Moves Made:</p><code>{{ solutionMovesMadeStr }}</code>
-      <p>View Moves Made:</p><code>{{ viewMovesMadeStr }}</code>
-      <p>View Only:</p><code>{{ isViewOnly }}</code>
-    </pre>
   </div>
 </template>
 
