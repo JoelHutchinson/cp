@@ -1,9 +1,9 @@
 <template>
   <TheChessboard
-    :board-config="mergedBoardConfig"
-    :reactive-config="true"
+    :board-config="boardConfig"
     @board-created="handleBoardCreated"
     :style="{ width: `${width}px`, height: `${height}px` }"
+    reactive-config
   />
 </template>
 
@@ -11,23 +11,28 @@
 import { TheChessboard } from "vue3-chessboard";
 import "vue3-chessboard/style.css";
 
-import type {
-  BoardApi,
-  BoardConfig,
-  MoveEvent,
-  PieceColor,
-  PromotionEvent,
-} from "vue3-chessboard";
+import type { BoardApi, BoardConfig, Piece, SquareKey } from "vue3-chessboard";
+import type { Reactive } from "vue";
 
-import merge from "deepmerge";
+const vue3ChessboardApi: Ref<BoardApi | null> = ref(null);
+const boardApi: Ref<ChessBoardAPI | null> = ref(null);
 
 const props = defineProps<{
-  boardConfig?: BoardConfig;
+  viewOnly: boolean;
   width: number;
   height: number;
+  onMove?: (orig: SquareKey, dest: SquareKey, capturedPiece?: Piece) => void;
 }>();
 
-const defaultBoardConfig: Ref<BoardConfig> = ref({
+const emit = defineEmits<{
+  (e: "boardCreated", boardApi: ChessBoardAPI): void;
+}>();
+
+const boardConfig: Reactive<BoardConfig> = reactive({
+  events: {
+    move: props.onMove as any,
+  },
+  viewOnly: false,
   coordinates: true,
   autoCastle: false,
   orientation: "white",
@@ -56,23 +61,55 @@ const defaultBoardConfig: Ref<BoardConfig> = ref({
   },
 });
 
-const mergedBoardConfig = computed(() => {
-  return props.boardConfig
-    ? merge(defaultBoardConfig.value, props.boardConfig)
-    : defaultBoardConfig.value;
-});
+const handleBoardCreated = (newBoardApi: BoardApi) => {
+  vue3ChessboardApi.value = newBoardApi;
 
-const emit = defineEmits<{
-  (e: "boardCreated", boardApi: BoardApi): void;
-  (e: "checkmate", isMated: PieceColor): void;
-  (e: "stalemate"): void;
-  (e: "draw"): void;
-  (e: "check", isInCheck: PieceColor): void;
-  (e: "promotion", promotion: PromotionEvent): void;
-  (e: "move", move: MoveEvent): void;
-}>();
-
-const handleBoardCreated = (boardApi: BoardApi) => {
-  emit("boardCreated", boardApi);
+  boardApi.value = {
+    setPosition,
+    makeMove,
+    resetBoard,
+    clearBoard,
+    undoLastMove,
+  };
+  emit("boardCreated", boardApi.value);
 };
+
+// Chess Board API methods
+const setPosition = (fen: string) => {
+  if (vue3ChessboardApi.value) {
+    vue3ChessboardApi.value.setPosition(fen);
+  }
+};
+
+const makeMove = (move: string) => {
+  if (vue3ChessboardApi.value) {
+    vue3ChessboardApi.value.move(move);
+  }
+};
+
+const resetBoard = () => {
+  if (vue3ChessboardApi.value) {
+    vue3ChessboardApi.value.resetBoard();
+  }
+};
+
+const clearBoard = () => {
+  if (vue3ChessboardApi.value) {
+    vue3ChessboardApi.value.clearBoard();
+  }
+};
+
+const undoLastMove = () => {
+  if (vue3ChessboardApi.value) {
+    vue3ChessboardApi.value.undoLastMove();
+  }
+};
+
+// Watchers
+watch(
+  () => props.viewOnly,
+  (viewOnly) => {
+    boardConfig.viewOnly = viewOnly;
+  }
+);
 </script>

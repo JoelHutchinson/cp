@@ -1,12 +1,22 @@
 <template>
   <div class="flex flex-col w-fit gap-1">
     <ChessBoard
-      :board-config="{ events: { move: onMove } }"
       v-bind="$attrs"
-      :width="300"
-      :height="300"
+      :on-move="onMove"
+      :view-only="isViewOnly"
+      :width="400"
+      :height="400"
+      @board-created="(api) => (boardApi = api)"
     />
-    <UButton @click="popMove">Undo</UButton>
+    <div class="flex flex-row gap-1">
+      <UButton icon="i-heroicons-arrow-long-left" @click="prevViewMove" />
+      <UButton icon="i-heroicons-arrow-long-right" @click="nextViewMove" />
+    </div>
+    <pre>
+      <p>Solution Moves Made:</p><code>{{ solutionMovesMadeStr }}</code>
+      <p>View Moves Made:</p><code>{{ viewMovesMadeStr }}</code>
+      <p>View Only:</p><code>{{ isViewOnly }}</code>
+    </pre>
   </div>
 </template>
 
@@ -17,30 +27,102 @@ const props = defineProps<{
   puzzle: Puzzle;
 }>();
 
-const movesMade = ref<string[]>([]);
-const movesMadeStr = computed(() => movesMade.value.join(" "));
+// Initially, make the first solution move
+onMounted(() => {
+  boardApi.value?.setPosition(props.puzzle.FEN);
+  boardApi.value?.makeMove(solutionMoves.value[0]);
+});
+
+const boardApi: Ref<ChessBoardAPI | null> = ref(null);
+
+// If the solution moves made string is equal to the puzzle moves string, the puzzle is solved
+const puzzleSolved = computed(
+  () => solutionMovesMadeStr.value === props.puzzle.Moves
+);
+
+// If the board is not showing the latest position or the puzzle has been solved, it should be in view-only mode
+const isViewOnly = computed(() => {
+  return (
+    solutionMovesMadeStr.value !== viewMovesMadeStr.value || puzzleSolved.value
+  );
+});
+
+// Puzzle solution
+const solutionMoves = computed(() => props.puzzle.Moves.split(" "));
+
+// Solution moves made (all of the solution moves that have been made)
+const solutionMovesMade = ref<string[]>([]);
+const solutionMovesMadeStr = computed(() => solutionMovesMade.value.join(" "));
+
+// View moves made (what is shown on the board)
+const viewMovesMade = ref<string[]>([]);
+const viewMovesMadeStr = computed(() => viewMovesMade.value.join(" "));
 
 const onMove = (
   orig: SquareKey,
   dest: SquareKey,
   capturedPiece?: Piece | undefined
 ) => {
-  pushMove(orig, dest);
+  const move = orig + dest;
 
-  if (movesMadeStr.value === props.puzzle.moves) {
-    console.log("Puzzle solved!");
+  // Check if the move is a solution move or a view move (i.e. has it been made before)
+  if (!solutionMovesMade.value.includes(move)) {
+    handleSolutionMove(move);
+
+    if (solutionMovesMadeStr.value === props.puzzle.Moves) {
+      console.log("Puzzle solved!");
+    }
   }
 };
 
-const pushMove = (orig: SquareKey, dest: SquareKey) => {
-  movesMade.value.push(origDestToSan(orig, dest));
+const handleSolutionMove = (move: string) => {
+  // Check if the move is correct
+  if (solutionMoves.value[solutionMovesMade.value.length] === move) {
+    console.log("Correct move!");
+
+    solutionMovesMade.value.push(move);
+    nextViewMove();
+
+    // Make the next move if the puzzle is not solved AND it is not the user's turn
+    if (
+      solutionMovesMadeStr.value !== props.puzzle.Moves &&
+      solutionMovesMade.value.length % 2 === 0
+    ) {
+      setTimeout(() => {
+        boardApi.value?.makeMove(
+          solutionMoves.value[solutionMovesMade.value.length]
+        );
+      }, 500);
+    }
+  } else {
+    console.log("Incorrect move!");
+
+    // After a delay, undo the move
+    setTimeout(() => {
+      boardApi.value?.undoLastMove();
+    }, 500);
+  }
 };
 
-const popMove = () => {
-  movesMade.value.pop();
+const prevViewMove = () => {
+  if (viewMovesMade.value.length === 0) {
+    return;
+  }
+
+  const lastMove = viewMovesMade.value.pop();
+  if (lastMove) {
+    boardApi.value?.undoLastMove();
+  }
 };
 
-const origDestToSan = (orig: SquareKey, dest: SquareKey) => {
-  return orig + dest;
+const nextViewMove = () => {
+  if (solutionMovesMadeStr.value === viewMovesMadeStr.value) {
+    return;
+  }
+
+  const nextMove = solutionMovesMade.value[viewMovesMade.value.length];
+
+  boardApi.value?.makeMove(nextMove);
+  viewMovesMade.value.push(nextMove);
 };
 </script>
