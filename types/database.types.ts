@@ -44,6 +44,73 @@ export type Database = {
           }
         ];
       };
+      puzzle_set_puzzles: {
+        Row: {
+          id: string;
+          index: number;
+          is_solved: boolean;
+          puzzle_id: string;
+          puzzle_set_id: string;
+          user_id: string;
+        };
+        Insert: {
+          id?: string;
+          index?: number;
+          is_solved?: boolean;
+          puzzle_id?: string;
+          puzzle_set_id?: string;
+          user_id: string;
+        };
+        Update: {
+          id?: string;
+          index?: number;
+          is_solved?: boolean;
+          puzzle_id?: string;
+          puzzle_set_id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "puzzle_set_puzzles_puzzle_id_fkey";
+            columns: ["puzzle_id"];
+            isOneToOne: false;
+            referencedRelation: "puzzles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "puzzle_set_puzzles_puzzle_set_id_fkey";
+            columns: ["puzzle_set_id"];
+            isOneToOne: false;
+            referencedRelation: "puzzle_sets";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "puzzle_set_puzzles_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
+      puzzle_sets: {
+        Row: {
+          created_at: string;
+          id: string;
+          name: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: string;
+          name: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          name?: string;
+        };
+        Relationships: [];
+      };
       puzzles: {
         Row: {
           FEN: string;

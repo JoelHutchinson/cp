@@ -1,7 +1,23 @@
 import type { Database } from "./database.types";
 
-export type Profile = Database["public"]["Tables"]["profiles"]["Row"];
-export type Puzzle = Database["public"]["Tables"]["puzzles"]["Row"];
+type TableRow<T extends keyof Database["public"]["Tables"]> =
+  Database["public"]["Tables"][T]["Row"];
+
+// Users
+export type Profile = Omit<TableRow<"profiles">, "id" | "created_at">;
+
+// Puzzles
+export type Puzzle = Omit<TableRow<"puzzles">, "id">;
+
+// Puzzle Sets
+export type PuzzleSet = Omit<TableRow<"puzzle_sets">, "id" | "created_at"> & {
+  puzzles: Puzzle[];
+};
+
+export type PuzzleSetPuzzle = Omit<
+  TableRow<"puzzle_set_puzzles">,
+  "id" | "is_solved"
+>;
 
 export type ChessBoardAPI = {
   setPosition: (fen: string) => void;
