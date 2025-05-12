@@ -13,7 +13,7 @@
     </UFormGroup>
 
     <UButtonGroup>
-      <UButton type="submit"> Sign In </UButton>
+      <UButton type="submit" :loading="isLoggingIn"> Sign In </UButton>
       <UButton @click="navigateToSignUp"> Sign Up </UButton>
     </UButtonGroup>
   </UForm>
@@ -24,7 +24,6 @@ definePageMeta({
   layout: "userform",
 });
 
-const supabase = useSupabaseClient();
 import type { FormSubmitEvent } from "#ui/types";
 import { z } from "zod";
 
@@ -40,11 +39,34 @@ const state = reactive({
   password: "",
 });
 
+const supabase = useSupabaseClient();
+const notifications = useNotification();
+
+const isLoggingIn = ref(false);
+
 const onSubmit = async (event: FormSubmitEvent<Schema>) => {
-  await supabase.auth.signInWithPassword({
+  isLoggingIn.value = true;
+
+  const { error } = await supabase.auth.signInWithPassword({
     email: event.data.email,
     password: event.data.password,
   });
+
+  isLoggingIn.value = false;
+
+  if (error) {
+    notifications.error({
+      title: "Login failed",
+      message: error.message,
+    });
+  } else {
+    notifications.success({
+      title: "Logged in successfully",
+      message: "Welcome back!",
+    });
+
+    await navigateTo("/");
+  }
 };
 
 const navigateToSignUp = async () => {

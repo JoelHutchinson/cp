@@ -59,6 +59,7 @@ const state = reactive({
 
 const supabase = useSupabaseClient();
 const notifications = useNotification();
+
 const isRegistering = ref(false);
 
 const onSubmit = async (event: FormSubmitEvent<Schema>) => {
@@ -89,7 +90,8 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
     console.log("User created successfully", data);
     notifications.success({
       title: "Success",
-      message: "Account created successfully.",
+      message:
+        "Account created successfully. Please check your email to verify your account.",
     });
   }
 };
