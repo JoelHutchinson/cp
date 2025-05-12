@@ -1,6 +1,6 @@
 <template>
   <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
-    <UFormGroup label="Email">
+    <UFormGroup label="Email" name="email">
       <UInput
         v-model="state.email"
         placeholder="you@example.com"
@@ -8,24 +8,24 @@
       />
     </UFormGroup>
 
-    <UFormGroup label="Password">
+    <UFormGroup label="Password" name="password">
       <UInput v-model="state.password" type="password" />
     </UFormGroup>
 
-    <UFormGroup label="Username">
+    <UFormGroup label="Username" name="username">
       <UInput v-model="state.username" />
     </UFormGroup>
 
-    <UFormGroup label="First Name">
+    <UFormGroup label="First Name" name="firstName">
       <UInput v-model="state.firstName" />
     </UFormGroup>
 
-    <UFormGroup label="Last Name">
+    <UFormGroup label="Last Name" name="lastName">
       <UInput v-model="state.lastName" />
     </UFormGroup>
 
     <UButtonGroup>
-      <UButton type="submit"> Sign Up </UButton>
+      <UButton type="submit" :loading="isRegistering"> Sign Up </UButton>
       <UButton @click="navigateToSignIn"> Sign In </UButton>
     </UButtonGroup>
   </UForm>
@@ -42,8 +42,8 @@ import { z } from "zod";
 type Schema = z.output<typeof schema>;
 
 const schema = z.object({
-  email: z.string().email(),
-  password: z.string().min(8),
+  email: z.string().email("Must be a valid email address"),
+  password: z.string().min(8, "Must be at least 8 characters long"),
   firstName: z.string(),
   lastName: z.string(),
   username: z.string(),
@@ -58,8 +58,12 @@ const state = reactive({
 });
 
 const supabase = useSupabaseClient();
+const notifications = useNotification();
+const isRegistering = ref(false);
 
 const onSubmit = async (event: FormSubmitEvent<Schema>) => {
+  isRegistering.value = true;
+
   const { data, error } = await supabase.auth.signUp({
     email: event.data.email,
     password: event.data.password,
@@ -73,7 +77,21 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
     },
   });
 
-  if (error) console.error(error);
+  isRegistering.value = false;
+
+  if (error) {
+    console.error(error);
+    notifications.error({
+      title: "Error",
+      message: error.message,
+    });
+  } else {
+    console.log("User created successfully", data);
+    notifications.success({
+      title: "Success",
+      message: "Account created successfully.",
+    });
+  }
 };
 
 const navigateToSignIn = async () => {
