@@ -1,5 +1,6 @@
 <template>
   <ChessPuzzleInterface v-if="puzzle" :puzzle="puzzle" />
+  <ChessPuzzleInterfaceSkeleton v-else />
 </template>
 
 <script setup lang="ts">

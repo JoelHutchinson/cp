@@ -1,7 +1,7 @@
 <template>
   <UDropdown
     :items="items"
-    :ui="{ item: { disabled: 'cursor-text select-text' } }"
+    :ui="{ width: 'w-fit', item: { disabled: 'cursor-text select-text' } }"
     :popper="{ placement: 'bottom-start' }"
   >
     <UAvatar :alt="fullName" />
