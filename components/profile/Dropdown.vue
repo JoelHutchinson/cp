@@ -56,6 +56,11 @@ const items = [
     {
       label: "Sign out",
       icon: "i-heroicons-arrow-left-on-rectangle",
+      click: async () => {
+        const supabase = useSupabaseClient();
+        await supabase.auth.signOut();
+        await navigateTo("/login");
+      },
     },
   ],
 ];

@@ -17,7 +17,7 @@ const linkSections = [
     links: [
       {
         label: "Solve",
-        to: "/puzzle",
+        to: "/solve",
         icon: "i-heroicons-puzzle-piece-20-solid",
       },
       {
