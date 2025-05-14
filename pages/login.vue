@@ -1,22 +1,34 @@
 <template>
-  <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
-    <UFormGroup label="Email">
-      <UInput
-        v-model="state.email"
-        placeholder="you@example.com"
-        icon="i-heroicons-envelope"
-      />
-    </UFormGroup>
+  <UCard>
+    <template #header>
+      <h1 class="text-2xl font-bold">Sign In</h1>
+      <div class="flex items-center">
+        <p class="text-sm text-gray-500">Don't have an account yet?</p>
+        <UButton @click="navigateToSignUp" variant="link">Sign Up</UButton>
+      </div>
+    </template>
 
-    <UFormGroup label="Password">
-      <UInput v-model="state.password" type="password" />
-    </UFormGroup>
+    <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
+      <UFormGroup label="Email">
+        <UInput
+          v-model="state.email"
+          placeholder="you@example.com"
+          icon="i-heroicons-envelope"
+        />
+      </UFormGroup>
 
-    <UButtonGroup>
-      <UButton type="submit" :loading="isLoggingIn"> Sign In </UButton>
-      <UButton @click="navigateToSignUp"> Sign Up </UButton>
-    </UButtonGroup>
-  </UForm>
+      <UFormGroup label="Password">
+        <UInput
+          v-model="state.password"
+          icon="i-heroicons-lock-closed"
+          placeholder="password"
+          type="password"
+        />
+      </UFormGroup>
+
+      <UButton type="submit" :loading="isLoggingIn" block> Log in </UButton>
+    </UForm>
+  </UCard>
 </template>
 
 <script setup lang="ts">
