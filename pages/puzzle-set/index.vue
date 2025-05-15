@@ -1,10 +1,20 @@
 <template>
   <div class="flex flex-row justify-between items-center mb-4">
     <UiHeading>Your Puzzle Sets</UiHeading>
-    <UButton>Refresh</UButton>
+
+    <div class="flex flex-row gap-2">
+      <UButton icon="i-heroicons-plus" trailing>Create</UButton>
+      <UButton
+        @click="refresh"
+        :loading="status === 'pending'"
+        icon="i-heroicons-arrow-path"
+        trailing
+        >Refresh</UButton
+      >
+    </div>
   </div>
 
-  <UiTable :rows="puzzleSets"> </UiTable>
+  <UiTable v-if="data" :rows="data" :loading="status === 'pending'"> </UiTable>
 
   <UiModal>
     <div class="flex flex-col gap-4 w-64">
@@ -56,9 +66,9 @@
 </template>
 
 <script setup lang="ts">
-const { puzzleSets, fetchPuzzleSets, refreshPuzzleSets } = usePuzzleSets();
+const { data, status, error, refresh, clear } = await usePuzzleSets();
 
-await fetchPuzzleSets();
+await refresh();
 
 const puzzleThemes = [
   {

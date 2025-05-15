@@ -9,7 +9,7 @@
 
 <script setup lang="ts">
 const { puzzleSetName } = useRoute().params as { puzzleSetName: string };
-const { profile } = useProfile();
+const { data: profile } = useProfile();
 
 const { data: puzzle, refresh: refreshPuzzle } = await useFetch(
   () =>

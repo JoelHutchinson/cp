@@ -5,5 +5,8 @@ export default defineAppConfig({
     card: {
       background: "bg-white dark:bg-gray-800",
     },
+    button: {
+      default: { variant: "soft" },
+    },
   },
 });
