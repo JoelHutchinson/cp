@@ -76,6 +76,26 @@ export const createPuzzleSet = async (
   return data;
 };
 
+export const fetchPuzzleSets = async (
+  event: H3Event,
+  params: { profileId: string }
+) => {
+  const supabase = await serverSupabaseClient<Database>(event);
+  const { data, error } = await supabase
+    .from("puzzle_sets")
+    .select("*")
+    .eq("profile_id", params.profileId);
+
+  if (error) {
+    throw createError({
+      statusCode: 500,
+      message: `Error fetching puzzle sets. (Message: ${error.message})`,
+    });
+  }
+
+  return data;
+};
+
 export const fetchPuzzleSetByName = async (
   event: H3Event,
   params: { profileId: string; name: string }
