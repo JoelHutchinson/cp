@@ -5,14 +5,14 @@ export const usePuzzleSets = () => {
 
   const { data: puzzleSets } = useNuxtData<PuzzleSet[]>(key);
 
-  const refresh = async () => {
+  const refreshPuzzleSets = async () => {
     clearNuxtData(key);
     await refreshNuxtData(key);
   };
 
-  const fetch = async () => {
+  const fetchPuzzleSets = async () => {
     await useFetch(`/api/profiles/${profile.value!.id}/puzzle-sets`, { key });
   };
 
-  return { puzzleSets, fetch, refresh };
+  return { puzzleSets, fetchPuzzleSets, refreshPuzzleSets };
 };

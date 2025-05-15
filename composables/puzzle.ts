@@ -3,14 +3,14 @@ const key = "puzzle";
 export const usePuzzle = (id: string) => {
   const { data: puzzle } = useNuxtData<Puzzle>(key);
 
-  const refresh = async () => {
+  const refreshPuzzle = async () => {
     clearNuxtData(key);
     await refreshNuxtData(key);
   };
 
-  const fetch = async () => {
+  const fetchPuzzle = async () => {
     await useFetch(`/api/puzzles/${id}`, { key });
   };
 
-  return { puzzle, fetch, refresh };
+  return { puzzle, fetchPuzzle, refreshPuzzle };
 };

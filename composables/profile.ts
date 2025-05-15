@@ -5,14 +5,14 @@ export const useProfile = () => {
 
   const { data: profile } = useNuxtData<Profile>(key);
 
-  const refresh = async () => {
+  const refreshProfile = async () => {
     clearNuxtData(key);
     await refreshNuxtData(key);
   };
 
-  const fetch = async () => {
+  const fetchProfile = async () => {
     await useFetch(`/api/profiles/${user.value.id}`, { key });
   };
 
-  return { profile, fetch, refresh };
+  return { profile, fetchProfile, refreshProfile };
 };

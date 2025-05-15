@@ -1,52 +1,65 @@
 <template>
-  <div class="flex flex-col gap-4 w-64">
-    <div class="flex flex-col justify-center items-center">
-      <span class="flex items-center gap-1 text-gray-500 dark:text-gray-400"
-        ><UIcon name="i-heroicons-puzzle-piece" />{{ numberOfPuzzles }}</span
-      >
-      <URange v-model="numberOfPuzzles" :min="100" :max="1000" :step="50" />
-    </div>
-    <div class="flex flex-col justify-center items-center">
-      <span class="flex items-center gap-1 text-gray-500 dark:text-gray-400"
-        ><UIcon name="i-heroicons-arrow-trending-up" />{{
-          averagePuzzleRating
-        }}</span
-      >
-      <URange
-        v-model="averagePuzzleRating"
-        :min="1000"
-        :max="3000"
-        :step="25"
-      />
-    </div>
-    <UFormGroup label="Themes">
-      <USelectMenu
-        v-model="selectedPuzzleThemes"
-        :options="puzzleThemes"
-        searchable
-        searchable-placeholder="Search a theme..."
-        multiple
-        placeholder="Select puzzle themes"
-      >
-        <template #option="{ option: theme }">
-          <UTooltip
-            :text="theme.description"
-            :popper="{
-              placement: 'right',
-              offsetDistance: 16,
-            }"
-            :ui="{ base: 'h-fit text-clip' }"
-          >
-            <span>{{ theme.label }}</span>
-          </UTooltip>
-        </template>
-      </USelectMenu>
-    </UFormGroup>
-    <UButton>Create</UButton>
+  <div class="flex flex-row justify-between items-center mb-4">
+    <UiHeading>Your Puzzle Sets</UiHeading>
+    <UButton>Refresh</UButton>
   </div>
+
+  <UiTable :rows="puzzleSets"> </UiTable>
+
+  <UiModal>
+    <div class="flex flex-col gap-4 w-64">
+      <div class="flex flex-col justify-center items-center">
+        <span class="flex items-center gap-1 text-gray-500 dark:text-gray-400"
+          ><UIcon name="i-heroicons-puzzle-piece" />{{ numberOfPuzzles }}</span
+        >
+        <URange v-model="numberOfPuzzles" :min="100" :max="1000" :step="50" />
+      </div>
+      <div class="flex flex-col justify-center items-center">
+        <span class="flex items-center gap-1 text-gray-500 dark:text-gray-400"
+          ><UIcon name="i-heroicons-arrow-trending-up" />{{
+            averagePuzzleRating
+          }}</span
+        >
+        <URange
+          v-model="averagePuzzleRating"
+          :min="1000"
+          :max="3000"
+          :step="25"
+        />
+      </div>
+      <UFormGroup label="Themes">
+        <USelectMenu
+          v-model="selectedPuzzleThemes"
+          :options="puzzleThemes"
+          searchable
+          searchable-placeholder="Search a theme..."
+          multiple
+          placeholder="Select puzzle themes"
+        >
+          <template #option="{ option: theme }">
+            <UTooltip
+              :text="theme.description"
+              :popper="{
+                placement: 'right',
+                offsetDistance: 16,
+              }"
+              :ui="{ base: 'h-fit text-clip' }"
+            >
+              <span>{{ theme.label }}</span>
+            </UTooltip>
+          </template>
+        </USelectMenu>
+      </UFormGroup>
+      <UButton>Create</UButton>
+    </div>
+  </UiModal>
 </template>
 
 <script setup lang="ts">
+const { puzzleSets, fetchPuzzleSets, refreshPuzzleSets } = usePuzzleSets();
+
+await fetchPuzzleSets();
+
 const puzzleThemes = [
   {
     label: "Advanced pawn",
