@@ -94,7 +94,6 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
       message: error.message,
     });
   } else {
-    console.log("User created successfully", data);
     notifications.success({
       title: "Success",
       message:

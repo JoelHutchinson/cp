@@ -157,8 +157,6 @@ export const updateCurrentPuzzleInSetSolved = async (
     .limit(1)
     .single();
 
-  console.log(fetchData);
-
   if (fetchError) {
     // content not found (error due to .single()) -> 404 error
     if (fetchError.code === "PGRST116")
