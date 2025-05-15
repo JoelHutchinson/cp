@@ -1,34 +1,41 @@
 <template>
-  <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
-    <UFormGroup label="Email" name="email">
-      <UInput
-        v-model="state.email"
-        placeholder="you@example.com"
-        icon="i-heroicons-envelope"
-      />
-    </UFormGroup>
+  <UCard>
+    <template #header>
+      <h1 class="text-2xl font-bold">Register</h1>
+      <div class="flex items-center">
+        <p class="text-sm text-gray-500">Already have an account?</p>
+        <UButton @click="navigateToSignIn" variant="link">Sign In</UButton>
+      </div>
+    </template>
 
-    <UFormGroup label="Password" name="password">
-      <UInput v-model="state.password" type="password" />
-    </UFormGroup>
+    <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
+      <UFormGroup label="Email" name="email">
+        <UInput
+          v-model="state.email"
+          placeholder="you@example.com"
+          icon="i-heroicons-envelope"
+        />
+      </UFormGroup>
 
-    <UFormGroup label="Username" name="username">
-      <UInput v-model="state.username" />
-    </UFormGroup>
+      <UFormGroup label="Password" name="password">
+        <UInput v-model="state.password" type="password" />
+      </UFormGroup>
 
-    <UFormGroup label="First Name" name="firstName">
-      <UInput v-model="state.firstName" />
-    </UFormGroup>
+      <UFormGroup label="Username" name="username">
+        <UInput v-model="state.username" />
+      </UFormGroup>
 
-    <UFormGroup label="Last Name" name="lastName">
-      <UInput v-model="state.lastName" />
-    </UFormGroup>
+      <UFormGroup label="First Name" name="firstName">
+        <UInput v-model="state.firstName" />
+      </UFormGroup>
 
-    <UButtonGroup>
-      <UButton type="submit" :loading="isRegistering"> Sign Up </UButton>
-      <UButton @click="navigateToSignIn"> Sign In </UButton>
-    </UButtonGroup>
-  </UForm>
+      <UFormGroup label="Last Name" name="lastName">
+        <UInput v-model="state.lastName" />
+      </UFormGroup>
+
+      <UButton type="submit" :loading="isRegistering" block> Sign Up </UButton>
+    </UForm>
+  </UCard>
 </template>
 
 <script setup lang="ts">

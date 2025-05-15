@@ -28,11 +28,27 @@ const props = defineProps<{
   puzzle: Puzzle;
 }>();
 
+const emit = defineEmits<{
+  (e: "solved"): void;
+}>();
+
 // Initially, make the first solution move
 onMounted(() => {
   boardApi.value?.setPosition(props.puzzle.FEN);
   boardApi.value?.makeMove(solutionMoves.value[0]);
 });
+
+// If the puzzle prop changes, reset the moves made and set the position
+watch(
+  () => props.puzzle,
+  (puzzle) => {
+    solutionMovesMade.value = [];
+    viewMovesMade.value = [];
+
+    boardApi.value?.setPosition(puzzle.FEN);
+    boardApi.value?.makeMove(solutionMoves.value[0]);
+  }
+);
 
 const boardApi: Ref<ChessBoardAPI | null> = ref(null);
 
@@ -71,6 +87,7 @@ const onMove = (
     handleSolutionMove(move);
 
     if (solutionMovesMadeStr.value === props.puzzle.Moves) {
+      emit("solved");
       console.log("Puzzle solved!");
     }
   }

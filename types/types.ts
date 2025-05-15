@@ -4,13 +4,13 @@ type TableRow<T extends keyof Database["public"]["Tables"]> =
   Database["public"]["Tables"][T]["Row"];
 
 // Users
-export type Profile = Omit<TableRow<"profiles">, "id" | "created_at">;
+export type Profile = Omit<TableRow<"profiles">, "created_at">;
 
 // Puzzles
-export type Puzzle = Omit<TableRow<"puzzles">, "id">;
+export type Puzzle = TableRow<"puzzles">;
 
 // Puzzle Sets
-export type PuzzleSet = Omit<TableRow<"puzzle_sets">, "id" | "created_at"> & {
+export type PuzzleSet = Omit<TableRow<"puzzle_sets">, "created_at"> & {
   puzzles: Puzzle[];
 };
 
