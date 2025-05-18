@@ -17,16 +17,16 @@ const bodySchema = z.object({
 });
 
 export default defineEventHandler(async (event) => {
-  await authorize(event);
+  const user = await authorize(event);
 
-  const body = getZodValidatedBody(event, bodySchema);
+  const body = await getZodValidatedBody(event, bodySchema);
 
-  const puzzleSet: PuzzleSet = generatePuzzleSet(
-    body.name,
-    body.number_of_puzzles,
-    body.rating,
-    body.themes
-  );
+  const puzzleSet: PuzzleSet = await generatePuzzleSet(event, {
+    name: body.name,
+    numberOfPuzzles: body.number_of_puzzles,
+    rating: body.rating,
+    themes: body.themes,
+  });
 
-  return await createPuzzleSet(event, {});
+  return await createPuzzleSet(event, { puzzleSet, userId: user.id });
 });

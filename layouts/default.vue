@@ -35,6 +35,6 @@
 </template>
 
 <script setup lang="ts">
-const { data: profile, refresh: fetchProfile } = useProfile();
-fetchProfile();
+const { profile, fetchProfile } = useFetchProfile();
+await fetchProfile();
 </script>

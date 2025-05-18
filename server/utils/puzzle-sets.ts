@@ -8,9 +8,10 @@ export const generatePuzzleSet = async (
   params: {
     name: string;
     numberOfPuzzles: number;
+    themes: string[];
     rating: number;
   }
-): PuzzleSet => {
+): Promise<PuzzleSet> => {
   const supabase = await serverSupabaseClient<Database>(event);
 
   // Order puzzles by rating, and pick within a range of +-250 elo
@@ -28,19 +29,24 @@ export const generatePuzzleSet = async (
     });
   }
 
+  // Filter puzzles for themes provided
+  const filteredData = data.filter((puzzle) =>
+    params.themes.some((theme) => puzzle.Themes.split(" ").includes(theme))
+  );
+
   // Select a sample of puzzles evenly distributed across the range
   const step = Math.floor(data.length / params.numberOfPuzzles);
-  const puzzles = data
+  const puzzles = filteredData
     .filter((_, i) => i % step === 0)
     .slice(0, params.numberOfPuzzles);
 
-  return { name: params.name, puzzles };
+  return { id: crypto.randomUUID(), name: params.name, puzzles };
 };
 
 // TODO: Implement
 export const createPuzzleSet = async (
   event: H3Event,
-  params: { puzzleSet: PuzzleSet }
+  params: { puzzleSet: PuzzleSet; userId: string }
 ) => {
   const supabase = await serverSupabaseClient<Database>(event);
 
@@ -60,16 +66,24 @@ export const createPuzzleSet = async (
 
   // Insert the individual puzzle set puzzles
   const puzzleSetPuzzles: PuzzleSetPuzzle[] = params.puzzleSet.puzzles.map(
-    (puzzle) => ({
+    (puzzle, index) => ({
+      id: crypto.randomUUID(),
+      index,
+      is_solved: false,
       puzzle_set_id: data.id,
       puzzle_id: puzzle.id,
+      user_id: params.userId,
     })
   );
 
-  if (error) {
+  const { error: puzzleSetPuzzlesError } = await supabase
+    .from("puzzle_set_puzzles")
+    .insert(puzzleSetPuzzles);
+
+  if (puzzleSetPuzzlesError) {
     throw createError({
       statusCode: 500,
-      message: `Error creating puzzle set. (Message: ${error.message})`,
+      message: `Error creating puzzle set puzzles. (Message: ${puzzleSetPuzzlesError.message})`,
     });
   }
 

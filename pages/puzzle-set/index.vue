@@ -3,7 +3,12 @@
     <UiHeading>Your Puzzle Sets</UiHeading>
 
     <div class="flex flex-row gap-2">
-      <UButton icon="i-heroicons-plus" trailing>Create</UButton>
+      <UButton
+        @click="createModalIsOpen = !createModalIsOpen"
+        icon="i-heroicons-plus"
+        trailing
+        >Create</UButton
+      >
       <UButton
         @click="refresh"
         :loading="status === 'pending'"
@@ -16,30 +21,50 @@
 
   <UiTable v-if="data" :rows="data" :loading="status === 'pending'"> </UiTable>
 
-  <UiModal>
-    <div class="flex flex-col gap-4 w-64">
+  <UiModal
+    v-model="createModalIsOpen"
+    @action="createPuzzleSet(state)"
+    title="Create a puzzle set"
+    buttonText="Create"
+    buttonColor="primary"
+    :loading="status === 'pending'"
+  >
+    <div class="flex flex-col gap-4">
+      <UFormGroup label="Name">
+        <UInput v-model="state.name" placeholder="Puzzle set name" />
+      </UFormGroup>
+
       <div class="flex flex-col justify-center items-center">
         <span class="flex items-center gap-1 text-gray-500 dark:text-gray-400"
-          ><UIcon name="i-heroicons-puzzle-piece" />{{ numberOfPuzzles }}</span
-        >
-        <URange v-model="numberOfPuzzles" :min="100" :max="1000" :step="50" />
-      </div>
-      <div class="flex flex-col justify-center items-center">
-        <span class="flex items-center gap-1 text-gray-500 dark:text-gray-400"
-          ><UIcon name="i-heroicons-arrow-trending-up" />{{
-            averagePuzzleRating
+          ><UIcon name="i-heroicons-puzzle-piece" />{{
+            state.numberOfPuzzles
           }}</span
         >
         <URange
-          v-model="averagePuzzleRating"
+          v-model="state.numberOfPuzzles"
+          :min="100"
+          :max="1000"
+          :step="50"
+        />
+      </div>
+
+      <div class="flex flex-col justify-center items-center">
+        <span class="flex items-center gap-1 text-gray-500 dark:text-gray-400"
+          ><UIcon name="i-heroicons-arrow-trending-up" />{{
+            state.averagePuzzleRating
+          }}</span
+        >
+        <URange
+          v-model="state.averagePuzzleRating"
           :min="1000"
           :max="3000"
           :step="25"
         />
       </div>
+
       <UFormGroup label="Themes">
         <USelectMenu
-          v-model="selectedPuzzleThemes"
+          v-model="state.selectedPuzzleThemes"
           :options="puzzleThemes"
           searchable
           searchable-placeholder="Search a theme..."
@@ -60,13 +85,12 @@
           </template>
         </USelectMenu>
       </UFormGroup>
-      <UButton>Create</UButton>
     </div>
   </UiModal>
 </template>
 
 <script setup lang="ts">
-const { data, status, error, refresh, clear } = await usePuzzleSets();
+const { data, status, error, refresh, clear } = await useFetchPuzzleSets();
 
 await refresh();
 
@@ -398,7 +422,21 @@ const puzzleThemes = [
   },
 ];
 
-const numberOfPuzzles = ref(50);
-const averagePuzzleRating = ref(800);
-const selectedPuzzleThemes = ref(puzzleThemes);
+const createModalIsOpen = ref(false);
+
+const state = reactive({
+  name: "",
+  numberOfPuzzles: 50,
+  averagePuzzleRating: 800,
+  selectedPuzzleThemes: puzzleThemes,
+});
+
+const createPuzzleSet = async () => {
+  await useCreatePuzzleSet({
+    name: name.value,
+    numberOfPuzzles: numberOfPuzzles.value,
+    rating: averagePuzzleRating.value,
+    themes: selectedPuzzleThemes.value,
+  });
+};
 </script>

@@ -14,10 +14,7 @@ export type PuzzleSet = Omit<TableRow<"puzzle_sets">, "created_at"> & {
   puzzles: Puzzle[];
 };
 
-export type PuzzleSetPuzzle = Omit<
-  TableRow<"puzzle_set_puzzles">,
-  "id" | "is_solved"
->;
+export type PuzzleSetPuzzle = TableRow<"puzzle_set_puzzles">;
 
 export type ChessBoardAPI = {
   setPosition: (fen: string) => void;
