@@ -34,7 +34,7 @@ const emit = defineEmits<{
 
 // Initially, make the first solution move
 onMounted(() => {
-  boardApi.value?.setPosition(props.puzzle.FEN);
+  boardApi.value?.setPosition(props.puzzle.fen);
   boardApi.value?.makeMove(solutionMoves.value[0]);
 });
 
@@ -45,7 +45,7 @@ watch(
     solutionMovesMade.value = [];
     viewMovesMade.value = [];
 
-    boardApi.value?.setPosition(puzzle.FEN);
+    boardApi.value?.setPosition(puzzle.fen);
     boardApi.value?.makeMove(solutionMoves.value[0]);
   }
 );
@@ -54,7 +54,7 @@ const boardApi: Ref<ChessBoardAPI | null> = ref(null);
 
 // If the solution moves made string is equal to the puzzle moves string, the puzzle is solved
 const puzzleSolved = computed(
-  () => solutionMovesMadeStr.value === props.puzzle.Moves
+  () => solutionMovesMadeStr.value === props.puzzle.moves
 );
 
 // If the board is not showing the latest position or the puzzle has been solved, it should be in view-only mode
@@ -65,7 +65,7 @@ const isViewOnly = computed(() => {
 });
 
 // Puzzle solution
-const solutionMoves = computed(() => props.puzzle.Moves.split(" "));
+const solutionMoves = computed(() => props.puzzle.moves.split(" "));
 
 // Solution moves made (all of the solution moves that have been made)
 const solutionMovesMade = ref<string[]>([]);
@@ -86,7 +86,7 @@ const onMove = (
   if (!solutionMovesMade.value.includes(move)) {
     handleSolutionMove(move);
 
-    if (solutionMovesMadeStr.value === props.puzzle.Moves) {
+    if (solutionMovesMadeStr.value === props.puzzle.moves) {
       emit("solved");
       console.log("Puzzle solved!");
     }
@@ -103,7 +103,7 @@ const handleSolutionMove = (move: string) => {
 
     // Make the next move if the puzzle is not solved AND it is not the user's turn
     if (
-      solutionMovesMadeStr.value !== props.puzzle.Moves &&
+      solutionMovesMadeStr.value !== props.puzzle.moves &&
       solutionMovesMade.value.length % 2 === 0
     ) {
       setTimeout(() => {
