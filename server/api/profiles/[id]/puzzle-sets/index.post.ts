@@ -5,7 +5,7 @@ const bodySchema = z.object({
     required_error: "Puzzle set name is required",
     invalid_type_error: "Puzzle set name must be a string",
   }),
-  number_of_puzzles: z.number({
+  numberOfPuzzles: z.number({
     required_error: "Number of puzzles is required",
     invalid_type_error: "Number of puzzles must be a number",
   }),
@@ -13,20 +13,27 @@ const bodySchema = z.object({
     required_error: "Rating is required",
     invalid_type_error: "Rating must be a number",
   }),
-  themes: z.array(z.string()),
+  themes: z.array(z.string(), {
+    required_error: "Themes are required",
+    invalid_type_error: "Themes must be an array",
+  }),
 });
 
 export default defineEventHandler(async (event) => {
   const user = await authorize(event);
-
   const body = await getZodValidatedBody(event, bodySchema);
+
+  console.log("Generating puzzle set from", body);
 
   const puzzleSet: PuzzleSet = await generatePuzzleSet(event, {
     name: body.name,
-    numberOfPuzzles: body.number_of_puzzles,
+    numberOfPuzzles: body.numberOfPuzzles,
     rating: body.rating,
     themes: body.themes,
+    profileId: user.id,
   });
 
-  return await createPuzzleSet(event, { puzzleSet, userId: user.id });
+  console.log("Generated puzzle set", puzzleSet);
+
+  return await createPuzzleSet(event, { puzzleSet, profileId: user.id });
 });

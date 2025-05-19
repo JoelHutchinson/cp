@@ -4,7 +4,7 @@
 
     <div class="flex flex-row gap-2">
       <UButton
-        @click="createModalIsOpen = !createModalIsOpen"
+        @click="isCreateModalOpen = !isCreateModalOpen"
         icon="i-heroicons-plus"
         trailing
         >Create</UButton
@@ -22,12 +22,12 @@
   <UiTable v-if="data" :rows="data" :loading="status === 'pending'"> </UiTable>
 
   <UiModal
-    v-model="createModalIsOpen"
-    @action="createPuzzleSet(state)"
+    v-model="isCreateModalOpen"
+    @action="createPuzzleSet"
+    :loading="isCreateLoading"
     title="Create a puzzle set"
     buttonText="Create"
     buttonColor="primary"
-    :loading="status === 'pending'"
   >
     <div class="flex flex-col gap-4">
       <UFormGroup label="Name">
@@ -51,25 +51,22 @@
       <div class="flex flex-col justify-center items-center">
         <span class="flex items-center gap-1 text-gray-500 dark:text-gray-400"
           ><UIcon name="i-heroicons-arrow-trending-up" />{{
-            state.averagePuzzleRating
+            state.rating
           }}</span
         >
-        <URange
-          v-model="state.averagePuzzleRating"
-          :min="1000"
-          :max="3000"
-          :step="25"
-        />
+        <URange v-model="state.rating" :min="1000" :max="3000" :step="25" />
       </div>
 
       <UFormGroup label="Themes">
         <USelectMenu
-          v-model="state.selectedPuzzleThemes"
+          v-model="state.themes"
           :options="puzzleThemes"
           searchable
           searchable-placeholder="Search a theme..."
           multiple
           placeholder="Select puzzle themes"
+          option-attribute="label"
+          value-attribute="value"
         >
           <template #option="{ option: theme }">
             <UTooltip
@@ -90,10 +87,6 @@
 </template>
 
 <script setup lang="ts">
-const { data, status, error, refresh, clear } = await useFetchPuzzleSets();
-
-await refresh();
-
 const puzzleThemes = [
   {
     label: "Advanced pawn",
@@ -422,21 +415,37 @@ const puzzleThemes = [
   },
 ];
 
-const createModalIsOpen = ref(false);
-
 const state = reactive({
   name: "",
-  numberOfPuzzles: 50,
-  averagePuzzleRating: 800,
-  selectedPuzzleThemes: puzzleThemes,
+  numberOfPuzzles: 100,
+  rating: 800,
+  themes: puzzleThemes.map((theme) => theme.value),
 });
 
+const notifications = useNotification();
+const { data, status, error, refresh, clear } = await useFetchPuzzleSets();
+
+await refresh();
+
+const isCreateModalOpen = ref(false);
+const isCreateLoading = ref(false);
+
 const createPuzzleSet = async () => {
-  await useCreatePuzzleSet({
-    name: name.value,
-    numberOfPuzzles: numberOfPuzzles.value,
-    rating: averagePuzzleRating.value,
-    themes: selectedPuzzleThemes.value,
-  });
+  isCreateLoading.value = true;
+  try {
+    await useCreatePuzzleSet(state);
+
+    notifications.success({
+      title: "Puzzle set created",
+      message: "Your puzzle set has been created successfully.",
+    });
+  } catch (error: any) {
+    notifications.error({
+      title: "Error creating puzzle set",
+      message: error.data.message,
+    });
+  }
+
+  isCreateLoading.value = false;
 };
 </script>

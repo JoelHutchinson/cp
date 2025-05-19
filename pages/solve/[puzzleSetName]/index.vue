@@ -1,4 +1,5 @@
 <template>
+  {{ puzzle }}
   <ChessPuzzleInterface
     v-if="puzzle"
     :puzzle="puzzle"

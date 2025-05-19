@@ -10,6 +10,7 @@ export const generatePuzzleSet = async (
     numberOfPuzzles: number;
     themes: string[];
     rating: number;
+    profileId: string;
   }
 ): Promise<PuzzleSet> => {
   const supabase = await serverSupabaseClient<Database>(event);
@@ -31,7 +32,7 @@ export const generatePuzzleSet = async (
 
   // Filter puzzles for themes provided
   const filteredData = data.filter((puzzle) =>
-    params.themes.some((theme) => puzzle.Themes.split(" ").includes(theme))
+    params.themes.some((theme) => puzzle.themes.split(" ").includes(theme))
   );
 
   // Select a sample of puzzles evenly distributed across the range
@@ -40,20 +41,27 @@ export const generatePuzzleSet = async (
     .filter((_, i) => i % step === 0)
     .slice(0, params.numberOfPuzzles);
 
-  return { id: crypto.randomUUID(), name: params.name, puzzles };
+  return {
+    id: crypto.randomUUID(),
+    profile_id: params.profileId,
+    name: params.name,
+    puzzles,
+  };
 };
 
 // TODO: Implement
 export const createPuzzleSet = async (
   event: H3Event,
-  params: { puzzleSet: PuzzleSet; userId: string }
+  params: { puzzleSet: PuzzleSet; profileId: string }
 ) => {
   const supabase = await serverSupabaseClient<Database>(event);
+
+  const { puzzles, ...puzzleSet } = params.puzzleSet;
 
   // Insert the puzzle set
   const { data, error } = await supabase
     .from("puzzle_sets")
-    .insert(params.puzzleSet)
+    .insert(puzzleSet)
     .select()
     .single();
 
@@ -65,16 +73,13 @@ export const createPuzzleSet = async (
   }
 
   // Insert the individual puzzle set puzzles
-  const puzzleSetPuzzles: PuzzleSetPuzzle[] = params.puzzleSet.puzzles.map(
-    (puzzle, index) => ({
-      id: crypto.randomUUID(),
-      index,
-      is_solved: false,
-      puzzle_set_id: data.id,
-      puzzle_id: puzzle.id,
-      user_id: params.userId,
-    })
-  );
+  const puzzleSetPuzzles: PuzzleSetPuzzle[] = puzzles.map((puzzle, index) => ({
+    id: crypto.randomUUID(),
+    index,
+    is_solved: false,
+    puzzle_id: puzzle.id,
+    puzzle_set_id: data.id,
+  }));
 
   const { error: puzzleSetPuzzlesError } = await supabase
     .from("puzzle_set_puzzles")
