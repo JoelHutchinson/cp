@@ -42,9 +42,9 @@
         >
         <URange
           v-model="state.numberOfPuzzles"
-          :min="100"
+          :min="10"
           :max="1000"
-          :step="50"
+          :step="10"
         />
       </div>
 
@@ -417,15 +417,13 @@ const puzzleThemes = [
 
 const state = reactive({
   name: "",
-  numberOfPuzzles: 100,
+  numberOfPuzzles: 10,
   rating: 800,
   themes: puzzleThemes.map((theme) => theme.value),
 });
 
 const notifications = useNotification();
 const { data, status, error, refresh, clear } = await useFetchPuzzleSets();
-
-await refresh();
 
 const isCreateModalOpen = ref(false);
 const isCreateLoading = ref(false);
@@ -447,5 +445,7 @@ const createPuzzleSet = async () => {
   }
 
   isCreateLoading.value = false;
+
+  await refresh();
 };
 </script>

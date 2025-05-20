@@ -72,7 +72,7 @@ const isRegistering = ref(false);
 const onSubmit = async (event: FormSubmitEvent<Schema>) => {
   isRegistering.value = true;
 
-  const { data, error } = await supabase.auth.signUp({
+  const { error } = await supabase.auth.signUp({
     email: event.data.email,
     password: event.data.password,
     options: {
