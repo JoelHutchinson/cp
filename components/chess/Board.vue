@@ -109,7 +109,7 @@ const undoLastMove = () => {
 watch(
   () => props.viewOnly,
   (viewOnly) => {
-    
+    boardConfig.viewOnly = viewOnly;
   }
 );
 </script>
