@@ -147,6 +147,37 @@ export const fetchPuzzleSetByName = async (
   return data;
 };
 
+export const fetchDefaultPuzzleSet = async (
+  event: H3Event,
+  params: { profileId: string }
+) => {
+  const supabase = await serverSupabaseClient<Database>(event);
+
+  const { data, error } = await supabase
+    .from("puzzle_sets")
+    .select("*")
+    .eq("profile_id", params.profileId)
+    .eq("is_default", true)
+    .single();
+
+  if (error) {
+    // content not found (error due to .single()) -> 404 error
+    if (error.code === "PGRST116")
+      throw createError({
+        statusCode: 404,
+        statusMessage: `Default puzzle set not found for profile ID "${params.profileId}".`,
+      });
+
+    // other errors -> 500 error
+    throw createError({
+      statusCode: 500,
+      message: `Error fetching default puzzle set. (Message: ${error.message})`,
+    });
+  }
+
+  return data;
+};
+
 export const fetchCurrentPuzzleInSet = async (
   event: H3Event,
   params: { profileId: string; puzzleSetName: string }

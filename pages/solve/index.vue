@@ -4,6 +4,12 @@
 
 <script setup lang="ts">
 definePageMeta({
-  middleware: "02-puzzle",
+  middleware: "02-solve",
 });
+
+const { defaultPuzzleSet, fetchDefaultPuzzleSet } = useFetchDefaultPuzzleSet();
+
+if (!defaultPuzzleSet.value) await fetchDefaultPuzzleSet();
+
+await navigateTo(`/solve/${defaultPuzzleSet.value!.name}`);
 </script>
