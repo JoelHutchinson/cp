@@ -4,7 +4,7 @@
     v-model="selectedPuzzleSet"
     :options="puzzleSets"
     option-attribute="name"
-    value-attribute="name"
+    value-attribute="slug"
     class="mb-4"
   />
   <ChessPuzzleInterface
@@ -26,7 +26,6 @@ const {
   data: puzzle,
   refresh: refreshPuzzle,
   status: puzzleStatus,
-  error: puzzleError,
 } = await useLazyAsyncData(() => {
   return $fetch<Puzzle>(
     `/api/profiles/${profile.value!.id}/puzzle-sets/${
@@ -39,11 +38,10 @@ const {
 });
 
 const markPuzzleAsSolved = async () => {
-  await useFetch(
-    () =>
-      `/api/profiles/${
-        profile.value!.id
-      }/puzzle-sets/${puzzleSet}/current/solved`,
+  await $fetch(
+    `/api/profiles/${
+      profile.value!.id
+    }/puzzle-sets/${puzzleSet}/current/solved`,
     {
       method: "POST",
     }

@@ -104,20 +104,26 @@ export type Database = {
         Row: {
           created_at: string;
           id: string;
+          is_default: boolean;
           name: string;
           profile_id: string;
+          slug: string;
         };
         Insert: {
           created_at?: string;
           id?: string;
+          is_default?: boolean;
           name: string;
           profile_id: string;
+          slug?: string;
         };
         Update: {
           created_at?: string;
           id?: string;
+          is_default?: boolean;
           name?: string;
           profile_id?: string;
+          slug?: string;
         };
         Relationships: [
           {

@@ -2,7 +2,6 @@ import type { H3Event } from "h3";
 import { serverSupabaseClient } from "#supabase/server";
 import { PuzzleSetPuzzle } from "~/types/types";
 
-// TODO: Implement
 export const generatePuzzleSet = async (
   event: H3Event,
   params: {
@@ -45,6 +44,8 @@ export const generatePuzzleSet = async (
     id: crypto.randomUUID(),
     profile_id: params.profileId,
     name: params.name,
+    slug: slugify(params.name),
+    is_default: false,
     puzzles,
   };
 };
@@ -115,9 +116,9 @@ export const fetchPuzzleSets = async (
   return data;
 };
 
-export const fetchPuzzleSetByName = async (
+export const fetchPuzzleSetBySlug = async (
   event: H3Event,
-  params: { profileId: string; name: string }
+  params: { profileId: string; slug: string }
 ) => {
   const supabase = await serverSupabaseClient<Database>(event);
   const { data, error } = await supabase
@@ -125,7 +126,7 @@ export const fetchPuzzleSetByName = async (
     .select("*")
     .match({
       profile_id: params.profileId,
-      name: params.name,
+      slug: params.slug,
     })
     .single();
 
@@ -134,7 +135,7 @@ export const fetchPuzzleSetByName = async (
     if (error.code === "PGRST116")
       throw createError({
         statusCode: 404,
-        statusMessage: `Puzzle set with name "${params.name}" not found for profile ID "${params.profileId}".`,
+        statusMessage: `Puzzle set with slug "${params.slug}" not found for profile ID "${params.profileId}".`,
       });
 
     // other errors -> 500 error
@@ -180,7 +181,7 @@ export const fetchDefaultPuzzleSet = async (
 
 export const fetchCurrentPuzzleInSet = async (
   event: H3Event,
-  params: { profileId: string; puzzleSetName: string }
+  params: { profileId: string; puzzleSetSlug: string }
 ) => {
   const supabase = await serverSupabaseClient<Database>(event);
   const { data, error } = await supabase
@@ -188,7 +189,7 @@ export const fetchCurrentPuzzleInSet = async (
     .select("*, puzzles(*), puzzle_sets(*)")
     .match({
       "puzzle_sets.profile_id": params.profileId,
-      "puzzle_sets.name": params.puzzleSetName,
+      "puzzle_sets.slug": params.puzzleSetSlug,
       is_solved: false,
     })
     .not("puzzle_sets", "is", null)
@@ -201,7 +202,7 @@ export const fetchCurrentPuzzleInSet = async (
     if (error.code === "PGRST116")
       throw createError({
         statusCode: 404,
-        statusMessage: `Current puzzle not found for puzzle set "${params.puzzleSetName}" profile ID "${params.profileId}".`,
+        statusMessage: `Current puzzle not found for puzzle set "${params.puzzleSetSlug}" profile ID "${params.profileId}".`,
       });
 
     // other errors -> 500 error
@@ -216,7 +217,7 @@ export const fetchCurrentPuzzleInSet = async (
 
 export const updateCurrentPuzzleInSetSolved = async (
   event: H3Event,
-  params: { profileId: string; puzzleSetName: string }
+  params: { profileId: string; puzzleSetSlug: string }
 ) => {
   // get the id of the puzzle_set_puzzles record
   const supabase = await serverSupabaseClient<Database>(event);
@@ -224,7 +225,7 @@ export const updateCurrentPuzzleInSetSolved = async (
     .from("puzzle_set_puzzles")
     .select("id, puzzle_sets(*)")
     .eq("puzzle_sets.profile_id", params.profileId)
-    .eq("puzzle_sets.name", params.puzzleSetName)
+    .eq("puzzle_sets.name", params.puzzleSetSlug)
     .eq("is_solved", false)
     .order("index", { ascending: true })
     .limit(1)
@@ -235,7 +236,7 @@ export const updateCurrentPuzzleInSetSolved = async (
     if (fetchError.code === "PGRST116")
       throw createError({
         statusCode: 404,
-        statusMessage: `Current puzzle not found for puzzle set "${params.puzzleSetName}" profile ID "${params.profileId}".`,
+        statusMessage: `Current puzzle not found for puzzle set "${params.puzzleSetSlug}" profile ID "${params.profileId}".`,
       });
 
     // other errors -> 500 error

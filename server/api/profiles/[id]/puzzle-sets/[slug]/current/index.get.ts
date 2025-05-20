@@ -7,19 +7,19 @@ const routeSchema = z.object({
       invalid_type_error: "Profile ID must be a string",
     })
     .uuid({ message: "Profile ID must be a UUID" }),
-  name: z.string({
-    required_error: "Puzzle set name is required",
-    invalid_type_error: "Puzzle set name must be a string",
+  slug: z.string({
+    required_error: "Puzzle set slug is required",
+    invalid_type_error: "Puzzle set slug must be a string",
   }),
 });
 
 export default defineEventHandler(async (event) => {
   await authorize(event);
 
-  const { id, name } = await getZodValidatedRouterParams(event, routeSchema);
+  const { id, slug } = await getZodValidatedRouterParams(event, routeSchema);
 
-  return await updateCurrentPuzzleInSetSolved(event, {
+  return await fetchCurrentPuzzleInSet(event, {
     profileId: id,
-    puzzleSetName: name,
+    puzzleSetSlug: slug,
   });
 });

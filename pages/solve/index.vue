@@ -11,5 +11,5 @@ const { defaultPuzzleSet, fetchDefaultPuzzleSet } = useFetchDefaultPuzzleSet();
 
 if (!defaultPuzzleSet.value) await fetchDefaultPuzzleSet();
 
-await navigateTo(`/solve/${defaultPuzzleSet.value!.name}`);
+await navigateTo(`/solve/${defaultPuzzleSet.value!.slug}`);
 </script>
