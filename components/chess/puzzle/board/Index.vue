@@ -32,6 +32,15 @@ const emit = defineEmits<{
   (e: "solved"): void;
 }>();
 
+defineShortcuts({
+  ArrowLeft: () => {
+    prevViewMove();
+  },
+  ArrowRight: () => {
+    nextViewMove();
+  },
+});
+
 // Initially, make the first solution move
 onMounted(() => {
   boardApi.value?.setPosition(props.puzzle.fen);

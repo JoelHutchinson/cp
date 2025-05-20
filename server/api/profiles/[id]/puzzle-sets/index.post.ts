@@ -23,8 +23,6 @@ export default defineEventHandler(async (event) => {
   const user = await authorize(event);
   const body = await getZodValidatedBody(event, bodySchema);
 
-  console.log("Generating puzzle set from", body);
-
   const puzzleSet: PuzzleSet = await generatePuzzleSet(event, {
     name: body.name,
     numberOfPuzzles: body.numberOfPuzzles,
@@ -32,8 +30,6 @@ export default defineEventHandler(async (event) => {
     themes: body.themes,
     profileId: user.id,
   });
-
-  console.log("Generated puzzle set", puzzleSet);
 
   return await createPuzzleSet(event, { puzzleSet, profileId: user.id });
 });

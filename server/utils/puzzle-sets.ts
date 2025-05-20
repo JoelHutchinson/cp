@@ -185,10 +185,13 @@ export const fetchCurrentPuzzleInSet = async (
   const supabase = await serverSupabaseClient<Database>(event);
   const { data, error } = await supabase
     .from("puzzle_set_puzzles")
-    .select("puzzles(*), puzzle_sets(*)")
-    .eq("puzzle_sets.profile_id", params.profileId)
-    .eq("puzzle_sets.name", params.puzzleSetName)
-    .eq("is_solved", false)
+    .select("*, puzzles(*), puzzle_sets(*)")
+    .match({
+      "puzzle_sets.profile_id": params.profileId,
+      "puzzle_sets.name": params.puzzleSetName,
+      is_solved: false,
+    })
+    .not("puzzle_sets", "is", null)
     .order("index", { ascending: true })
     .limit(1)
     .single();
