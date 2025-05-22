@@ -19,7 +19,38 @@
     </div>
   </div>
 
-  <UiTable v-if="data" :rows="data" :loading="status === 'pending'"> </UiTable>
+  <UTable
+    v-if="data"
+    :columns="tableColumns"
+    :rows="tableRows"
+    :loading="status === 'pending'"
+  >
+    <template #is_default-data="{ row }">
+      <div>
+        <UBadge v-if="row.is_default" color="white">Default</UBadge>
+      </div>
+    </template>
+
+    <template #created_at-data="{ row }">
+      <UiFormattedDate :date="row.created_at" />
+    </template>
+
+    <template #actions-data="{ row }">
+      <UiActionsDropdown
+        :actions="[
+          [
+            {
+              label: 'Delete',
+              icon: 'i-heroicons-trash',
+              click: () => {
+                isDeleteModalOpen.value = true;
+              },
+            },
+          ],
+        ]"
+      />
+    </template>
+  </UTable>
 
   <UiModal
     v-model="isCreateModalOpen"
@@ -83,6 +114,16 @@
         </USelectMenu>
       </UFormGroup>
     </div>
+  </UiModal>
+
+  <UiModal
+    v-model="isDeleteModalOpen"
+    @action="deletePuzzleSet"
+    :loading="isDeleteLoading"
+    title="Delete Puzzle Set"
+    buttonText="Delete"
+    buttonColor="primary"
+  >
   </UiModal>
 </template>
 
@@ -428,6 +469,34 @@ const { data, status, error, refresh, clear } = await useFetchPuzzleSets();
 const isCreateModalOpen = ref(false);
 const isCreateLoading = ref(false);
 
+const isDeleteModalOpen = ref(false);
+const isDeleteLoading = ref(false);
+
+const tableColumns = [
+  {
+    label: "Name",
+    key: "name",
+    class: "w-1/3",
+  },
+  {
+    key: "is_default",
+  },
+  {
+    label: "Created at",
+    key: "created_at",
+    class: "w-1/3",
+  },
+  { key: "actions", class: "w-[52px]" },
+];
+
+const tableRows = computed(() => {
+  return data.value?.map((puzzleSet) => ({
+    name: puzzleSet.name,
+    is_default: puzzleSet.is_default,
+    created_at: puzzleSet.created_at,
+  }));
+});
+
 const createPuzzleSet = async () => {
   isCreateLoading.value = true;
   try {
@@ -445,6 +514,27 @@ const createPuzzleSet = async () => {
   }
 
   isCreateLoading.value = false;
+
+  await refresh();
+};
+
+const deletePuzzleSet = async (slug: string) => {
+  isDeleteLoading.value = true;
+  try {
+    await useDeletePuzzleSet(slug);
+
+    notifications.success({
+      title: "Puzzle set deleted",
+      message: "Your puzzle set has been deleted successfully.",
+    });
+  } catch (error: any) {
+    notifications.error({
+      title: "Error deleting puzzle set",
+      message: error.data.message,
+    });
+  }
+
+  isDeleteLoading.value = false;
 
   await refresh();
 };

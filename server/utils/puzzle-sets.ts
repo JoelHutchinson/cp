@@ -225,7 +225,7 @@ export const updateCurrentPuzzleInSetSolved = async (
     .from("puzzle_set_puzzles")
     .select("id, puzzle_sets(*)")
     .eq("puzzle_sets.profile_id", params.profileId)
-    .eq("puzzle_sets.name", params.puzzleSetSlug)
+    .eq("puzzle_sets.slug", params.puzzleSetSlug)
     .eq("is_solved", false)
     .order("index", { ascending: true })
     .limit(1)
@@ -261,4 +261,26 @@ export const updateCurrentPuzzleInSetSolved = async (
   }
 
   return updateData;
+};
+
+export const deletePuzzleSet = async (
+  event: H3Event,
+  params: { profileId: string; puzzleSetSlug: string }
+) => {
+  const supabase = await serverSupabaseClient<Database>(event);
+
+  // Delete the puzzle set
+  const { error } = await supabase.from("puzzle_sets").delete().match({
+    profile_id: params.profileId,
+    slug: params.puzzleSetSlug,
+  });
+
+  if (error) {
+    throw createError({
+      statusCode: 500,
+      message: `Error deleting puzzle set. (Message: ${error.message})`,
+    });
+  }
+
+  return null;
 };

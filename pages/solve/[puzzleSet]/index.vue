@@ -30,7 +30,7 @@ const {
   return $fetch<Puzzle>(
     `/api/profiles/${profile.value!.id}/puzzle-sets/${
       selectedPuzzleSet.value
-    }/current`,
+    }/current-puzzle`,
     {
       headers: useRequestHeaders(["cookie"]), // needed to pass supabase auth session
     }
@@ -41,7 +41,7 @@ const markPuzzleAsSolved = async () => {
   await $fetch(
     `/api/profiles/${
       profile.value!.id
-    }/puzzle-sets/${puzzleSet}/current/solved`,
+    }/puzzle-sets/${puzzleSet}/current-puzzle/solved`,
     {
       method: "POST",
     }
