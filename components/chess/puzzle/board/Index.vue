@@ -1,24 +1,12 @@
 <template>
-  <div class="flex flex-col w-fit gap-1">
-    <ChessBoard
-      v-bind="$attrs"
-      :on-move="onMove"
-      :view-only="isViewOnly"
-      :width="400"
-      :height="400"
-      @board-created="(api) => (boardApi = api)"
-    />
-    <div class="flex flex-row justify-between">
-      <ChessPuzzleBoardButton
-        icon="i-heroicons-arrow-long-left"
-        @click="prevViewMove"
-      />
-      <ChessPuzzleBoardButton
-        icon="i-heroicons-arrow-long-right"
-        @click="nextViewMove"
-      />
-    </div>
-  </div>
+  <ChessBoard
+    v-bind="$attrs"
+    :on-move="onMove"
+    :view-only="isViewOnly"
+    :width="600"
+    :height="600"
+    @board-created="(api) => (boardApi = api)"
+  />
 </template>
 
 <script setup lang="ts">
@@ -152,4 +140,9 @@ const nextViewMove = () => {
   boardApi.value?.makeMove(nextMove);
   viewMovesMade.value.push(nextMove);
 };
+
+defineExpose({
+  nextViewMove,
+  prevViewMove,
+});
 </script>

@@ -1,4 +1,4 @@
 <template>
-  <UButton color="primary" variant="soft" :ui="{ rounded: 'rounded-full' }">
+  <UButton color="primary" variant="ghost" :ui="{ rounded: 'rounded-full' }">
   </UButton>
 </template>

@@ -36,5 +36,6 @@
 
 <script setup lang="ts">
 const { profile, fetchProfile } = useFetchProfile();
+const { data: puzzleSets } = await useFetchPuzzleSets();
 await fetchProfile();
 </script>
