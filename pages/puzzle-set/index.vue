@@ -476,6 +476,7 @@ const state = reactive({
 
 const notifications = useNotification();
 const { data, status, error, refresh, clear } = await useFetchPuzzleSets();
+const { createPuzzleSet: create } = useCreatePuzzleSet();
 
 const isCreateModalOpen = ref(false);
 const isCreateLoading = ref(false);
@@ -511,7 +512,7 @@ const tableRows = computed(() => {
 const createPuzzleSet = async () => {
   isCreateLoading.value = true;
   try {
-    await useCreatePuzzleSet(state);
+    await create(state);
 
     notifications.success({
       title: "Puzzle set created",

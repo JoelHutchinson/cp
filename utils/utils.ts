@@ -1,0 +1,1 @@
+export const jsonCopy = <T>(obj: T) => structuredClone(toRaw(obj)) as T;

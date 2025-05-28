@@ -1,9 +1,10 @@
 <template>
   <div class="flex flex-row gap-4">
+    <!-- TODO: Mark incorrect solves as well -->
     <ChessPuzzleInterface
       v-if="puzzle"
       :puzzle="puzzle!"
-      @solved="markPuzzleAsSolved"
+      @solved="() => solvePuzzle(true)"
     >
       <template #leading>
         <ChessPuzzleSetInterface
@@ -32,57 +33,17 @@ const { data: puzzleSets, refresh: refreshPuzzleSets } =
 refreshPuzzleSets();
 
 const selectedPuzzleSetSlug: Ref<string> = ref(puzzleSet);
-const selectedPuzzleSet = computed<PuzzleSet | null>(() => {
-  return (
-    puzzleSets.value?.find((set) => set.slug === selectedPuzzleSetSlug.value) ??
-    puzzleSets.value?.[0] ??
-    null
-  );
-});
-
-const { data: puzzleSetProgress, refresh: refreshPuzzleSetProgress } =
-  await useFetchPuzzleSetProgress(selectedPuzzleSetSlug.value);
-
-refreshPuzzleSetProgress();
 
 const {
-  data,
-  refresh: refreshPuzzle,
-  status: puzzleStatus,
-} = await useLazyAsyncData(() => {
-  return $fetch<{ puzzle: Puzzle; progress: PuzzleSetPuzzleProgress }>(
-    `/api/profiles/${profile.value!.id}/puzzle-sets/${
-      selectedPuzzleSetSlug.value
-    }/current-puzzle`,
-    {
-      headers: useRequestHeaders(["cookie"]), // needed to pass supabase auth session
-    }
-  );
-});
-
-const puzzle = computed(() => data.value?.puzzle);
-
-// TODO: Mark incorrect solves as well
-const markPuzzleAsSolved = async () => {
-  await $fetch(
-    `/api/profiles/${
-      profile.value!.id
-    }/puzzle-sets/${puzzleSet}/current-puzzle/solves`,
-    {
-      method: "POST",
-      body: {
-        solved: true,
-      },
-    }
-  );
-
-  await refreshPuzzle();
-  await refreshPuzzleSetProgress();
-};
+  puzzle,
+  puzzleStatus,
+  refreshPuzzle,
+  puzzleProgress,
+  solvePuzzle,
+  puzzleSetProgress,
+} = await usePuzzleSet(selectedPuzzleSetSlug.value);
 
 watch(selectedPuzzleSetSlug, async (newSelectedPuzzleSetSlug) => {
   await navigateTo(`/solve/${newSelectedPuzzleSetSlug}`);
-
-  refreshPuzzleSetProgress();
 });
 </script>

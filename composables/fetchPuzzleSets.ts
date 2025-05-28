@@ -1,6 +1,6 @@
 const key = "fetch-puzzle-sets";
 
-export const useFetchPuzzleSets = async () => {
+export const useFetchPuzzleSets = () => {
   const { profile } = useFetchProfile();
 
   return useLazyAsyncData<PuzzleSet[]>(key, () =>

@@ -1,6 +1,6 @@
 const key = "fetch-puzzle-set-progress";
 
-export const useFetchPuzzleSetProgress = async (slug: string) => {
+export const useFetchPuzzleSetProgress = (slug: string) => {
   const { profile } = useFetchProfile();
 
   return useLazyAsyncData<PuzzleSetProgress>(key, () =>
