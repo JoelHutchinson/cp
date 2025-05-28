@@ -12,7 +12,7 @@ export const generatePuzzleSet = async (
     rating: number;
     profileId: string;
   }
-): Promise<PuzzleSet> => {
+): Promise<PuzzleSetWithPuzzles> => {
   const supabase = await serverSupabaseClient<Database>(event);
 
   // Order puzzles by rating, and pick within a range of +-250 elo
@@ -55,7 +55,7 @@ export const generatePuzzleSet = async (
 
 export const createPuzzleSet = async (
   event: H3Event,
-  params: { puzzleSet: PuzzleSet; profileId: string }
+  params: { puzzleSet: PuzzleSetWithPuzzles; profileId: string }
 ) => {
   const supabase = await serverSupabaseClient<Database>(event);
 
@@ -156,16 +156,15 @@ export const fetchPuzzleSetProgressBySlug = async (
 ) => {
   const supabase = await serverSupabaseClient<Database>(event);
 
-  const { data, error } = await supabase
-    .from("puzzle_set_puzzles")
-    .select("*, progress(*)")
-    .eq("puzzle_set_id", params.puzzleSetSlug)
-    .eq("profile_id", params.profileId);
+  let { data, error } = await supabase.rpc("get_puzzle_set_progress", {
+    _profile_id: params.profileId,
+    _puzzle_set_slug: params.puzzleSetSlug,
+  });
 
   if (error) {
     throw createError({
       statusCode: 500,
-      message: `Error fetching puzzle set progress. (Message: ${error.message})`,
+      message: `Error fetching current puzzle in set. (Message: ${error.message})`,
     });
   }
 

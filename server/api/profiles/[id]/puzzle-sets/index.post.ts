@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
   const user = await authorize(event);
   const body = await getZodValidatedBody(event, bodySchema);
 
-  const puzzleSet: PuzzleSet = await generatePuzzleSet(event, {
+  const puzzleSet: PuzzleSetWithPuzzles = await generatePuzzleSet(event, {
     name: body.name,
     numberOfPuzzles: body.numberOfPuzzles,
     rating: body.rating,

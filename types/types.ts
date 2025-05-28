@@ -10,8 +10,25 @@ export type Profile = Omit<TableRow<"profiles">, "created_at">;
 export type Puzzle = TableRow<"puzzles">;
 
 // Puzzle Sets
-export type PuzzleSet = Omit<TableRow<"puzzle_sets">, "created_at"> & {
+export type PuzzleSet = Omit<TableRow<"puzzle_sets">, "created_at">;
+
+export type PuzzleSetWithPuzzles = PuzzleSet & {
   puzzles: Puzzle[];
+};
+
+export type PuzzleSetWithProgress = PuzzleSet & {
+  progress: PuzzleSetProgress;
+};
+
+export type PuzzleSetProgress = {
+  total_puzzles: number;
+  solved_in_current_cycle: number;
+  solved_correctly_in_current_cycle: number;
+  solved_incorrectly_in_current_cycle: number;
+  current_cycle: number;
+  total_cycles: number;
+  total_correct_solves: number;
+  total_incorrect_solves: number;
 };
 
 export type PuzzleSetPuzzle = TableRow<"puzzle_set_puzzles">;
