@@ -6,43 +6,15 @@
       @solved="markPuzzleAsSolved"
     >
       <template #leading>
-        <!-- Puzzle Set Details -->
-        <div
-          v-if="selectedPuzzleSet && puzzleSetProgress"
-          class="flex flex-col justify-between h-full"
-        >
-          <UFormGroup label="Puzzle Set">
-            <USelectMenu
-              v-if="puzzleSets"
-              v-model="selectedPuzzleSetSlug"
-              :options="puzzleSets"
-              option-attribute="name"
-              value-attribute="slug"
-            />
-          </UFormGroup>
+        <ChessPuzzleSetInterface
+          v-if="selectedPuzzleSetSlug && puzzleSets && puzzleSetProgress"
+          v-model:selected-puzzle-set-slug="selectedPuzzleSetSlug"
+          :puzzle-sets="puzzleSets"
+          :puzzle-set-progress="puzzleSetProgress"
+        />
 
-          <span class="flex flex-row gap-2 items-center self-center text-xl">
-            <!-- TODO: Use vue ticker when this increases -->
-            <!-- TODO: Make the text bigger -->
-            <UIcon name="i-heroicons-arrow-path" class="size-6" />
-            Cycle {{ puzzleSetProgress.current_cycle }}
-          </span>
-
-          <div>
-            <UProgress
-              :value="
-                (puzzleSetProgress.solved_in_current_cycle /
-                  puzzleSetProgress.total_puzzles) *
-                100
-              "
-              indicator
-            >
-              <!-- <template #indicator="{ value }">
-                <span class="text-sm">{{ value }}</span>
-              </template> -->
-            </UProgress>
-          </div>
-        </div>
+        <!-- TODO: skeleton goes here -->
+        <div v-else></div>
       </template>
     </ChessPuzzleInterface>
 
@@ -89,7 +61,6 @@ const {
 });
 
 const puzzle = computed(() => data.value?.puzzle);
-const progress = computed(() => data.value?.progress);
 
 // TODO: Mark incorrect solves as well
 const markPuzzleAsSolved = async () => {
@@ -109,8 +80,8 @@ const markPuzzleAsSolved = async () => {
   await refreshPuzzleSetProgress();
 };
 
-watch(selectedPuzzleSet, async (newSelectedPuzzleSet) => {
-  await navigateTo(`/solve/${newSelectedPuzzleSet?.slug}`);
+watch(selectedPuzzleSetSlug, async (newSelectedPuzzleSetSlug) => {
+  await navigateTo(`/solve/${newSelectedPuzzleSetSlug}`);
 
   refreshPuzzleSetProgress();
 });
