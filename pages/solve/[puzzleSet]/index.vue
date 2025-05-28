@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-row gap-4">
     <ChessPuzzleInterface
-      v-if="puzzleStatus === 'success'"
+      v-if="puzzle"
       :puzzle="puzzle!"
       @solved="markPuzzleAsSolved"
     >

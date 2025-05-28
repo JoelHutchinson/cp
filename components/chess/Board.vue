@@ -1,6 +1,7 @@
 <template>
   <TheChessboard
     :board-config="boardConfig"
+    @move="handleMove"
     @board-created="handleBoardCreated"
     :style="{ width: `${width}px`, height: `${height}px` }"
     reactive-config
@@ -11,7 +12,7 @@
 import { TheChessboard } from "vue3-chessboard";
 import "vue3-chessboard/style.css";
 
-import type { BoardApi, BoardConfig, Piece, SquareKey } from "vue3-chessboard";
+import type { BoardApi, BoardConfig, MoveEvent } from "vue3-chessboard";
 import type { Reactive } from "vue";
 
 const vue3ChessboardApi: Ref<BoardApi | null> = ref(null);
@@ -21,17 +22,14 @@ const props = defineProps<{
   viewOnly: boolean;
   width: number;
   height: number;
-  onMove?: (orig: SquareKey, dest: SquareKey, capturedPiece?: Piece) => void;
 }>();
 
 const emit = defineEmits<{
   (e: "boardCreated", boardApi: ChessBoardAPI): void;
+  (e: "move", move: MoveEvent): void;
 }>();
 
 const boardConfig: Reactive<BoardConfig> = reactive({
-  events: {
-    move: props.onMove as any,
-  },
   viewOnly: false,
   coordinates: true,
   autoCastle: false,
@@ -60,6 +58,10 @@ const boardConfig: Reactive<BoardConfig> = reactive({
     },
   },
 });
+
+const handleMove = (move: MoveEvent) => {
+  emit("move", move);
+};
 
 const handleBoardCreated = (newBoardApi: BoardApi) => {
   vue3ChessboardApi.value = newBoardApi;

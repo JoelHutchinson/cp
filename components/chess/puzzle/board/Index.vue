@@ -1,16 +1,16 @@
 <template>
   <ChessBoard
     v-bind="$attrs"
-    :on-move="onMove"
     :view-only="isViewOnly"
     :width="600"
     :height="600"
+    @move="onMove"
     @board-created="(api) => (boardApi = api)"
   />
 </template>
 
 <script setup lang="ts">
-import type { Piece, SquareKey } from "vue3-chessboard";
+import type { MoveEvent, Piece, SquareKey } from "vue3-chessboard";
 
 const props = defineProps<{
   puzzle: Puzzle;
@@ -72,16 +72,10 @@ const solutionMovesMadeStr = computed(() => solutionMovesMade.value.join(" "));
 const viewMovesMade = ref<string[]>([]);
 const viewMovesMadeStr = computed(() => viewMovesMade.value.join(" "));
 
-const onMove = (
-  orig: SquareKey,
-  dest: SquareKey,
-  capturedPiece?: Piece | undefined
-) => {
-  const move = orig + dest;
-
+const onMove = (move: MoveEvent) => {
   // Check if the move is a solution move or a view move (i.e. has it been made before)
-  if (!solutionMovesMade.value.includes(move)) {
-    handleSolutionMove(move);
+  if (!solutionMovesMade.value.includes(move.lan)) {
+    handleSolutionMove(move.lan);
 
     if (solutionMovesMadeStr.value === props.puzzle.moves) {
       emit("solved");
