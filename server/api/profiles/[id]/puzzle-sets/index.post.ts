@@ -13,6 +13,10 @@ const bodySchema = z.object({
     required_error: "Rating is required",
     invalid_type_error: "Rating must be a number",
   }),
+  totalCycles: z.number({
+    required_error: "Number of cycles is required",
+    invalid_type_error: "Number of cycles must be a number",
+  }),
   themes: z.array(z.string(), {
     required_error: "Themes are required",
     invalid_type_error: "Themes must be an array",
@@ -27,6 +31,7 @@ export default defineEventHandler(async (event) => {
     name: body.name,
     numberOfPuzzles: body.numberOfPuzzles,
     rating: body.rating,
+    totalCycles: body.totalCycles,
     themes: body.themes,
     profileId: user.id,
   });

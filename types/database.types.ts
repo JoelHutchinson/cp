@@ -109,6 +109,7 @@ export type Database = {
           name: string;
           profile_id: string;
           slug: string;
+          total_cycles: number;
         };
         Insert: {
           created_at?: string;
@@ -118,6 +119,7 @@ export type Database = {
           name: string;
           profile_id: string;
           slug?: string;
+          total_cycles?: number;
         };
         Update: {
           created_at?: string;
@@ -127,6 +129,7 @@ export type Database = {
           name?: string;
           profile_id?: string;
           slug?: string;
+          total_cycles?: number;
         };
         Relationships: [
           {

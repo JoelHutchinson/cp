@@ -88,6 +88,16 @@
         <URange v-model="state.rating" :min="1000" :max="3000" :step="25" />
       </div>
 
+      <UFormGroup label="Number of Cycles">
+        <UInput
+          v-model="state.totalCycles"
+          type="number"
+          placeholder="Number of cycles"
+          :min="1"
+          :max="10"
+        />
+      </UFormGroup>
+
       <UFormGroup label="Themes">
         <USelectMenu
           v-model="state.themes"
@@ -460,6 +470,7 @@ const state = reactive({
   name: "",
   numberOfPuzzles: 10,
   rating: 800,
+  totalCycles: 3,
   themes: puzzleThemes.map((theme) => theme.value),
 });
 

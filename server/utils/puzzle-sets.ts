@@ -8,6 +8,7 @@ export const generatePuzzleSet = async (
     name: string;
     numberOfPuzzles: number;
     themes: string[];
+    totalCycles: number;
     rating: number;
     profileId: string;
   }
@@ -47,11 +48,11 @@ export const generatePuzzleSet = async (
     slug: slugify(params.name),
     is_default: false,
     current_cycle: 1,
+    total_cycles: params.totalCycles,
     puzzles,
   };
 };
 
-// TODO: Implement
 export const createPuzzleSet = async (
   event: H3Event,
   params: { puzzleSet: PuzzleSet; profileId: string }
@@ -143,6 +144,28 @@ export const fetchPuzzleSetBySlug = async (
     throw createError({
       statusCode: 500,
       message: `Error fetching puzzle set. (Message: ${error.message})`,
+    });
+  }
+
+  return data;
+};
+
+export const fetchPuzzleSetProgressBySlug = async (
+  event: H3Event,
+  params: { profileId: string; puzzleSetSlug: string }
+) => {
+  const supabase = await serverSupabaseClient<Database>(event);
+
+  const { data, error } = await supabase
+    .from("puzzle_set_puzzles")
+    .select("*, progress(*)")
+    .eq("puzzle_set_id", params.puzzleSetSlug)
+    .eq("profile_id", params.profileId);
+
+  if (error) {
+    throw createError({
+      statusCode: 500,
+      message: `Error fetching puzzle set progress. (Message: ${error.message})`,
     });
   }
 
