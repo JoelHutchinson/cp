@@ -1,5 +1,6 @@
 <template>
   <div class="flex flex-row gap-4">
+    {{ progress }}
     <ChessPuzzleInterface
       v-if="puzzleStatus === 'success'"
       :puzzle="puzzle!"
@@ -40,11 +41,11 @@ const { data: puzzleSets } = await useFetchPuzzleSets();
 const selectedPuzzleSet = ref(puzzleSet);
 
 const {
-  data: puzzle,
+  data,
   refresh: refreshPuzzle,
   status: puzzleStatus,
 } = await useLazyAsyncData(() => {
-  return $fetch<Puzzle>(
+  return $fetch<{ puzzle: Puzzle; progress: PuzzleSetPuzzleProgress }>(
     `/api/profiles/${profile.value!.id}/puzzle-sets/${
       selectedPuzzleSet.value
     }/current-puzzle`,
@@ -54,13 +55,20 @@ const {
   );
 });
 
+const puzzle = computed(() => data.value?.puzzle);
+const progress = computed(() => data.value?.progress);
+
+// TODO: Mark incorrect solves as well
 const markPuzzleAsSolved = async () => {
   await $fetch(
     `/api/profiles/${
       profile.value!.id
-    }/puzzle-sets/${puzzleSet}/current-puzzle/solved`,
+    }/puzzle-sets/${puzzleSet}/current-puzzle/solves`,
     {
       method: "POST",
+      body: {
+        solved: true,
+      },
     }
   );
 

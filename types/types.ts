@@ -16,6 +16,11 @@ export type PuzzleSet = Omit<TableRow<"puzzle_sets">, "created_at"> & {
 
 export type PuzzleSetPuzzle = TableRow<"puzzle_set_puzzles">;
 
+export type PuzzleSetPuzzleProgress = {
+  incorrect_solves: number;
+  correct_solves: number;
+};
+
 export type ChessBoardAPI = {
   setPosition: (fen: string) => void;
   makeMove: (move: string) => void;

@@ -65,21 +65,21 @@ export type Database = {
         Row: {
           id: string;
           index: number;
-          is_solved: boolean;
+          progress: Json;
           puzzle_id: string;
           puzzle_set_id: string;
         };
         Insert: {
           id?: string;
           index?: number;
-          is_solved?: boolean;
+          progress?: Json;
           puzzle_id?: string;
           puzzle_set_id?: string;
         };
         Update: {
           id?: string;
           index?: number;
-          is_solved?: boolean;
+          progress?: Json;
           puzzle_id?: string;
           puzzle_set_id?: string;
         };
@@ -103,6 +103,7 @@ export type Database = {
       puzzle_sets: {
         Row: {
           created_at: string;
+          current_cycle: number;
           id: string;
           is_default: boolean;
           name: string;
@@ -111,6 +112,7 @@ export type Database = {
         };
         Insert: {
           created_at?: string;
+          current_cycle?: number;
           id?: string;
           is_default?: boolean;
           name: string;
@@ -119,6 +121,7 @@ export type Database = {
         };
         Update: {
           created_at?: string;
+          current_cycle?: number;
           id?: string;
           is_default?: boolean;
           name?: string;
@@ -182,7 +185,44 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
-      [_ in never]: never;
+      get_current_puzzle_in_set: {
+        Args: { _profile_id: string; _puzzle_set_slug: string };
+        Returns: {
+          progress: Json;
+          id: string;
+          fen: string;
+          moves: string;
+          rating: number;
+          themes: string;
+          opening_tags: string;
+          puzzle_id: string;
+          rating_deviation: number;
+          popularity: number;
+          game_url: string;
+          nb_plays: number;
+        }[];
+      };
+      update_current_puzzle_in_set_progress: {
+        Args: {
+          _profile_id: string;
+          _puzzle_set_slug: string;
+          _solved: boolean;
+        };
+        Returns: {
+          progress: Json;
+          id: string;
+          fen: string;
+          moves: string;
+          rating: number;
+          themes: string;
+          opening_tags: string;
+          puzzle_id: string;
+          rating_deviation: number;
+          popularity: number;
+          game_url: string;
+          nb_plays: number;
+        }[];
+      };
     };
     Enums: {
       [_ in never]: never;

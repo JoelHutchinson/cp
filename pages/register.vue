@@ -88,7 +88,6 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
   isRegistering.value = false;
 
   if (error) {
-    console.error(error);
     notifications.error({
       title: "Error",
       message: error.message,

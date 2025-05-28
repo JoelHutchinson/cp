@@ -46,6 +46,7 @@ export const generatePuzzleSet = async (
     name: params.name,
     slug: slugify(params.name),
     is_default: false,
+    current_cycle: 1,
     puzzles,
   };
 };
@@ -77,7 +78,7 @@ export const createPuzzleSet = async (
   const puzzleSetPuzzles: PuzzleSetPuzzle[] = puzzles.map((puzzle, index) => ({
     id: crypto.randomUUID(),
     index,
-    is_solved: false,
+    progress: { incorrect_solves: 0, correct_solves: 0 },
     puzzle_id: puzzle.id,
     puzzle_set_id: data.id,
   }));
@@ -184,103 +185,49 @@ export const fetchCurrentPuzzleInSet = async (
   params: { profileId: string; puzzleSetSlug: string }
 ) => {
   const supabase = await serverSupabaseClient<Database>(event);
-  const { data, error } = await supabase
-    .from("puzzle_set_puzzles")
-    .select("*, puzzles(*), puzzle_sets(*)")
-    .match({
-      "puzzle_sets.profile_id": params.profileId,
-      "puzzle_sets.slug": params.puzzleSetSlug,
-      is_solved: false,
-    })
-    .not("puzzle_sets", "is", null)
-    .order("index", { ascending: true })
-    .limit(1)
-    .single();
 
-  if (error) {
-    // content not found (error due to .single()) -> 404 error
-    if (error.code === "PGRST116")
-      throw createError({
-        statusCode: 404,
-        statusMessage: `Current puzzle not found for puzzle set "${params.puzzleSetSlug}" profile ID "${params.profileId}".`,
-      });
-
-    // other errors -> 500 error
-    throw createError({
-      statusCode: 500,
-      message: `Error fetching puzzle. (Message: ${error.message})`,
-    });
-  }
-
-  return data.puzzles;
-};
-
-export const updateCurrentPuzzleInSetSolved = async (
-  event: H3Event,
-  params: { profileId: string; puzzleSetSlug: string }
-) => {
-  // get the id of the puzzle_set_puzzles record
-  const supabase = await serverSupabaseClient<Database>(event);
-  const { data: fetchData, error: fetchError } = await supabase
-    .from("puzzle_set_puzzles")
-    .select("id, puzzle_sets(*)")
-    .eq("puzzle_sets.profile_id", params.profileId)
-    .eq("puzzle_sets.slug", params.puzzleSetSlug)
-    .eq("is_solved", false)
-    .order("index", { ascending: true })
-    .limit(1)
-    .single();
-
-  if (fetchError) {
-    // content not found (error due to .single()) -> 404 error
-    if (fetchError.code === "PGRST116")
-      throw createError({
-        statusCode: 404,
-        statusMessage: `Current puzzle not found for puzzle set "${params.puzzleSetSlug}" profile ID "${params.profileId}".`,
-      });
-
-    // other errors -> 500 error
-    throw createError({
-      statusCode: 500,
-      message: `Error fetching puzzle. (Message: ${fetchError.message})`,
-    });
-  }
-
-  // set the is_solved field to true
-  const { data: updateData, error: updateError } = await supabase
-    .from("puzzle_set_puzzles")
-    .update({ is_solved: true })
-    .eq("id", fetchData.id)
-    .select();
-
-  if (updateError) {
-    throw createError({
-      statusCode: 500,
-      message: `Error updating puzzle. (Message: ${updateError.message})`,
-    });
-  }
-
-  return updateData;
-};
-
-export const deletePuzzleSet = async (
-  event: H3Event,
-  params: { profileId: string; puzzleSetSlug: string }
-) => {
-  const supabase = await serverSupabaseClient<Database>(event);
-
-  // Delete the puzzle set
-  const { error } = await supabase.from("puzzle_sets").delete().match({
-    profile_id: params.profileId,
-    slug: params.puzzleSetSlug,
+  let { data, error } = await supabase.rpc("get_current_puzzle_in_set", {
+    _profile_id: params.profileId,
+    _puzzle_set_slug: params.puzzleSetSlug,
   });
 
   if (error) {
     throw createError({
       statusCode: 500,
-      message: `Error deleting puzzle set. (Message: ${error.message})`,
+      message: `Error fetching current puzzle in set. (Message: ${error.message})`,
     });
   }
 
-  return null;
+  return {
+    puzzle: { ...data![0], progress: undefined } as Puzzle,
+    progress: data![0].progress as PuzzleSetPuzzleProgress,
+  };
+};
+
+export const updateCurrentPuzzleInSetProgress = async (
+  event: H3Event,
+  params: { profileId: string; puzzleSetSlug: string; solved: boolean }
+) => {
+  const supabase = await serverSupabaseClient<Database>(event);
+
+  let { data, error } = await supabase.rpc(
+    "update_current_puzzle_in_set_progress",
+    {
+      _profile_id: params.profileId,
+      _puzzle_set_slug: params.puzzleSetSlug,
+      _solved: params.solved,
+    }
+  );
+
+  if (error) {
+    throw createError({
+      statusCode: 500,
+      message: `Error updating current puzzle in set progress. (Message: ${error.message})`,
+    });
+  }
+
+  return {
+    puzzle: { ...data![0], progress: undefined } as Puzzle,
+    progress: data![0].progress as PuzzleSetPuzzleProgress,
+  };
 };
