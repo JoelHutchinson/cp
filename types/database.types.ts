@@ -202,6 +202,10 @@ export type Database = {
           nb_plays: number;
         }[];
       };
+      increment_puzzle_set_cycle_if_ready: {
+        Args: { _profile_id: string; _puzzle_set_slug: string };
+        Returns: boolean;
+      };
       update_current_puzzle_in_set_progress: {
         Args: {
           _profile_id: string;

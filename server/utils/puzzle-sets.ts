@@ -231,3 +231,27 @@ export const updateCurrentPuzzleInSetProgress = async (
     progress: data![0].progress as PuzzleSetPuzzleProgress,
   };
 };
+
+export const incrementPuzzleSetCycleIfReady = async (
+  event: H3Event,
+  params: { profileId: string; puzzleSetSlug: string }
+) => {
+  const supabase = await serverSupabaseClient<Database>(event);
+
+  const { data, error } = await supabase.rpc(
+    "increment_puzzle_set_cycle_if_ready",
+    {
+      _profile_id: params.profileId,
+      _puzzle_set_slug: params.puzzleSetSlug,
+    }
+  );
+
+  if (error) {
+    throw createError({
+      statusCode: 500,
+      message: `Error incrementing puzzle set cycle. (Message: ${error.message})`,
+    });
+  }
+
+  return data;
+};
