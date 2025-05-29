@@ -14,10 +14,9 @@
       variant="soft"
       class="flex flex-row gap-2 items-center self-center text-xl"
     >
-      <!-- TODO: Use vue ticker when this increases -->
-      <!-- TODO: Make the text bigger -->
       <UIcon name="i-heroicons-arrow-path" class="size-6" />
-      Cycle {{ puzzleSetProgress.current_cycle }}
+      Cycle
+      <UiOdometer :value="puzzleSetProgress.current_cycle" class="text-xl" />
     </UBadge>
 
     <div class="flex flex-row gap-2">
@@ -31,23 +30,28 @@
         indicator
       >
         <template #indicator="{ percent }">
-          <span class="text-sm text-center font-bold text-primary-500">
-            {{ puzzleSetProgress.solved_in_current_cycle }}/{{
-              puzzleSetProgress.total_puzzles
-            }}
+          <span class="text-center font-bold text-primary-500">
+            <UiOdometer :value="puzzleSetProgress.solved_in_current_cycle" />
+            /
+            <UiOdometer :value="puzzleSetProgress.total_puzzles" />
           </span>
         </template>
       </UProgress>
-      <span class="text-center basis-1/2 font-bold text-primary-500"
-        >{{
-          puzzleSetProgress.solved_in_current_cycle === 0
-            ? 0
-            : Math.round(
-                (puzzleSetProgress.solved_correctly_in_current_cycle /
-                  puzzleSetProgress.solved_in_current_cycle) *
-                  100
-              )
-        }}% Accuracy</span
+
+      <span class="text-center basis-1/2 font-bold text-primary-500">
+        <UiOdometer
+          class="text-primary text-md tracking-tight"
+          :value="
+            puzzleSetProgress.solved_in_current_cycle === 0
+              ? 0
+              : Math.round(
+                  (puzzleSetProgress.solved_correctly_in_current_cycle /
+                    puzzleSetProgress.solved_in_current_cycle) *
+                    100
+                )
+          "
+        />
+        % Accuracy</span
       >
     </div>
   </div>
