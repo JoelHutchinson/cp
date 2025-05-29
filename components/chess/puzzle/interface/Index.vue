@@ -5,6 +5,8 @@
       ref="chessPuzzleBoard"
       :puzzle="puzzle"
       @solved="emit('solved')"
+      @correct-move="emit('correct-move', $event)"
+      @incorrect-move="emit('incorrect-move', $event)"
     />
 
     <!-- Puzzle Details -->
@@ -45,6 +47,8 @@ defineProps<{
 
 const emit = defineEmits<{
   (e: "solved"): void;
+  (e: "correct-move", move: string): void;
+  (e: "incorrect-move", move: string): void;
 }>();
 
 const chessPuzzleBoard = ref();

@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import type { MoveEvent, Piece, SquareKey } from "vue3-chessboard";
+import type { MoveEvent } from "vue3-chessboard";
 
 const props = defineProps<{
   puzzle: Puzzle;
@@ -18,6 +18,8 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: "solved"): void;
+  (e: "correct-move", move: string): void;
+  (e: "incorrect-move", move: string): void;
 }>();
 
 defineShortcuts({
@@ -88,6 +90,7 @@ const handleSolutionMove = (move: string) => {
   // Check if the move is correct
   if (solutionMoves.value[solutionMovesMade.value.length] === move) {
     console.log("Correct move!");
+    emit("correct-move", move);
 
     solutionMovesMade.value.push(move);
     nextViewMove();
@@ -105,6 +108,7 @@ const handleSolutionMove = (move: string) => {
     }
   } else {
     console.log("Incorrect move!");
+    emit("incorrect-move", move);
 
     // After a delay, undo the move
     setTimeout(() => {

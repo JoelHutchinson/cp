@@ -1,10 +1,6 @@
 export const usePuzzleSet = (slug: string) => {
   const { profile } = useFetchProfile();
 
-  const { data: initialPuzzleSetProgress } = useFetchPuzzleSetProgress(
-    slug
-  );
-
   const {
     data,
     refresh: refreshPuzzle,
@@ -20,7 +16,17 @@ export const usePuzzleSet = (slug: string) => {
 
   const puzzle = computed(() => data.value?.puzzle);
   const puzzleProgress = computed(() => data.value?.progress);
-  const puzzleSetProgress = ref(jsonCopy(initialPuzzleSetProgress.value!));
+  const puzzleSetProgress = ref();
+  const puzzleCorrectness = ref(false);
+
+  const fetchPuzzleSetProgress = async () => {
+    puzzleSetProgress.value = await $fetch(
+      `/api/profiles/${profile.value!.id}/puzzle-sets/${slug}/progress`,
+      {
+        headers: useRequestHeaders(["cookie"]), // needed to pass supabase auth session
+      }
+    );
+  };
 
   const updateProgress = (solved: boolean) => {
     if (
@@ -49,9 +55,9 @@ export const usePuzzleSet = (slug: string) => {
     }
   };
 
-  const solvePuzzle = async (solved: boolean) => {
+  const solvePuzzle = async () => {
     // increment the local progress values
-    updateProgress(solved);
+    updateProgress(puzzleCorrectness.value);
 
     // post a request to the server to update the progress
     await $fetch(
@@ -61,13 +67,21 @@ export const usePuzzleSet = (slug: string) => {
       {
         method: "POST",
         body: {
-          solved,
+          solved: puzzleCorrectness.value,
         },
       }
     );
 
+    puzzleCorrectness.value = true;
+
     // refresh the puzzle data
     await refreshPuzzle();
+  };
+
+  const makePuzzleMove = (correct: boolean) => {
+    if (!correct) {
+      puzzleCorrectness.value = false;
+    }
   };
 
   return {
@@ -75,6 +89,8 @@ export const usePuzzleSet = (slug: string) => {
     puzzleStatus,
     refreshPuzzle,
     puzzleProgress,
+    fetchPuzzleSetProgress,
+    makePuzzleMove,
     solvePuzzle,
     puzzleSetProgress,
   };

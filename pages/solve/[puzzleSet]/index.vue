@@ -4,7 +4,9 @@
     <ChessPuzzleInterface
       v-if="puzzle"
       :puzzle="puzzle!"
-      @solved="() => solvePuzzle(true)"
+      @solved="solvePuzzle"
+      @correct-move="makePuzzleMove(true)"
+      @incorrect-move="makePuzzleMove(false)"
     >
       <template #leading>
         <ChessPuzzleSetInterface
@@ -39,9 +41,14 @@ const {
   puzzleStatus,
   refreshPuzzle,
   puzzleProgress,
+  makePuzzleMove,
   solvePuzzle,
   puzzleSetProgress,
-} = await usePuzzleSet(selectedPuzzleSetSlug.value);
+  fetchPuzzleSetProgress,
+} = usePuzzleSet(selectedPuzzleSetSlug.value);
+
+// Fetch the initial puzzle set progress on page load. After that it is optimistically updated
+await fetchPuzzleSetProgress();
 
 watch(selectedPuzzleSetSlug, async (newSelectedPuzzleSetSlug) => {
   await navigateTo(`/solve/${newSelectedPuzzleSetSlug}`);
