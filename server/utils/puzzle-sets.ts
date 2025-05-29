@@ -277,3 +277,22 @@ export const incrementPuzzleSetCycleIfReady = async (
 
   return data;
 };
+
+export const deletePuzzleSet = async (
+  event: H3Event,
+  params: { profileId: string; puzzleSetSlug: string }
+) => {
+  const supabase = await serverSupabaseClient<Database>(event);
+
+  const { error } = await supabase.from("puzzle_sets").delete().match({
+    profile_id: params.profileId,
+    slug: params.puzzleSetSlug,
+  });
+
+  if (error) {
+    throw createError({
+      statusCode: 500,
+      message: `Error deleting puzzle set. (Message: ${error.message})`,
+    });
+  }
+};

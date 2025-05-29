@@ -1,10 +1,14 @@
 import { z } from "zod";
 
 const bodySchema = z.object({
-  name: z.string({
-    required_error: "Puzzle set name is required",
-    invalid_type_error: "Puzzle set name must be a string",
-  }),
+  name: z
+    .string({
+      required_error: "Puzzle set name is required",
+      invalid_type_error: "Puzzle set name must be a string",
+    })
+    .min(1, {
+      message: "Puzzle set name must not be empty",
+    }),
   numberOfPuzzles: z.number({
     required_error: "Number of puzzles is required",
     invalid_type_error: "Number of puzzles must be a number",

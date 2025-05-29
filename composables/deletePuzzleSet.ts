@@ -3,10 +3,10 @@ const key = "delete-puzzle-set";
 export const useDeletePuzzleSet = () => {
   const { profile } = useFetchProfile();
 
-  const deletePuzzleSet = async (puzzleSet: any) => {
+  const deletePuzzleSet = async (slug: string) => {
     if (!profile.value) throw createError("Profile is not loaded");
 
-    $fetch(`/api/profiles/${profile.value!.id}/puzzle-sets/${puzzleSet.slug}`, {
+    await $fetch(`/api/profiles/${profile.value!.id}/puzzle-sets/${slug}`, {
       method: "DELETE",
       key,
     });

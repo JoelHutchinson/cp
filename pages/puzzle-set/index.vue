@@ -22,12 +22,25 @@
   <UTable
     v-if="data"
     :columns="tableColumns"
-    :rows="tableRows"
+    :rows="data"
     :loading="status === 'pending'"
   >
     <template #is_default-data="{ row }">
       <div>
         <UBadge v-if="row.is_default" color="white">Default</UBadge>
+      </div>
+    </template>
+
+    <template #cycles-data="{ row }">
+      <div class="flex flex-row items-center gap-2">
+        <UIcon name="i-heroicons-arrows-arrow-path" />
+        <!-- <span>{{ row.current_cycle }} of {{ row.total_cycles }}</span> -->
+        <UProgress
+          :value="row.current_cycle - 1"
+          :min="1"
+          :max="row.total_cycles - 1"
+          indicator
+        ></UProgress>
       </div>
     </template>
 
@@ -43,7 +56,8 @@
               label: 'Delete',
               icon: 'i-heroicons-trash',
               click: () => {
-                isDeleteModalOpen.value = true;
+                puzzleSetToDelete = row;
+                isDeleteModalOpen = true;
               },
             },
           ],
@@ -134,6 +148,12 @@
     buttonText="Delete"
     buttonColor="primary"
   >
+    <p>
+      Are you sure you want to permanently delete '<strong>{{
+        puzzleSetToDelete?.name
+      }}</strong
+      >'? This action cannot be reversed.
+    </p>
   </UiModal>
 </template>
 
@@ -476,38 +496,39 @@ const state = reactive({
 
 const notifications = useNotification();
 const { data, status, error, refresh, clear } = await useFetchPuzzleSets();
+
 const { createPuzzleSet: create } = useCreatePuzzleSet();
+const { deletePuzzleSet: _delete } = useDeletePuzzleSet();
 
 const isCreateModalOpen = ref(false);
 const isCreateLoading = ref(false);
 
 const isDeleteModalOpen = ref(false);
 const isDeleteLoading = ref(false);
+const puzzleSetToDelete: Ref<PuzzleSet | null> = ref(null);
 
 const tableColumns = [
   {
     label: "Name",
     key: "name",
-    class: "w-1/3",
+    // class: "w-1/6",
   },
   {
     key: "is_default",
   },
   {
+    label: "Progress",
+    key: "cycles",
+    icon: "i-heroicons-arrows-arrow-path",
+    // class: "w-1/12",
+  },
+  {
     label: "Created at",
     key: "created_at",
-    class: "w-1/3",
+    // class: "w-1/3",
   },
   { key: "actions", class: "w-[52px]" },
 ];
-
-const tableRows = computed(() => {
-  return data.value?.map((puzzleSet) => ({
-    name: puzzleSet.name,
-    is_default: puzzleSet.is_default,
-    created_at: puzzleSet.created_at,
-  }));
-});
 
 const createPuzzleSet = async () => {
   isCreateLoading.value = true;
@@ -518,6 +539,8 @@ const createPuzzleSet = async () => {
       title: "Puzzle set created",
       message: "Your puzzle set has been created successfully.",
     });
+
+    isCreateModalOpen.value = false;
   } catch (error: any) {
     notifications.error({
       title: "Error creating puzzle set",
@@ -530,15 +553,21 @@ const createPuzzleSet = async () => {
   await refresh();
 };
 
-const deletePuzzleSet = async (slug: string) => {
+const deletePuzzleSet = async () => {
+  if (!puzzleSetToDelete.value) {
+    return;
+  }
+
   isDeleteLoading.value = true;
   try {
-    await useDeletePuzzleSet(slug);
+    await _delete(puzzleSetToDelete.value.slug);
 
     notifications.success({
       title: "Puzzle set deleted",
       message: "Your puzzle set has been deleted successfully.",
     });
+
+    isDeleteModalOpen.value = false;
   } catch (error: any) {
     notifications.error({
       title: "Error deleting puzzle set",
