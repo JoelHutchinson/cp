@@ -38,7 +38,7 @@
         <UProgress
           :value="row.current_cycle - 1"
           :min="1"
-          :max="row.total_cycles - 1"
+          :max="row.total_cycles"
           indicator
         ></UProgress>
       </div>
@@ -59,6 +59,7 @@
                 puzzleSetToDelete = row;
                 isDeleteModalOpen = true;
               },
+              disabled: row.is_default,
             },
           ],
         ]"
@@ -79,28 +80,25 @@
         <UInput v-model="state.name" placeholder="Puzzle set name" />
       </UFormGroup>
 
-      <div class="flex flex-col justify-center items-center">
-        <span class="flex items-center gap-1 text-gray-500 dark:text-gray-400"
-          ><UIcon name="i-heroicons-puzzle-piece" />{{
-            state.numberOfPuzzles
-          }}</span
-        >
-        <URange
+      <UFormGroup label="Number of Puzzles">
+        <UiRange
           v-model="state.numberOfPuzzles"
           :min="10"
           :max="1000"
           :step="10"
+          icon="i-heroicons-puzzle-piece"
         />
-      </div>
+      </UFormGroup>
 
-      <div class="flex flex-col justify-center items-center">
-        <span class="flex items-center gap-1 text-gray-500 dark:text-gray-400"
-          ><UIcon name="i-heroicons-arrow-trending-up" />{{
-            state.rating
-          }}</span
-        >
-        <URange v-model="state.rating" :min="1000" :max="3000" :step="25" />
-      </div>
+      <UFormGroup label="Average Puzzle Rating">
+        <UiRange
+          v-model="state.rating"
+          :min="1000"
+          :max="3000"
+          :step="25"
+          icon="i-heroicons-star"
+        />
+      </UFormGroup>
 
       <UFormGroup label="Number of Cycles">
         <UInput

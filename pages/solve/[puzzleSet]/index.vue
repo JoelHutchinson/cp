@@ -2,7 +2,7 @@
   <div class="flex flex-row gap-4">
     <!-- TODO: Mark incorrect solves as well -->
     <ChessPuzzleInterface
-      v-if="puzzle"
+      v-if="puzzleStatus === 'success'"
       :puzzle="puzzle!"
       @solved="solvePuzzle"
       @correct-move="makePuzzleMove(true)"
