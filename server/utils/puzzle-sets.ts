@@ -207,6 +207,13 @@ export const fetchPuzzleSetProgressBySlug = async (
     });
   }
 
+  if (!data) {
+    throw createError({
+      statusCode: 404,
+      statusMessage: `No progress found for puzzle set with slug "${params.puzzleSetSlug}" for profile ID "${params.profileId}".`,
+    });
+  }
+
   return data;
 };
 
@@ -256,6 +263,13 @@ export const fetchCurrentPuzzleInSet = async (
     throw createError({
       statusCode: 500,
       message: `Error fetching current puzzle in set. (Message: ${error.message})`,
+    });
+  }
+
+  if (!data || data.length === 0) {
+    throw createError({
+      statusCode: 404,
+      statusMessage: `No current puzzle found in set with slug "${params.puzzleSetSlug}" for profile ID "${params.profileId}".`,
     });
   }
 

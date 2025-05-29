@@ -21,7 +21,6 @@
     </ChessPuzzleInterface>
 
     <ChessPuzzleInterfaceSkeleton v-else-if="puzzleStatus === 'pending'" />
-    {{ puzzleSetProgress }}
   </div>
 </template>
 

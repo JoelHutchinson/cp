@@ -5,10 +5,17 @@ export const useFetchDefaultPuzzleSet = () => {
 
   const { data: defaultPuzzleSet } = useNuxtData<PuzzleSet>(key);
 
+  const fetchDefaultPuzzleSetError = ref<any>(null);
+
   const fetchDefaultPuzzleSet = async () => {
-    await useFetch(`/api/profiles/${profile.value!.id}/puzzle-sets/default`, {
-      key,
-    });
+    const { error } = await useFetch(
+      `/api/profiles/${profile.value!.id}/puzzle-sets/default`,
+      {
+        key,
+      }
+    );
+
+    fetchDefaultPuzzleSetError.value = error.value;
   };
 
   const refreshDefaultPuzzleSet = async () => {
@@ -16,5 +23,10 @@ export const useFetchDefaultPuzzleSet = () => {
     await refreshNuxtData(key);
   };
 
-  return { defaultPuzzleSet, fetchDefaultPuzzleSet, refreshDefaultPuzzleSet };
+  return {
+    defaultPuzzleSet,
+    fetchDefaultPuzzleSet,
+    refreshDefaultPuzzleSet,
+    fetchDefaultPuzzleSetError,
+  };
 };

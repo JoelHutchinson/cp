@@ -527,6 +527,8 @@ const {
   clear,
 } = await useFetchPuzzleSets();
 
+refreshPuzzleSets();
+
 const { createPuzzleSet: create } = useCreatePuzzleSet();
 const { refreshDefaultPuzzleSet } = useFetchDefaultPuzzleSet();
 const { makePuzzleSetDefault: makeDefault } = useMakePuzzleSetDefault();
