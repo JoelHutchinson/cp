@@ -61,10 +61,49 @@ export const createPuzzleSet = async (
 
   const { puzzles, ...puzzleSet } = params.puzzleSet;
 
+  const { data: existingPuzzleSets, error: existingError } = await supabase
+    .from("puzzle_sets")
+    .select("*")
+    .eq("profile_id", params.profileId);
+
+  if (existingError) {
+    throw createError({
+      statusCode: 500,
+      message: `Error checking existing puzzle sets. (Message: ${existingError.message})`,
+    });
+  }
+
+  // Check if the puzzle set is called 'default'
+  if (puzzleSet.slug === "default") {
+    throw createError({
+      statusCode: 400,
+      message: `Puzzle set slug "default" is reserved and cannot be used.`,
+    });
+  }
+
+  // Check if this is the first puzzle set for the profile, and that the slug is unique
+  let isDefault = false;
+
+  if (existingPuzzleSets.length === 0) {
+    isDefault = true;
+  } else {
+    // Check if the slug already exists for this profile
+    const existingSlug = existingPuzzleSets.find(
+      (set) =>
+        set.slug === puzzleSet.slug && set.profile_id === params.profileId
+    );
+    if (existingSlug) {
+      throw createError({
+        statusCode: 400,
+        message: `Puzzle set with slug "${puzzleSet.slug}" already exists for this profile.`,
+      });
+    }
+  }
+
   // Insert the puzzle set
   const { data, error } = await supabase
     .from("puzzle_sets")
-    .insert(puzzleSet)
+    .insert({ ...puzzleSet, is_default: isDefault })
     .select()
     .single();
 
@@ -224,6 +263,45 @@ export const fetchCurrentPuzzleInSet = async (
     puzzle: { ...data![0], progress: undefined } as Puzzle,
     progress: data![0].progress as PuzzleSetPuzzleProgress,
   };
+};
+
+export const updateDefaultPuzzleSet = async (
+  event: H3Event,
+  params: { profileId: string; puzzleSetSlug: string }
+) => {
+  const supabase = await serverSupabaseClient<Database>(event);
+
+  // First, unset the current default puzzle set
+  const { error: unsetError } = await supabase
+    .from("puzzle_sets")
+    .update({ is_default: false })
+    .eq("profile_id", params.profileId)
+    .eq("is_default", true);
+
+  if (unsetError) {
+    throw createError({
+      statusCode: 500,
+      message: `Error unsetting current default puzzle set. (Message: ${unsetError.message})`,
+    });
+  }
+
+  // Then, set the new default puzzle set
+  const { data, error } = await supabase
+    .from("puzzle_sets")
+    .update({ is_default: true })
+    .eq("profile_id", params.profileId)
+    .eq("slug", params.puzzleSetSlug)
+    .select()
+    .single();
+
+  if (error) {
+    throw createError({
+      statusCode: 500,
+      message: `Error setting new default puzzle set. (Message: ${error.message})`,
+    });
+  }
+
+  return data;
 };
 
 export const updateCurrentPuzzleInSetProgress = async (

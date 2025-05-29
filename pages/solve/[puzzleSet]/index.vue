@@ -1,6 +1,5 @@
 <template>
   <div class="flex flex-row gap-4">
-    <!-- TODO: Mark incorrect solves as well -->
     <ChessPuzzleInterface
       v-if="puzzleStatus === 'success'"
       :puzzle="puzzle!"
@@ -28,7 +27,6 @@
 
 <script setup lang="ts">
 const { puzzleSet } = useRoute().params as { puzzleSet: string };
-const { profile } = useFetchProfile();
 const { data: puzzleSets, refresh: refreshPuzzleSets } =
   await useFetchPuzzleSets();
 

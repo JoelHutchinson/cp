@@ -10,7 +10,7 @@
         >Create</UButton
       >
       <UButton
-        @click="refresh"
+        @click="refreshPuzzleSets"
         :loading="status === 'pending'"
         icon="i-heroicons-arrow-path"
         trailing
@@ -52,6 +52,15 @@
       <UiActionsDropdown
         :actions="[
           [
+            {
+              label: 'Make Default',
+              icon: 'i-heroicons-star',
+              click: () => {
+                puzzleSetToMakeDefault = row;
+                isMakeDefaultModalOpen = true;
+              },
+              disabled: row.is_default,
+            },
             {
               label: 'Delete',
               icon: 'i-heroicons-trash',
@@ -136,6 +145,23 @@
         </USelectMenu>
       </UFormGroup>
     </div>
+  </UiModal>
+
+  <UiModal
+    v-model="isMakeDefaultModalOpen"
+    @action="makePuzzleSetDefault"
+    :loading="isMakeDefaultLoading"
+    title="Make Puzzle Set Default"
+    buttonText="Make Default"
+    buttonColor="primary"
+  >
+    <p>
+      Are you sure you want to set '<strong>{{
+        puzzleSetToMakeDefault?.name
+      }}</strong
+      >' as your default puzzle set? This will replace your current default
+      puzzle set.
+    </p>
   </UiModal>
 
   <UiModal
@@ -493,13 +519,25 @@ const state = reactive({
 });
 
 const notifications = useNotification();
-const { data, status, error, refresh, clear } = await useFetchPuzzleSets();
+const {
+  data,
+  status,
+  error,
+  refresh: refreshPuzzleSets,
+  clear,
+} = await useFetchPuzzleSets();
 
 const { createPuzzleSet: create } = useCreatePuzzleSet();
+const { refreshDefaultPuzzleSet } = useFetchDefaultPuzzleSet();
+const { makePuzzleSetDefault: makeDefault } = useMakePuzzleSetDefault();
 const { deletePuzzleSet: _delete } = useDeletePuzzleSet();
 
 const isCreateModalOpen = ref(false);
 const isCreateLoading = ref(false);
+
+const isMakeDefaultModalOpen = ref(false);
+const isMakeDefaultLoading = ref(false);
+const puzzleSetToMakeDefault: Ref<PuzzleSet | null> = ref(null);
 
 const isDeleteModalOpen = ref(false);
 const isDeleteLoading = ref(false);
@@ -548,7 +586,36 @@ const createPuzzleSet = async () => {
 
   isCreateLoading.value = false;
 
-  await refresh();
+  await refreshDefaultPuzzleSet();
+  await refreshPuzzleSets();
+};
+
+const makePuzzleSetDefault = async () => {
+  if (!puzzleSetToMakeDefault.value) {
+    return;
+  }
+
+  isMakeDefaultLoading.value = true;
+  try {
+    await makeDefault(puzzleSetToMakeDefault.value.slug);
+
+    notifications.success({
+      title: "Puzzle set made default",
+      message: "Your puzzle set has been made the default successfully.",
+    });
+
+    isMakeDefaultModalOpen.value = false;
+  } catch (error: any) {
+    notifications.error({
+      title: "Error making puzzle set default",
+      message: error.data.message,
+    });
+  }
+
+  isMakeDefaultLoading.value = false;
+
+  await refreshDefaultPuzzleSet();
+  await refreshPuzzleSets();
 };
 
 const deletePuzzleSet = async () => {
@@ -575,6 +642,6 @@ const deletePuzzleSet = async () => {
 
   isDeleteLoading.value = false;
 
-  await refresh();
+  await refreshPuzzleSets();
 };
 </script>
