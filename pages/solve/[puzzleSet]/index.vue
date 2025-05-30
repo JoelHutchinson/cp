@@ -1,8 +1,8 @@
 <template>
   <div class="flex flex-row gap-4">
     <ChessPuzzleInterface
-      v-if="puzzle"
-      :puzzle="puzzle!"
+      v-if="currentPuzzle"
+      :puzzle="currentPuzzle"
       @solved="solvePuzzle"
       @correct-move="makePuzzleMove(true)"
       @incorrect-move="makePuzzleMove(false)"
@@ -34,18 +34,17 @@ refreshPuzzleSets();
 const selectedPuzzleSetSlug: Ref<string> = ref(puzzleSet);
 
 const {
-  puzzle,
+  currentPuzzle,
+  currentPuzzleProgress,
+  nextPuzzle,
+  nextPuzzleProgress,
+  puzzleSetProgress,
+  puzzleCorrectness,
   puzzleStatus,
-  refreshPuzzle,
-  puzzleProgress,
   makePuzzleMove,
   solvePuzzle,
-  puzzleSetProgress,
-  fetchPuzzleSetProgress,
+  refreshProgress,
 } = usePuzzleSet(selectedPuzzleSetSlug.value);
-
-// Fetch the initial puzzle set progress on page load. After that it is optimistically updated
-await fetchPuzzleSetProgress();
 
 watch(selectedPuzzleSetSlug, async (newSelectedPuzzleSetSlug) => {
   await navigateTo(`/solve/${newSelectedPuzzleSetSlug}`);

@@ -205,6 +205,23 @@ export type Database = {
           nb_plays: number;
         }[];
       };
+      get_next_puzzle_in_set: {
+        Args: { _profile_id: string; _puzzle_set_slug: string };
+        Returns: {
+          progress: Json;
+          id: string;
+          fen: string;
+          moves: string;
+          rating: number;
+          themes: string;
+          opening_tags: string;
+          puzzle_id: string;
+          rating_deviation: number;
+          popularity: number;
+          game_url: string;
+          nb_plays: number;
+        }[];
+      };
       get_puzzle_set_progress: {
         Args: { _profile_id: string; _puzzle_set_slug: string };
         Returns: Json;

@@ -279,6 +279,37 @@ export const fetchCurrentPuzzleInSet = async (
   };
 };
 
+export const fetchNextPuzzleInSet = async (
+  event: H3Event,
+  params: { profileId: string; puzzleSetSlug: string }
+) => {
+  const supabase = await serverSupabaseClient<Database>(event);
+
+  let { data, error } = await supabase.rpc("get_next_puzzle_in_set", {
+    _profile_id: params.profileId,
+    _puzzle_set_slug: params.puzzleSetSlug,
+  });
+
+  if (error) {
+    throw createError({
+      statusCode: 500,
+      message: `Error fetching next puzzle in set. (Message: ${error.message})`,
+    });
+  }
+
+  if (!data || data.length === 0) {
+    throw createError({
+      statusCode: 404,
+      statusMessage: `No next puzzle found in set with slug "${params.puzzleSetSlug}" for profile ID "${params.profileId}".`,
+    });
+  }
+
+  return {
+    puzzle: { ...data![0], progress: undefined } as Puzzle,
+    progress: data![0].progress as PuzzleSetPuzzleProgress,
+  };
+};
+
 export const updateDefaultPuzzleSet = async (
   event: H3Event,
   params: { profileId: string; puzzleSetSlug: string }

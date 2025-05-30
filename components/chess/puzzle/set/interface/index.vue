@@ -40,7 +40,7 @@
 
       <span class="text-center basis-1/2 font-bold text-primary-500">
         <UiOdometer
-          class="text-primary text-md tracking-tight"
+          class="text-primary-500 text-md tracking-tight"
           :value="
             puzzleSetProgress.solved_in_current_cycle === 0
               ? 0
