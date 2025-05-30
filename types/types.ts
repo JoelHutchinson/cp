@@ -9,6 +9,12 @@ export type Profile = Omit<TableRow<"profiles">, "created_at">;
 // Puzzles
 export type Puzzle = TableRow<"puzzles">;
 
+export type PuzzleStatus =
+  | "notStarted"
+  | "inProgressCorrect"
+  | "inProgressIncorrect"
+  | "solved";
+
 // Puzzle Sets
 export type PuzzleSet = Omit<TableRow<"puzzle_sets">, "created_at">;
 

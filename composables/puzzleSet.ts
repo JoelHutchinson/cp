@@ -92,15 +92,30 @@ export const usePuzzleSet = (slug: string) => {
       }
     );
 
-    // Promote next puzzle to current
-    currentPuzzle.value = nextPuzzle.value;
-    currentPuzzleProgress.value = nextPuzzleProgress.value;
+    // If we've reached the end of the set, re-fetch all progress and puzzles
+    if (puzzleSetProgress.value.solved_in_current_cycle === 0) {
+      await Promise.all([
+        fetchCurrentPuzzle(),
+        fetchNextPuzzle(),
+        fetchPuzzleSetProgress(),
+      ]);
+    } else {
+      // Promote next puzzle to current
+      currentPuzzle.value = nextPuzzle.value;
+      currentPuzzleProgress.value = nextPuzzleProgress.value;
+    }
+
+    // If we are on the second to last puzzle, don't pre-fetch next puzzle
+    if (
+      puzzleSetProgress.value.solved_in_current_cycle !==
+      puzzleSetProgress.value.total_puzzles - 1
+    ) {
+      // Pre-fetch new next puzzle
+      await fetchNextPuzzle();
+    }
 
     // Reset correctness for next puzzle
     puzzleCorrectness.value = true;
-
-    // Pre-fetch new next puzzle
-    await fetchNextPuzzle();
   };
 
   const makePuzzleMove = (correct: boolean) => {

@@ -4,9 +4,9 @@
     <ChessPuzzleBoard
       ref="chessPuzzleBoard"
       :puzzle="puzzle"
-      @solved="emit('solved')"
-      @correct-move="emit('correct-move', $event)"
-      @incorrect-move="emit('incorrect-move', $event)"
+      @solved="handleSolved"
+      @correct-move="handleCorrectMove"
+      @incorrect-move="handleIncorrectMove"
     />
 
     <!-- Puzzle Details -->
@@ -16,9 +16,13 @@
       </ChessPuzzleInterfaceCard>
 
       <ChessPuzzleInterfaceCard class="flex-1">
-        <div class="grid grid-cols-1 gap-4 h-full content-end">
+        <div class="grid grid-rows-[1fr_auto] h-full">
+          <div class="flex justify-center items-center">
+            <ChessPuzzleInterfaceMessage :status="status" turn-color="white" />
+          </div>
+
           <div class="flex justify-between items-center">
-            <UButton icon="i-heroicons-question-mark-circle">Help</UButton>
+            <UButton icon="i-heroicons-forward">Skip</UButton>
             <div>
               <ChessPuzzleBoardButton
                 icon="i-heroicons-chevron-left"
@@ -53,11 +57,27 @@ const emit = defineEmits<{
 
 const chessPuzzleBoard = ref();
 
-function handleNext() {
-  chessPuzzleBoard.value.nextViewMove();
-}
+const status: Ref<PuzzleStatus> = computed(
+  () => chessPuzzleBoard.value?.status ?? "notStarted"
+);
 
-function handlePrev() {
+const handleNext = () => {
+  chessPuzzleBoard.value.nextViewMove();
+};
+
+const handlePrev = () => {
   chessPuzzleBoard.value.prevViewMove();
-}
+};
+
+const handleSolved = () => {
+  emit("solved");
+};
+
+const handleCorrectMove = (move: string) => {
+  emit("correct-move", move);
+};
+
+const handleIncorrectMove = (move: string) => {
+  emit("incorrect-move", move);
+};
 </script>

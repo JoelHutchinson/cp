@@ -31,6 +31,8 @@ defineShortcuts({
   },
 });
 
+const status: Ref<PuzzleStatus> = ref("notStarted");
+
 // Initially, make the first solution move
 onMounted(() => {
   boardApi.value?.setPosition(props.puzzle.fen);
@@ -41,6 +43,7 @@ onMounted(() => {
 watch(
   () => props.puzzle,
   (puzzle) => {
+    status.value = "notStarted";
     solutionMovesMade.value = [];
     viewMovesMade.value = [];
 
@@ -80,8 +83,9 @@ const onMove = (move: MoveEvent) => {
     handleSolutionMove(move.lan);
 
     if (solutionMovesMadeStr.value === props.puzzle.moves) {
+      status.value = "solved";
+
       emit("solved");
-      console.log("Puzzle solved!");
     }
   }
 };
@@ -89,7 +93,10 @@ const onMove = (move: MoveEvent) => {
 const handleSolutionMove = (move: string) => {
   // Check if the move is correct
   if (solutionMoves.value[solutionMovesMade.value.length] === move) {
-    console.log("Correct move!");
+    if (status.value === "notStarted" && solutionMovesMade.value.length === 1) {
+      status.value = "inProgressCorrect";
+    }
+
     emit("correct-move", move);
 
     solutionMovesMade.value.push(move);
@@ -107,7 +114,10 @@ const handleSolutionMove = (move: string) => {
       }, 500);
     }
   } else {
-    console.log("Incorrect move!");
+    if (status.value === "notStarted" || status.value === "inProgressCorrect") {
+      status.value = "inProgressIncorrect";
+    }
+
     emit("incorrect-move", move);
 
     // After a delay, undo the move
@@ -140,6 +150,7 @@ const nextViewMove = () => {
 };
 
 defineExpose({
+  status,
   nextViewMove,
   prevViewMove,
 });

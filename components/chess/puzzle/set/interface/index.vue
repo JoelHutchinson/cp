@@ -38,7 +38,9 @@
         </template>
       </UProgress>
 
-      <span class="text-center basis-1/2 font-bold text-primary-500">
+      <span
+        class="basis-1/2 gap-0.5 justify-center font-bold text-primary-500 flex items-center"
+      >
         <UiOdometer
           class="text-primary-500 text-md tracking-tight"
           :value="

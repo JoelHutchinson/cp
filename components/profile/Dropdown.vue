@@ -16,12 +16,13 @@
             {{ item.email }}
           </p>
         </div>
-        <span
+        <!-- TODO: Add this once puzzle rating is implemented -->
+        <!-- <span
           class="flex flex-row text-sm text-gray-500 dark:text-gray-400 items-center gap-0.5"
         >
           <UIcon name="i-heroicons-puzzle-piece-20-solid" />
           {{ item.puzzleRating }}
-        </span>
+        </span> -->
       </div>
     </template>
 
