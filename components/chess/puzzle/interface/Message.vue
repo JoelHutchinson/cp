@@ -1,10 +1,10 @@
 <template>
-  <div class="flex items-center gap-3 p-2">
+  <div class="flex items-center gap-2 p-2">
     <UIcon
       :key="statusMeta.icon"
       :name="statusMeta.icon"
       :class="statusMeta.iconClass"
-      class="size-10"
+      class="size-8"
     />
     <span :class="statusMeta.spanClass">
       {{ statusMeta.message }}
@@ -15,12 +15,11 @@
 <script setup lang="ts">
 const props = defineProps<{
   status: PuzzleStatus;
-  turnColor: "white" | "black";
 }>();
 
 const statusMeta = computed(() => {
   const messages = {
-    notStarted: `Find the best move for ${props.turnColor}.`,
+    notStarted: `Find the best move`,
     inProgressCorrect: "Keep going, you're on the right track!",
     inProgressIncorrect: "Incorrect move, try again.",
     solved: "Puzzle solved! Great job!",
@@ -43,7 +42,7 @@ const statusMeta = computed(() => {
   return {
     message: messages[props.status],
     icon: icons[props.status],
-    iconClass: `${iconClasses[props.status]} text-2xl mb-2`,
+    iconClass: `${iconClasses[props.status]} text-2xl`,
     spanClass: "text-gray-500 dark:text-gray-400 text-xl font-semibold",
   };
 });

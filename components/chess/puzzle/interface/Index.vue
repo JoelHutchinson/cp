@@ -18,7 +18,7 @@
       <ChessPuzzleInterfaceCard class="flex-1">
         <div class="grid grid-rows-[1fr_auto] h-full">
           <div class="flex justify-center items-center">
-            <ChessPuzzleInterfaceMessage :status="status" turn-color="white" />
+            <ChessPuzzleInterfaceMessage :status="status" />
           </div>
 
           <div class="flex justify-between items-center">

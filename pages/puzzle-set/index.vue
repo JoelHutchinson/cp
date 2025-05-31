@@ -34,12 +34,10 @@
     <template #cycles-data="{ row }">
       <div class="flex flex-row items-center gap-2">
         <UIcon name="i-heroicons-arrows-arrow-path" />
-        <UProgress
-          :value="row.current_cycle - 1"
-          :min="1"
-          :max="row.total_cycles"
-          indicator
-        ></UProgress>
+
+        <span class="text-sm text-gray-500 dark:text-gray-400">
+          {{ row.current_cycle }} / {{ row.total_cycles }} Cycles
+        </span>
       </div>
     </template>
 
