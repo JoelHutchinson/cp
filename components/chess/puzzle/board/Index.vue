@@ -1,12 +1,18 @@
 <template>
-  <ChessBoard
-    v-bind="$attrs"
-    :view-only="isViewOnly"
-    :width="600"
-    :height="600"
-    @move="onMove"
-    @board-created="(api) => (boardApi = api)"
-  />
+  <UiResizableContainer
+    v-model:width="width"
+    v-model:height="height"
+    lock-aspect-ratio
+  >
+    <ChessBoard
+      v-bind="$attrs"
+      :view-only="isViewOnly"
+      :width="width"
+      :height="height"
+      @move="onMove"
+      @board-created="(api) => (boardApi = api)"
+    />
+  </UiResizableContainer>
 </template>
 
 <script setup lang="ts">
@@ -31,6 +37,8 @@ defineShortcuts({
   },
 });
 
+const width = ref(300);
+const height = ref(300);
 const status: Ref<PuzzleStatus> = ref("notStarted");
 
 // Initially, make the first solution move
