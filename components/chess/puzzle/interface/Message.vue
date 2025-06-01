@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center gap-2 p-2">
+  <div class="flex flex-col items-center gap-2 p-2 w-4/5">
     <UIcon
       :key="statusMeta.icon"
       :name="statusMeta.icon"
@@ -21,7 +21,7 @@ const statusMeta = computed(() => {
   const messages = {
     notStarted: `Find the best move`,
     inProgressCorrect: "Keep going, you're on the right track!",
-    inProgressIncorrect: "Incorrect move, try again.",
+    inProgressIncorrect: "Incorrect, try again.",
     solved: "Puzzle solved! Great job!",
   };
 
@@ -42,8 +42,9 @@ const statusMeta = computed(() => {
   return {
     message: messages[props.status],
     icon: icons[props.status],
-    iconClass: `${iconClasses[props.status]} text-2xl`,
-    spanClass: "text-gray-500 dark:text-gray-400 text-xl font-semibold",
+    iconClass: `${iconClasses[props.status]} w-full`,
+    spanClass:
+      "text-gray-500 dark:text-gray-400 text-xl font-semibold text-center",
   };
 });
 </script>
