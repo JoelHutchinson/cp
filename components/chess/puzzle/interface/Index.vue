@@ -16,7 +16,7 @@
       </ChessPuzzleInterfaceCard>
 
       <ChessPuzzleInterfaceCard class="flex-1">
-        <div class="grid grid-rows-[1fr_auto] h-full">
+        <div class="grid grid-rows-[1fr_auto] gap-4 h-full">
           <div class="flex justify-center items-center">
             <ChessPuzzleInterfaceMessage :status="status" />
           </div>

@@ -18,33 +18,40 @@
     </div>
     <div class="resizer" @mousedown="startResize">
       <UIcon
-        name="i-heroicons-arrows-pointing-out"
-        class="size-3 mr-2 mb-2 text-primary-500 dark:text-primary-400"
+        name="mdi-drag-variant"
+        class="size-3 mr-2 mb-2 text-gray-500 dark:text-gray-400"
       />
     </div>
   </UCard>
 </template>
 
-<script setup>
-import { ref } from "vue";
-
+<script setup lang="ts">
 const props = defineProps({
-  width: { type: Number, default: 200 },
-  height: { type: Number, default: 150 },
   lockAspectRatio: { type: Boolean, default: false },
+  step: { type: Number, default: 5 },
+  minWidth: { type: Number, default: 50 },
+  maxWidth: { type: Number, default: Infinity },
+  minHeight: { type: Number, default: 50 },
+  maxHeight: { type: Number, default: Infinity },
 });
 
-const emit = defineEmits(["update:width", "update:height"]);
+const width = defineModel<number>("width", { default: 600, required: true });
+const height = defineModel<number>("height", { default: 600 });
 
-const width = ref(props.width);
-const height = ref(props.height);
+const emit = defineEmits(["update:width", "update:height"]);
 
 const extraWidth = 20;
 const extraHeight = 20;
 
 let aspectRatio = width.value / height.value;
 
-const startResize = (e) => {
+const roundToStep = (value: number, step: number) =>
+  Math.round(value / step) * step;
+
+const clamp = (value: number, min: number, max: number) =>
+  Math.min(Math.max(value, min), max);
+
+const startResize = (e: MouseEvent) => {
   if (typeof window === "undefined") return;
 
   const startX = e.clientX;
@@ -52,12 +59,11 @@ const startResize = (e) => {
   const startWidth = width.value;
   const startHeight = height.value;
 
-  // Capture aspect ratio at drag start
   if (props.lockAspectRatio) {
     aspectRatio = startWidth / startHeight;
   }
 
-  const onMouseMove = (e) => {
+  const onMouseMove = (e: MouseEvent) => {
     const dx = e.clientX - startX;
     const dy = e.clientY - startY;
 
@@ -72,10 +78,11 @@ const startResize = (e) => {
       }
     }
 
-    width.value = Math.max(50, Math.round(newWidth));
-    height.value = Math.max(50, Math.round(newHeight));
-    emit("update:width", width.value);
-    emit("update:height", height.value);
+    const steppedWidth = roundToStep(newWidth, props.step);
+    const steppedHeight = roundToStep(newHeight, props.step);
+
+    width.value = clamp(steppedWidth, props.minWidth, props.maxWidth);
+    height.value = clamp(steppedHeight, props.minHeight, props.maxHeight);
   };
 
   const onMouseUp = () => {
@@ -99,8 +106,8 @@ const startResize = (e) => {
   background: white;
   overflow: hidden;
   display: flex;
-  justify-content: center; /* horizontal centering */
-  align-items: center; /* vertical centering */
+  justify-content: center;
+  align-items: center;
 }
 
 .resizer {

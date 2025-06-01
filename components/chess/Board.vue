@@ -1,11 +1,22 @@
 <template>
-  <TheChessboard
-    :board-config="boardConfig"
-    @move="handleMove"
-    @board-created="handleBoardCreated"
-    :style="{ width: `${width}px`, height: `${height}px` }"
-    reactive-config
-  />
+  <UiResizableContainer
+    v-model:width="width"
+    v-model:height="height"
+    :min-width="300"
+    :min-height="300"
+    :max-width="600"
+    :max-height="600"
+    :step="4"
+    lock-aspect-ratio
+  >
+    <TheChessboard
+      :board-config="boardConfig"
+      @move="handleMove"
+      @board-created="handleBoardCreated"
+      :style="{ width: `${width}px`, height: `${height}px` }"
+      reactive-config
+    />
+  </UiResizableContainer>
 </template>
 
 <script setup lang="ts">
@@ -17,6 +28,9 @@ import type { Reactive } from "vue";
 
 const vue3ChessboardApi: Ref<BoardApi | null> = ref(null);
 const boardApi: Ref<ChessBoardAPI | null> = ref(null);
+
+const width = defineModel<number>("width", { default: 600, required: true });
+const height = defineModel<number>("height", { default: 600, required: true });
 
 const props = defineProps<{
   viewOnly: boolean;
@@ -57,6 +71,30 @@ const boardConfig: Reactive<BoardConfig> = reactive({
       },
     },
   },
+});
+
+// Get current window width dynamically
+const windowWidth = ref(window.innerWidth);
+
+const updateWindowWidth = () => {
+  windowWidth.value = window.innerWidth;
+};
+
+onMounted(() => {
+  window.addEventListener("resize", updateWindowWidth);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", updateWindowWidth);
+});
+
+const maxBoardWidth = computed(() => Math.max(200, windowWidth.value - 200));
+
+watch(windowWidth, () => {
+  if (width.value > maxBoardWidth.value) {
+    width.value = maxBoardWidth.value;
+    height.value = maxBoardWidth.value;
+  }
 });
 
 const handleMove = (move: MoveEvent) => {

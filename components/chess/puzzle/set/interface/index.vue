@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col justify-between h-full">
+  <div class="flex flex-col justify-between gap-6 h-full">
     <UFormGroup label="Puzzle Set">
       <USelectMenu
         v-if="puzzleSets"

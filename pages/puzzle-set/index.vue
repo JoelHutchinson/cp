@@ -36,7 +36,7 @@
         <UIcon name="i-heroicons-arrows-arrow-path" />
 
         <span class="text-sm text-gray-500 dark:text-gray-400">
-          {{ row.current_cycle }} / {{ row.total_cycles }} Cycles
+          {{ row.current_cycle - 1 }} Cycles
         </span>
       </div>
     </template>
