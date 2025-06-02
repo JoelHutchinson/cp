@@ -41,6 +41,7 @@
       <span
         class="basis-1/2 gap-0.5 justify-center font-bold text-primary-500 flex items-center"
       >
+        <UIcon name="i-lucide-bow-arrow" class="size-5" />
         <UiOdometer
           class="text-primary-500 text-md tracking-tight"
           :value="
@@ -53,7 +54,7 @@
                 )
           "
         />
-        % Accuracy</span
+        %</span
       >
     </div>
   </div>

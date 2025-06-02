@@ -3,12 +3,12 @@
     <img
       src="assets/logo-light.png"
       alt="Logo"
-      class="rounded-lg size-9 dark:hidden"
+      class="rounded-lg size-7 md:size-9 dark:hidden"
     />
     <img
       src="assets/logo-dark.png"
       alt="Logo"
-      class="rounded-lg size-9 hidden dark:block"
+      class="rounded-lg size-7 md:size-9 hidden dark:block"
     />
 
     <div class="flex flex-row items-center">

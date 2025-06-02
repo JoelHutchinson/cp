@@ -1,11 +1,11 @@
 <template>
-    <TheChessboard
-      :board-config="boardConfig"
-      @move="handleMove"
-      @board-created="handleBoardCreated"
-      :style="{ width: `${currentWidth}px`, height: `${currentHeight}px` }"
-      reactive-config
-    />
+  <TheChessboard
+    :board-config="boardConfig"
+    @move="handleMove"
+    @board-created="handleBoardCreated"
+    :style="{ width: `${currentWidth}px`, height: `${currentHeight}px` }"
+    reactive-config
+  />
 </template>
 
 <script setup lang="ts">
@@ -26,7 +26,11 @@ const breakpoints = useBreakpoints({
   xl: 1280,
 });
 
-const isDesktop = breakpoints.greater("md");
+const deviceType = computed(() => {
+  if (breakpoints.greater("lg").value) return "desktop";
+  if (breakpoints.greater("sm").value) return "tablet";
+  return "mobile";
+});
 
 const width = defineModel<number>("width", { default: 600, required: true });
 const height = defineModel<number>("height", { default: 600, required: true });
@@ -76,17 +80,42 @@ const vue3ChessboardApi: Ref<BoardApi | null> = ref(null);
 const boardApi: Ref<ChessBoardAPI | null> = ref(null);
 
 const maxBoardWidth = computed(() => {
-  return isDesktop.value ? 600 : windowWidth.value - 32;
+  switch (deviceType.value) {
+    case "desktop":
+      return 600;
+    case "tablet":
+      return 480;
+    case "mobile":
+      return windowWidth.value;
+    default:
+      return 600;
+  }
 });
 
-const currentWidth = computed(() =>
-  isDesktop.value ? width.value : maxBoardWidth.value
-);
-const currentHeight = computed(() =>
-  isDesktop.value ? height.value : maxBoardWidth.value
-);
+const currentWidth = computed(() => {
+  switch (deviceType.value) {
+    case "desktop":
+      return width.value;
+    case "tablet":
+    case "mobile":
+      return maxBoardWidth.value;
+    default:
+      return width.value;
+  }
+});
+const currentHeight = computed(() => {
+  switch (deviceType.value) {
+    case "desktop":
+      return width.value;
+    case "tablet":
+    case "mobile":
+      return maxBoardWidth.value;
+    default:
+      return width.value;
+  }
+});
 
-watch([windowWidth, isDesktop], () => {
+watch([windowWidth, deviceType], () => {
   const newSize = maxBoardWidth.value;
   if (width.value > newSize) {
     width.value = newSize;

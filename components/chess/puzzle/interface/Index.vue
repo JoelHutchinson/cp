@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-row gap-4">
+  <div class="flex flex-col md:flex-row md:gap-4">
     <!-- Puzzle Board -->
     <ChessPuzzleBoard
       ref="chessPuzzleBoard"
@@ -10,7 +10,7 @@
     />
 
     <!-- Puzzle Details -->
-    <div class="hidden md:flex flex-col gap-4">
+    <div class="flex w-screen md:flex-col md:gap-4">
       <ChessPuzzleInterfaceCard v-if="$slots.leading" class="flex-1">
         <slot name="leading"></slot>
       </ChessPuzzleInterfaceCard>
