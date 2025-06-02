@@ -9,7 +9,7 @@
     </template>
 
     <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <UFormGroup label="First Name" name="firstName">
           <UInput v-model="state.firstName" />
         </UFormGroup>

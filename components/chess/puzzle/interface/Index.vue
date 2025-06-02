@@ -10,7 +10,7 @@
     />
 
     <!-- Puzzle Details -->
-    <div class="flex flex-col gap-4">
+    <div class="hidden md:flex flex-col gap-4">
       <ChessPuzzleInterfaceCard v-if="$slots.leading" class="flex-1">
         <slot name="leading"></slot>
       </ChessPuzzleInterfaceCard>

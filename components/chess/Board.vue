@@ -1,22 +1,11 @@
 <template>
-  <UiResizableContainer
-    v-model:width="width"
-    v-model:height="height"
-    :min-width="300"
-    :min-height="300"
-    :max-width="600"
-    :max-height="600"
-    :step="4"
-    lock-aspect-ratio
-  >
     <TheChessboard
       :board-config="boardConfig"
       @move="handleMove"
       @board-created="handleBoardCreated"
-      :style="{ width: `${width}px`, height: `${height}px` }"
+      :style="{ width: `${currentWidth}px`, height: `${currentHeight}px` }"
       reactive-config
     />
-  </UiResizableContainer>
 </template>
 
 <script setup lang="ts">
@@ -26,8 +15,18 @@ import "vue3-chessboard/style.css";
 import type { BoardApi, BoardConfig, MoveEvent } from "vue3-chessboard";
 import type { Reactive } from "vue";
 
-const vue3ChessboardApi: Ref<BoardApi | null> = ref(null);
-const boardApi: Ref<ChessBoardAPI | null> = ref(null);
+import { useWindowSize, useBreakpoints } from "@vueuse/core";
+
+const { width: windowWidth } = useWindowSize();
+
+const breakpoints = useBreakpoints({
+  sm: 640,
+  md: 768,
+  lg: 1024,
+  xl: 1280,
+});
+
+const isDesktop = breakpoints.greater("md");
 
 const width = defineModel<number>("width", { default: 600, required: true });
 const height = defineModel<number>("height", { default: 600, required: true });
@@ -73,30 +72,35 @@ const boardConfig: Reactive<BoardConfig> = reactive({
   },
 });
 
-// Get current window width dynamically
-const windowWidth = ref(window.innerWidth);
+const vue3ChessboardApi: Ref<BoardApi | null> = ref(null);
+const boardApi: Ref<ChessBoardAPI | null> = ref(null);
 
-const updateWindowWidth = () => {
-  windowWidth.value = window.innerWidth;
-};
-
-onMounted(() => {
-  window.addEventListener("resize", updateWindowWidth);
+const maxBoardWidth = computed(() => {
+  return isDesktop.value ? 600 : windowWidth.value - 32;
 });
 
-onBeforeUnmount(() => {
-  window.removeEventListener("resize", updateWindowWidth);
-});
+const currentWidth = computed(() =>
+  isDesktop.value ? width.value : maxBoardWidth.value
+);
+const currentHeight = computed(() =>
+  isDesktop.value ? height.value : maxBoardWidth.value
+);
 
-const maxBoardWidth = computed(() => Math.max(200, windowWidth.value - 200));
-
-watch(windowWidth, () => {
-  if (width.value > maxBoardWidth.value) {
-    width.value = maxBoardWidth.value;
-    height.value = maxBoardWidth.value;
+watch([windowWidth, isDesktop], () => {
+  const newSize = maxBoardWidth.value;
+  if (width.value > newSize) {
+    width.value = newSize;
+    height.value = newSize;
   }
 });
 
+onMounted(() => {
+  const newSize = maxBoardWidth.value;
+  width.value = newSize;
+  height.value = newSize;
+});
+
+// Emitters
 const handleMove = (move: MoveEvent) => {
   emit("move", move);
 };
@@ -111,41 +115,17 @@ const handleBoardCreated = (newBoardApi: BoardApi) => {
     clearBoard,
     undoLastMove,
   };
+
   emit("boardCreated", boardApi.value);
 };
 
-// Chess Board API methods
-const setPosition = (fen: string) => {
-  if (vue3ChessboardApi.value) {
-    vue3ChessboardApi.value.setPosition(fen);
-  }
-};
+// Chessboard API
+const setPosition = (fen: string) => vue3ChessboardApi.value?.setPosition(fen);
+const makeMove = (move: string) => vue3ChessboardApi.value?.move(move);
+const resetBoard = () => vue3ChessboardApi.value?.resetBoard();
+const clearBoard = () => vue3ChessboardApi.value?.clearBoard();
+const undoLastMove = () => vue3ChessboardApi.value?.undoLastMove();
 
-const makeMove = (move: string) => {
-  if (vue3ChessboardApi.value) {
-    vue3ChessboardApi.value.move(move);
-  }
-};
-
-const resetBoard = () => {
-  if (vue3ChessboardApi.value) {
-    vue3ChessboardApi.value.resetBoard();
-  }
-};
-
-const clearBoard = () => {
-  if (vue3ChessboardApi.value) {
-    vue3ChessboardApi.value.clearBoard();
-  }
-};
-
-const undoLastMove = () => {
-  if (vue3ChessboardApi.value) {
-    vue3ChessboardApi.value.undoLastMove();
-  }
-};
-
-// Watchers
 watch(
   () => props.viewOnly,
   (viewOnly) => {

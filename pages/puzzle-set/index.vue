@@ -2,7 +2,7 @@
   <div class="flex flex-row justify-between items-center mb-4">
     <UiHeading>Your Puzzle Sets</UiHeading>
 
-    <div class="flex flex-row gap-2">
+    <div class="flex flex-col md:flex-row gap-2">
       <UButton
         @click="isCreateModalOpen = !isCreateModalOpen"
         icon="i-heroicons-plus"

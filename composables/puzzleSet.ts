@@ -126,11 +126,17 @@ export const usePuzzleSet = (slug: string) => {
 
   const loadInitialData = async () => {
     isLoading.value = true;
-    await Promise.all([
-      fetchCurrentPuzzle(),
-      fetchNextPuzzle(),
-      fetchPuzzleSetProgress(),
-    ]);
+    await Promise.all([fetchCurrentPuzzle(), fetchPuzzleSetProgress()]);
+
+    // Only prefetch next puzzle if not on the second to last puzzle
+    if (
+      puzzleSetProgress.value &&
+      puzzleSetProgress.value.solved_in_current_cycle !==
+        puzzleSetProgress.value.total_puzzles - 1
+    ) {
+      await fetchNextPuzzle();
+    }
+
     isLoading.value = false;
   };
 

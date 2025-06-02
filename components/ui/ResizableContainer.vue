@@ -7,7 +7,7 @@
     }"
     :ui="{
       base: 'flex items-center justify-center',
-      body: { padding: 'px-0 py-0 m-0 sm:p-0' },
+      body: { padding: 'px-0 py-0 m-0 md:p-0' },
     }"
   >
     <div
@@ -33,6 +33,7 @@ const props = defineProps({
   maxWidth: { type: Number, default: Infinity },
   minHeight: { type: Number, default: 50 },
   maxHeight: { type: Number, default: Infinity },
+  disabled: { type: Boolean, default: false },
 });
 
 const width = defineModel<number>("width", { default: 600, required: true });

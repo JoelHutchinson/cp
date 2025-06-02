@@ -7,7 +7,7 @@
       @correct-move="makePuzzleMove(true)"
       @incorrect-move="makePuzzleMove(false)"
     >
-      <template #leading>
+      <template #leading class="hidden md:flex">
         <ChessPuzzleSetInterface
           v-if="selectedPuzzleSetSlug && puzzleSets && puzzleSetProgress"
           v-model:selected-puzzle-set-slug="selectedPuzzleSetSlug"
