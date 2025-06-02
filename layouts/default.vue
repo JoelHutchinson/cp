@@ -7,7 +7,7 @@
     <div class="flex flex-row grow h-full">
       <AppSidebar v-model="sidebarIsOpen" />
       <main
-        class="w-full p-0 md:p-6 overflow-hidden shadow-lg border-l-[1px] border-t-[1px] md:rounded-l-xl dark:border-gray-800 bg-gray-50 dark:bg-gray-900 h-full"
+        class="w-full sm:p-2 md:p-6 overflow-hidden shadow-lg border-l-[1px] border-t-[1px] md:rounded-l-xl dark:border-gray-800 bg-gray-50 dark:bg-gray-900 h-full"
       >
         <slot />
       </main>

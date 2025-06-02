@@ -1,5 +1,5 @@
 <template>
-  <UCard>
+  <UCard class="w-[95%]">
     <template #header>
       <h1 class="text-2xl font-bold">Sign In</h1>
       <div class="flex items-center">

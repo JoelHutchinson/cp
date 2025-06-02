@@ -20,7 +20,7 @@ import { useWindowSize, useBreakpoints } from "@vueuse/core";
 const { width: windowWidth } = useWindowSize();
 
 const breakpoints = useBreakpoints({
-  sm: 640,
+  sm: 520,
   md: 768,
   lg: 1024,
   xl: 1280,

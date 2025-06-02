@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-row justify-between items-center mb-4">
+  <div class="flex flex-row justify-between items-center mb-4 p-4">
     <UiHeading>Your Puzzle Sets</UiHeading>
 
     <div class="flex flex-col md:flex-row gap-2">
