@@ -9,6 +9,20 @@
     </template>
 
     <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <UFormGroup label="First Name" name="firstName">
+          <UInput v-model="state.firstName" />
+        </UFormGroup>
+
+        <UFormGroup label="Last Name" name="lastName">
+          <UInput v-model="state.lastName" />
+        </UFormGroup>
+      </div>
+
+      <UFormGroup label="Username" name="username">
+        <UInput v-model="state.username" />
+      </UFormGroup>
+
       <UFormGroup label="Email" name="email">
         <UInput
           v-model="state.email"
@@ -19,18 +33,6 @@
 
       <UFormGroup label="Password" name="password">
         <UInput v-model="state.password" type="password" />
-      </UFormGroup>
-
-      <UFormGroup label="Username" name="username">
-        <UInput v-model="state.username" />
-      </UFormGroup>
-
-      <UFormGroup label="First Name" name="firstName">
-        <UInput v-model="state.firstName" />
-      </UFormGroup>
-
-      <UFormGroup label="Last Name" name="lastName">
-        <UInput v-model="state.lastName" />
       </UFormGroup>
 
       <UButton type="submit" :loading="isRegistering" block> Sign Up </UButton>

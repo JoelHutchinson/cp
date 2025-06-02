@@ -27,15 +27,5 @@ const linkSections = [
       },
     ],
   },
-  {
-    sectionTitle: "Settings",
-    links: [
-      {
-        label: "Profile",
-        to: "/profile",
-        icon: "i-heroicons-user-circle-20-solid",
-      },
-    ],
-  },
 ];
 </script>
