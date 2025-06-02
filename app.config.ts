@@ -5,5 +5,8 @@ export default defineAppConfig({
     button: {
       default: { variant: "soft" },
     },
+    modal: {
+      container: "items-center",
+    },
   },
 });

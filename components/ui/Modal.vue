@@ -52,7 +52,7 @@ defineProps<{
   loading: boolean;
 }>();
 
-const emit = defineEmits<{
+defineEmits<{
   (e: "action", event: Event): void;
 }>();
 </script>
