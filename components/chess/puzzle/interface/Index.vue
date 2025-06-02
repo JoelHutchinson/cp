@@ -12,7 +12,7 @@
     />
 
     <!-- Puzzle Details -->
-    <div class="flex w-screen md:flex-col sm:gap-2 md:gap-4">
+    <div class="flex w-screen md:flex-col sm:gap-2 md:gap-4 h-full">
       <ChessPuzzleInterfaceCard v-if="$slots.leading" class="flex-1">
         <slot name="leading"></slot>
       </ChessPuzzleInterfaceCard>
