@@ -24,7 +24,9 @@
           </div>
 
           <div class="flex justify-between items-center">
-            <UButton icon="i-heroicons-forward">Skip</UButton>
+            <UButton icon="i-heroicons-forward" @click="handleSolved">
+              Skip</UButton
+            >
             <div>
               <ChessPuzzleBoardButton
                 icon="i-heroicons-chevron-left"
