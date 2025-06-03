@@ -12,7 +12,7 @@
       <UFormGroup label="Email">
         <UInput
           v-model="state.email"
-          placeholder="you@example.com"
+          placeholder="Enter your email"
           icon="i-heroicons-envelope"
         />
       </UFormGroup>
@@ -21,7 +21,7 @@
         <UInput
           v-model="state.password"
           icon="i-heroicons-lock-closed"
-          placeholder="password"
+          placeholder="Enter your password"
           type="password"
         />
       </UFormGroup>

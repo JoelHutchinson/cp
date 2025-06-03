@@ -11,28 +11,32 @@
     <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <UFormGroup label="First Name" name="firstName">
-          <UInput v-model="state.firstName" />
+          <UInput v-model="state.firstName" placeholder="Sally" />
         </UFormGroup>
 
         <UFormGroup label="Last Name" name="lastName">
-          <UInput v-model="state.lastName" />
+          <UInput v-model="state.lastName" placeholder="Bish" />
         </UFormGroup>
       </div>
 
       <UFormGroup label="Username" name="username">
-        <UInput v-model="state.username" />
+        <UInput v-model="state.username" placeholder="SallyBish" />
       </UFormGroup>
 
       <UFormGroup label="Email" name="email">
         <UInput
           v-model="state.email"
-          placeholder="you@example.com"
+          placeholder="sallybish@example.com"
           icon="i-heroicons-envelope"
         />
       </UFormGroup>
 
       <UFormGroup label="Password" name="password">
-        <UInput v-model="state.password" type="password" />
+        <UInput
+          v-model="state.password"
+          type="password"
+          placeholder="secure_password47#P!@d"
+        />
       </UFormGroup>
 
       <UButton type="submit" :loading="isRegistering" block> Sign Up </UButton>
