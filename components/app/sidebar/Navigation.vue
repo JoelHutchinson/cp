@@ -27,5 +27,25 @@ const linkSections = [
       },
     ],
   },
+  {
+    sectionTitle: "Community",
+    links: [
+      {
+        label: "About",
+        to: "/about",
+        icon: "i-heroicons-information-circle-20-solid",
+      },
+      {
+        label: "Contact",
+        to: "/contact",
+        icon: "i-heroicons-envelope-20-solid",
+      },
+      {
+        label: "Privacy Policy",
+        to: "/privacy-policy",
+        icon: "i-heroicons-shield-check-20-solid",
+      },
+    ],
+  },
 ];
 </script>
