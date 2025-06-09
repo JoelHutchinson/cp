@@ -1,15 +1,8 @@
 <template>
-  <UiHeading class="mb-3">About ChessPecker</UiHeading>
+  <UiHeading class="mb-6">About ChessPecker</UiHeading>
 
   <section class="space-y-10">
-    <div>
-      <UiParagraph>
-        ChessPecker is a focused chess tactics trainer inspired by the
-        principles of the Woodpecker Method.
-      </UiParagraph>
-    </div>
-
-    <UCard class="">
+    <UCard>
       <template #header>
         <UiSubheading>The Woodpecker Method</UiSubheading>
       </template>
