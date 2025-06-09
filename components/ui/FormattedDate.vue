@@ -4,9 +4,9 @@
     :open-delay="200"
     :popper="{ placement: 'bottom-start' }"
   >
-    <span class="capitalize">
+    <UiTypography class="capitalize" v-bind="$attrs">
       {{ formatTimeAgo(date) }}
-    </span>
+    </UiTypography>
   </UTooltip>
 </template>
 

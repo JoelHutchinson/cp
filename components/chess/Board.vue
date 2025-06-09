@@ -95,7 +95,7 @@ const maxBoardWidth = computed(() => {
 const currentWidth = computed(() => {
   switch (deviceType.value) {
     case "desktop":
-      return width.value;
+      return maxBoardWidth.value;
     case "tablet":
     case "mobile":
       return maxBoardWidth.value;

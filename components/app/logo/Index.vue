@@ -1,12 +1,12 @@
 <template>
   <div class="flex flex-row items-center gap-2">
-    <img
-      src="assets/logo-light.png"
+    <NuxtImg
+      src="logo-light.png"
       alt="Logo"
       class="rounded-lg size-7 md:size-9 dark:hidden"
     />
-    <img
-      src="assets/logo-dark.png"
+    <NuxtImg
+      src="logo-dark.png"
       alt="Logo"
       class="rounded-lg size-7 md:size-9 hidden dark:block"
     />

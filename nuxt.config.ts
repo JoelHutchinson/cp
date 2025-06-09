@@ -15,7 +15,7 @@ export default defineNuxtConfig({
     },
   },
   devtools: { enabled: true },
-  modules: ["@nuxt/ui", "@nuxtjs/supabase"],
+  modules: ["@nuxt/ui", "@nuxtjs/supabase", "@nuxt/image"],
   supabase: {
     redirectOptions: {
       login: "/login",
@@ -23,5 +23,11 @@ export default defineNuxtConfig({
       exclude: ["/register"],
       cookieRedirect: false,
     },
+  },
+  routeRules: {
+    "/about": { prerender: true },
+    "/contact": { prerender: true },
+    "/privacy-policy": { prerender: true },
+    "/cookie-policy": { prerender: true },
   },
 });

@@ -1,8 +1,8 @@
 <template>
-  <div class="flex flex-row justify-between items-center mb-4 p-4 md:p-0">
+  <div class="flex flex-row justify-between items-center mb-4 md:p-0">
     <UiHeading>Your Puzzle Sets</UiHeading>
 
-    <div class="flex flex-row gap-2">
+    <div class="flex flex-col sm:flex-row gap-2">
       <UButton
         @click="isCreateModalOpen = !isCreateModalOpen"
         icon="i-heroicons-plus"
@@ -25,6 +25,12 @@
     :rows="data"
     :loading="status === 'pending'"
   >
+    <template #name-data="{ row }">
+      <span class="font-bold text-gray-900 dark:text-white">{{
+        row.name
+      }}</span>
+    </template>
+
     <template #is_default-data="{ row }">
       <div>
         <UBadge v-if="row.is_default" color="white">Default</UBadge>
@@ -35,9 +41,9 @@
       <div class="flex flex-row items-center gap-2">
         <UIcon name="i-heroicons-arrows-arrow-path" />
 
-        <span class="text-sm text-gray-500 dark:text-gray-400">
+        <UiTypography class="text-sm text-gray-500">
           {{ row.current_cycle - 1 }} Cycles
-        </span>
+        </UiTypography>
       </div>
     </template>
 

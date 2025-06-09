@@ -25,6 +25,10 @@
 </template>
 
 <script setup lang="ts">
+definePageMeta({
+  layoutMobileNoPadding: true,
+});
+
 const { puzzleSet } = useRoute().params as { puzzleSet: string };
 const { data: puzzleSets, refresh: refreshPuzzleSets } =
   await useFetchPuzzleSets();
