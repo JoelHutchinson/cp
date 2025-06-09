@@ -13,11 +13,15 @@
             src="woodpecker-method-cover.png"
             alt="The Woodpecker Method"
             class="h-48 rounded-lg shadow-md"
+            :width="136"
+            :height="192"
           />
           <NuxtImg
             src="woodpecker-method-2-cover.png"
             alt="The Woodpecker Method 2"
             class="h-48 rounded-lg shadow-md"
+            :width="136"
+            :height="192"
           />
         </div>
 

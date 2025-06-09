@@ -20,9 +20,8 @@
   </div>
 
   <UTable
-    v-if="data"
     :columns="tableColumns"
-    :rows="data"
+    :rows="data ?? []"
     :loading="status === 'pending'"
   >
     <template #name-data="{ row }">
