@@ -34,6 +34,50 @@ export type Database = {
   };
   public: {
     Tables: {
+      contact_form_entries: {
+        Row: {
+          created_at: string;
+          email: string;
+          first_name: string;
+          id: string;
+          last_name: string;
+          message: string;
+          profile_id: string | null;
+          subject: string;
+          username: string | null;
+        };
+        Insert: {
+          created_at?: string;
+          email: string;
+          first_name: string;
+          id?: string;
+          last_name: string;
+          message: string;
+          profile_id?: string | null;
+          subject: string;
+          username?: string | null;
+        };
+        Update: {
+          created_at?: string;
+          email?: string;
+          first_name?: string;
+          id?: string;
+          last_name?: string;
+          message?: string;
+          profile_id?: string | null;
+          subject?: string;
+          username?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "contact_form_entries_profile_id_fkey";
+            columns: ["profile_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
       profiles: {
         Row: {
           created_at: string;

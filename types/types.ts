@@ -44,6 +44,14 @@ export type PuzzleSetPuzzleProgress = {
   correct_solves: number;
 };
 
+// Contact Form Entries
+export type ContactFormEntry = Omit<
+  TableRow<"contact_form_entries">,
+  "created_at"
+>;
+
+export type ContactFormState = Omit<ContactFormEntry, "id" | "profile_id">;
+
 export type ChessBoardAPI = {
   setPosition: (fen: string) => void;
   makeMove: (move: string) => void;
