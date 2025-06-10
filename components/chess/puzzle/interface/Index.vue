@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-col md:flex-row sm:gap-3 md:gap-4 items-center md:items-start"
+    class="flex sm:p-4 flex-col lg:flex-row sm:gap-4 items-center lg:items-start lg:max-w-[75vw]"
   >
     <!-- Puzzle Board -->
     <ChessPuzzleBoard
@@ -12,7 +12,9 @@
     />
 
     <!-- Puzzle Details -->
-    <div class="flex w-screen md:w-fit md:flex-col sm:gap-2 md:gap-4 h-full">
+    <div
+      class="flex w-screen md:w-full lg:w-fit lg:flex-col sm:gap-4 md:gap-4 h-full"
+    >
       <ChessPuzzleInterfaceCard v-if="$slots.leading" class="flex-1">
         <slot name="leading"></slot>
       </ChessPuzzleInterfaceCard>

@@ -84,7 +84,7 @@ const maxBoardWidth = computed(() => {
     case "desktop":
       return 600;
     case "tablet":
-      return 480;
+      return 400;
     case "mobile":
       return windowWidth.value;
     default:
