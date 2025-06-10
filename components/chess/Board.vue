@@ -103,17 +103,7 @@ const currentWidth = computed(() => {
       return width.value;
   }
 });
-const currentHeight = computed(() => {
-  switch (deviceType.value) {
-    case "desktop":
-      return width.value;
-    case "tablet":
-    case "mobile":
-      return maxBoardWidth.value;
-    default:
-      return width.value;
-  }
-});
+const currentHeight = computed(() => currentWidth.value);
 
 watch([windowWidth, deviceType], () => {
   const newSize = maxBoardWidth.value;

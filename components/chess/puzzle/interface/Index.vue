@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-col md:flex-row sm:gap-3 md:gap-4 items-center md:items-start w-fit h-fit"
+    class="flex flex-col md:flex-row sm:gap-3 md:gap-4 items-center md:items-start"
   >
     <!-- Puzzle Board -->
     <ChessPuzzleBoard
