@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="overflow-hidden">
     <AppColorModeButton class="absolute top-2 right-2" />
 
     <main class="grid min-h-screen place-items-center">

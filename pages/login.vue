@@ -77,7 +77,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
       message: "Welcome back!",
     });
 
-    await navigateTo("/");
+    await navigateTo("/puzzle-set");
   }
 };
 

@@ -15,7 +15,12 @@ export default defineNuxtConfig({
     },
   },
   devtools: { enabled: true },
-  modules: ["@nuxt/ui", "@nuxtjs/supabase", "@nuxt/image"],
+  modules: [
+    "@nuxt/ui",
+    "@nuxtjs/supabase",
+    "@nuxt/image",
+    "@nuxt/test-utils/module",
+  ],
   supabase: {
     redirectOptions: {
       login: "/login",
