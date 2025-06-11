@@ -30,6 +30,8 @@ export default defineNuxtConfig({
     },
   },
   routeRules: {
+    "/login": { prerender: true },
+    "/register": { prerender: true },
     "/about": { prerender: true },
     "/contact": { prerender: true },
     "/privacy-policy": { prerender: true },
