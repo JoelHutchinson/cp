@@ -58,4 +58,6 @@ export type ChessBoardAPI = {
   resetBoard: () => void;
   clearBoard: () => void;
   undoLastMove: () => void;
+  toggleOrientation: () => void;
+  getTurnColor: () => "white" | "black";
 };
