@@ -133,6 +133,8 @@ const handleBoardCreated = (newBoardApi: BoardApi) => {
     resetBoard,
     clearBoard,
     undoLastMove,
+    toggleOrientation,
+    getTurnColor,
   };
 
   emit("boardCreated", boardApi.value);
@@ -144,6 +146,8 @@ const makeMove = (move: string) => vue3ChessboardApi.value?.move(move);
 const resetBoard = () => vue3ChessboardApi.value?.resetBoard();
 const clearBoard = () => vue3ChessboardApi.value?.clearBoard();
 const undoLastMove = () => vue3ChessboardApi.value?.undoLastMove();
+const toggleOrientation = () => vue3ChessboardApi.value?.toggleOrientation();
+const getTurnColor = () => vue3ChessboardApi.value?.getTurnColor() || "white";
 
 watch(
   () => props.viewOnly,

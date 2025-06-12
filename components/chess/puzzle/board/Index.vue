@@ -35,10 +35,14 @@ const status: Ref<PuzzleStatus> = ref("notStarted");
 const width = ref(600);
 const height = ref(600);
 
-// Initially, make the first solution move
+// Initially, make the first solution move and orient the board
 onMounted(() => {
+  boardApi.value?.resetBoard();
   boardApi.value?.setPosition(props.puzzle.fen);
   boardApi.value?.makeMove(solutionMoves.value[0]);
+
+  if (boardApi.value?.getTurnColor() === "black")
+    boardApi.value?.toggleOrientation();
 });
 
 // If the puzzle prop changes, reset the moves made and set the position
@@ -49,8 +53,12 @@ watch(
     solutionMovesMade.value = [];
     viewMovesMade.value = [];
 
+    boardApi.value?.resetBoard();
     boardApi.value?.setPosition(puzzle.fen);
     boardApi.value?.makeMove(solutionMoves.value[0]);
+
+    if (boardApi.value?.getTurnColor() === "black")
+      boardApi.value?.toggleOrientation();
   }
 );
 
