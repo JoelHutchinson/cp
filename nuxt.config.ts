@@ -2,6 +2,13 @@
 export default defineNuxtConfig({
   app: {
     head: {
+      meta: [
+        {
+          name: "description",
+          content:
+            "An online chess tactics trainer based on the Woodpecker Method, designed to boost pattern recognition through repetition.",
+        },
+      ],
       link: [{ rel: "icon", type: "image/png", href: "/favicon.png" }],
     },
   },
@@ -25,7 +32,13 @@ export default defineNuxtConfig({
     redirectOptions: {
       login: "/login",
       callback: "/puzzle",
-      exclude: ["/register"],
+      exclude: [
+        "/register",
+        "/about",
+        "/contact",
+        "/privacy-policy",
+        "/cookie-policy",
+      ],
       cookieRedirect: false,
     },
   },
