@@ -70,7 +70,8 @@ const state = reactive({
   username: "",
 });
 
-const supabase = useSupabaseClient();
+const { createUserProfile } = useProfile();
+
 const notifications = useNotification();
 
 const isRegistering = ref(false);
@@ -78,20 +79,16 @@ const isRegistering = ref(false);
 const onSubmit = async (event: FormSubmitEvent<Schema>) => {
   isRegistering.value = true;
 
-  const { error } = await supabase.auth.signUp({
-    email: event.data.email,
-    password: event.data.password,
-    options: {
-      data: {
-        email: event.data.email,
-        first_name: event.data.firstName,
-        last_name: event.data.lastName,
-        username: event.data.username,
-      },
+  const { error } = await createUserProfile(
+    {
+      id: crypto.randomUUID(),
+      email: event.data.email,
+      first_name: event.data.firstName,
+      last_name: event.data.lastName,
+      username: event.data.username,
     },
-  });
-
-  isRegistering.value = false;
+    event.data.password
+  );
 
   if (error) {
     notifications.error({
@@ -107,6 +104,8 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
 
     await navigateTo("/login");
   }
+
+  isRegistering.value = false;
 };
 
 const navigateToSignIn = async () => {

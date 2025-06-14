@@ -51,7 +51,7 @@ const state = reactive({
   password: "",
 });
 
-const supabase = useSupabaseClient();
+const { signIn } = useProfile();
 const notifications = useNotification();
 
 const isLoggingIn = ref(false);
@@ -59,12 +59,7 @@ const isLoggingIn = ref(false);
 const onSubmit = async (event: FormSubmitEvent<Schema>) => {
   isLoggingIn.value = true;
 
-  const { error } = await supabase.auth.signInWithPassword({
-    email: event.data.email,
-    password: event.data.password,
-  });
-
-  isLoggingIn.value = false;
+  const { error } = await signIn(event.data.email, event.data.password);
 
   if (error) {
     notifications.error({
@@ -79,6 +74,8 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
 
     await navigateTo("/puzzle-set");
   }
+
+  isLoggingIn.value = false;
 };
 
 const navigateToSignUp = async () => {
