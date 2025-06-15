@@ -36,7 +36,7 @@
         variant="outline"
         block
       >
-        Try as Guest
+        Try as a Guest
       </UButton>
     </UForm>
   </UCard>
