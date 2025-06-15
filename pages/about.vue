@@ -36,7 +36,10 @@
 
     <UCard>
       <template #header>
-        <UiSubheading id="getting-started">How to Use the App</UiSubheading>
+        <UiSubheading id="getting-started" class="flex items-center">
+          <UIcon name="i-lucide-info" class="mr-2" /> How to Use the
+          App</UiSubheading
+        >
       </template>
 
       <UiParagraph class="mb-2">
@@ -80,8 +83,9 @@
 
     <UCard>
       <template #header>
-        <UiSubheading id="woodpecker-method"
-          >The Woodpecker Method</UiSubheading
+        <UiSubheading id="woodpecker-method" class="flex items-center">
+          <UIcon name="i-lucide-book-open-check" class="mr-2" />The Woodpecker
+          Method</UiSubheading
         >
       </template>
 
@@ -123,7 +127,9 @@
 
     <UCard>
       <template #header>
-        <UiSubheading id="puzzle-sets">Puzzle Sets</UiSubheading>
+        <UiSubheading id="puzzle-sets" class="flex items-center"
+          ><UIcon name="i-lucide-grid" class="mr-2" /> Puzzle Sets</UiSubheading
+        >
       </template>
 
       <UiParagraph class="mb-1">
@@ -156,7 +162,10 @@
 
     <UCard>
       <template #header>
-        <UiSubheading id="progress-tracking">Progress Tracking</UiSubheading>
+        <UiSubheading id="progress-tracking" class="flex items-center"
+          ><UIcon name="i-lucide-bar-chart-3" class="mr-2" />Progress
+          Tracking</UiSubheading
+        >
       </template>
 
       <UiParagraph class="mb-1">
