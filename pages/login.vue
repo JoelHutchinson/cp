@@ -26,7 +26,18 @@
         />
       </UFormGroup>
 
-      <UButton type="submit" :loading="isLoggingIn" block> Log in </UButton>
+      <UButton type="submit" :loading="isUserLoggingIn" block> Log in </UButton>
+
+      <UDivider><span class="text-sm text-gray-500">Or</span></UDivider>
+
+      <UButton
+        @click="tryAsGuest"
+        :loading="isGuestLoggingIn"
+        variant="outline"
+        block
+      >
+        Try as Guest
+      </UButton>
     </UForm>
   </UCard>
 </template>
@@ -51,13 +62,14 @@ const state = reactive({
   password: "",
 });
 
-const { signIn } = useProfile();
+const { signIn, createGuestProfile } = useProfile();
 const notifications = useNotification();
 
-const isLoggingIn = ref(false);
+const isUserLoggingIn = ref(false);
+const isGuestLoggingIn = ref(false);
 
 const onSubmit = async (event: FormSubmitEvent<Schema>) => {
-  isLoggingIn.value = true;
+  isUserLoggingIn.value = true;
 
   const { error } = await signIn(event.data.email, event.data.password);
 
@@ -75,10 +87,32 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
     await navigateTo("/puzzle-set");
   }
 
-  isLoggingIn.value = false;
+  isUserLoggingIn.value = false;
 };
 
 const navigateToSignUp = async () => {
   await navigateTo("/register");
+};
+
+const tryAsGuest = async () => {
+  isGuestLoggingIn.value = true;
+
+  const { error } = await createGuestProfile();
+
+  if (error) {
+    notifications.error({
+      title: "Guest login failed",
+      message: error.message,
+    });
+  } else {
+    notifications.success({
+      title: "Logged in as Guest",
+      message: "Enjoy your time!",
+    });
+
+    await navigateTo("/about");
+  }
+
+  isGuestLoggingIn.value = false;
 };
 </script>

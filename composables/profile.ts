@@ -86,13 +86,22 @@ export const useProfile = () => {
     return { data };
   };
 
+  const signOut = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error("Sign-out error:", error);
+      return { error };
+    }
+    return { message: "Signed out successfully" };
+  };
+
   /**
    * Creates an anonymous guest user
    */
   const createGuestProfile = async () => {
     if (user.value) {
       console.warn("User already exists, cannot create guest profile.");
-      return;
+      return { error: { message: "User already exists" } };
     }
 
     const { data, error } = await supabase.auth.signInAnonymously({
@@ -179,6 +188,7 @@ export const useProfile = () => {
     conversionStatus,
 
     signIn,
+    signOut,
     createGuestProfile,
     createUserProfile,
     convertGuestToUserProfile,

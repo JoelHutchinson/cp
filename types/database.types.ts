@@ -81,26 +81,29 @@ export type Database = {
       profiles: {
         Row: {
           created_at: string;
-          email: string;
+          email: string | null;
           first_name: string;
           id: string;
           last_name: string;
+          type: Database["public"]["Enums"]["profile_type"];
           username: string;
         };
         Insert: {
           created_at?: string;
-          email: string;
+          email?: string | null;
           first_name: string;
           id?: string;
           last_name: string;
+          type?: Database["public"]["Enums"]["profile_type"];
           username?: string;
         };
         Update: {
           created_at?: string;
-          email?: string;
+          email?: string | null;
           first_name?: string;
           id?: string;
           last_name?: string;
+          type?: Database["public"]["Enums"]["profile_type"];
           username?: string;
         };
         Relationships: [];
@@ -297,7 +300,7 @@ export type Database = {
       };
     };
     Enums: {
-      [_ in never]: never;
+      profile_type: "user" | "guest";
     };
     CompositeTypes: {
       [_ in never]: never;
@@ -415,6 +418,8 @@ export const Constants = {
     Enums: {},
   },
   public: {
-    Enums: {},
+    Enums: {
+      profile_type: ["user", "guest"],
+    },
   },
 } as const;

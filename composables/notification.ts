@@ -1,4 +1,4 @@
-export const useNotification = (timeout: number = 5000) => {
+export const useNotification = (timeout: number = 10000) => {
   const toast = useToast();
 
   const success = (params: { title: string; message: string }) => {

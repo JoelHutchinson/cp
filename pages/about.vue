@@ -3,8 +3,84 @@
 
   <section class="space-y-10">
     <UCard>
+      <UiParagraph class="mb-4">
+        <strong>ChessPecker</strong> is a training tool inspired by the
+        <em>Woodpecker Method</em>, designed to sharpen your tactical vision
+        through deliberate repetition and focused practice. Create custom puzzle
+        sets, track your progress, and repeat cycles to build lasting
+        improvement.
+      </UiParagraph>
+
+      <UiParagraph class="mb-4">
+        Whether you're a club player or a serious improver, ChessPecker provides
+        a structured way to train like a Grandmaster.
+      </UiParagraph>
+
+      <div class="flex flex-wrap gap-2">
+        <UButton to="#woodpecker-method" variant="ghost" color="primary">
+          Learn the Method
+        </UButton>
+        <UButton to="#getting-started" variant="ghost" color="primary">
+          How to Use the App
+        </UButton>
+        <UButton to="#puzzle-sets" variant="ghost" color="primary">
+          Puzzle Sets
+        </UButton>
+        <UButton to="#progress-tracking" variant="ghost" color="primary">
+          Progress Tracking
+        </UButton>
+      </div>
+    </UCard>
+
+    <UCard>
       <template #header>
-        <UiSubheading>The Woodpecker Method</UiSubheading>
+        <UiSubheading id="getting-started">How to Use the App</UiSubheading>
+      </template>
+
+      <UiParagraph class="mb-2">
+        Getting started with ChessPecker is simple. Just follow these steps:
+      </UiParagraph>
+
+      <UiTypography>
+        <ul class="list-disc list-inside space-y-1 mb-3">
+          <li>
+            Go to the <strong>Puzzle Sets</strong> page and click
+            <em>Create Puzzle Set</em>.
+          </li>
+          <li>
+            Select how many puzzles you want in the set, and choose an average
+            difficulty rating that suits your current skill level.
+          </li>
+          <li>
+            Optionally, filter by <strong>themes</strong> such as mating
+            patterns, endgame types, or tactical motifs to focus your training.
+          </li>
+          <li>
+            Once your set is created, start solving! The app records your
+            results as you go.
+          </li>
+          <li>
+            Each time you complete all the puzzles in a set, it counts as one
+            <strong>cycle</strong>. The app tracks your progress through each
+            cycle and calculates your accuracy.
+          </li>
+        </ul>
+      </UiTypography>
+
+      <UAlert icon="i-heroicons-information-circle" title="Tip">
+        <template #description>
+          Revisit your puzzle sets repeatedly to follow the Woodpecker Method
+          approach. Over time, you’ll notice improved speed, accuracy, and
+          tactical intuition.
+        </template>
+      </UAlert>
+    </UCard>
+
+    <UCard>
+      <template #header>
+        <UiSubheading id="woodpecker-method"
+          >The Woodpecker Method</UiSubheading
+        >
       </template>
 
       <div class="grid grid-cols-1 lg:grid-cols-[auto_1fr] gap-6">
@@ -45,7 +121,7 @@
 
     <UCard>
       <template #header>
-        <UiSubheading>Puzzle Sets</UiSubheading>
+        <UiSubheading id="puzzle-sets">Puzzle Sets</UiSubheading>
       </template>
 
       <UiParagraph class="mb-1">
@@ -78,7 +154,7 @@
 
     <UCard>
       <template #header>
-        <UiSubheading>Progress Tracking</UiSubheading>
+        <UiSubheading id="progress-tracking">Progress Tracking</UiSubheading>
       </template>
 
       <UiParagraph class="mb-1">

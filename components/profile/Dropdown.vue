@@ -1,5 +1,6 @@
 <template>
   <UDropdown
+    v-if="profile.type === 'user'"
     :items="items"
     :ui="{ width: 'w-fit', item: { disabled: 'cursor-text select-text' } }"
     :popper="{ placement: 'bottom-start' }"
@@ -35,6 +36,9 @@
       />
     </template>
   </UDropdown>
+  <div v-else>
+    <UButton @click="signOutAndNavigate" variant="link"> Sign Up </UButton>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -42,6 +46,8 @@ const props = defineProps<{ profile: Profile }>();
 const fullName = computed(
   () => `${props.profile.first_name} ${props.profile.last_name}`
 );
+
+const { signOut } = useProfile();
 
 const items = [
   [
@@ -58,11 +64,14 @@ const items = [
       label: "Sign out",
       icon: "i-heroicons-arrow-left-on-rectangle",
       click: async () => {
-        const supabase = useSupabaseClient();
-        await supabase.auth.signOut();
-        await navigateTo("/login");
+        await signOutAndNavigate();
       },
     },
   ],
 ];
+
+const signOutAndNavigate = async () => {
+  await signOut();
+  await navigateTo("/login");
+};
 </script>
