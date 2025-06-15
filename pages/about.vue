@@ -17,18 +17,20 @@
       </UiParagraph>
 
       <div class="flex flex-wrap gap-2">
-        <UButton to="#woodpecker-method" variant="ghost" color="primary">
-          Learn the Method
-        </UButton>
-        <UButton to="#getting-started" variant="ghost" color="primary">
-          How to Use the App
-        </UButton>
-        <UButton to="#puzzle-sets" variant="ghost" color="primary">
-          Puzzle Sets
-        </UButton>
-        <UButton to="#progress-tracking" variant="ghost" color="primary">
-          Progress Tracking
-        </UButton>
+        <a href="#woodpecker-method">
+          <UButton variant="ghost" color="primary"> Learn the Method </UButton>
+        </a>
+        <a href="#getting-started">
+          <UButton variant="ghost" color="primary">
+            How to Use the App
+          </UButton>
+        </a>
+        <a href="#puzzle-sets">
+          <UButton variant="ghost" color="primary"> Puzzle Sets </UButton>
+        </a>
+        <a href="#progress-tracking">
+          <UButton variant="ghost" color="primary"> Progress Tracking </UButton>
+        </a>
       </div>
     </UCard>
 
