@@ -1,6 +1,20 @@
 <template>
-  <iframe
-    src="/cookie-policy.html"
-    style="width: 100%; height: 100%; border: none"
-  ></iframe>
+  <UiHeading class="mb-6">Cookie Policy</UiHeading>
+  <UCard class="w-full">
+    <div
+      class="prose dark:prose-invert p-4 !max-w-none prose-a:text-primary-500 dark:prose-a-primary-400"
+    >
+      <div v-html="htmlContent"></div>
+    </div>
+  </UCard>
 </template>
+
+<script setup lang="ts">
+const htmlContent = ref("");
+
+// Load HTML content on mount
+onMounted(async () => {
+  const res = await fetch("/cookie-policy.html");
+  htmlContent.value = await res.text();
+});
+</script>
