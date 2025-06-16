@@ -86,6 +86,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
       first_name: event.data.firstName,
       last_name: event.data.lastName,
       username: event.data.username,
+      type: "user",
     },
     event.data.password
   );
