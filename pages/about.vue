@@ -17,13 +17,13 @@
       </UiParagraph>
 
       <div class="flex flex-wrap gap-2">
-        <a href="#woodpecker-method">
-          <UButton variant="ghost" color="primary"> Learn the Method </UButton>
-        </a>
         <a href="#getting-started">
           <UButton variant="ghost" color="primary">
             How to Use the App
           </UButton>
+        </a>
+        <a href="#woodpecker-method">
+          <UButton variant="ghost" color="primary"> Learn the Method </UButton>
         </a>
         <a href="#puzzle-sets">
           <UButton variant="ghost" color="primary"> Puzzle Sets </UButton>
@@ -36,8 +36,11 @@
 
     <UCard>
       <template #header>
-        <UiSubheading id="getting-started" class="flex items-center">
-          <UIcon name="i-lucide-info" class="mr-2" /> How to Use the
+        <UiSubheading
+          id="getting-started"
+          class="flex items-center scroll-mt-11"
+        >
+          <UIcon name="i-lucide-circle-help" class="mr-2" /> How to Use the
           App</UiSubheading
         >
       </template>
@@ -83,7 +86,10 @@
 
     <UCard>
       <template #header>
-        <UiSubheading id="woodpecker-method" class="flex items-center">
+        <UiSubheading
+          id="woodpecker-method"
+          class="flex items-center scroll-mt-11"
+        >
           <UIcon name="i-lucide-book-open-check" class="mr-2" />The Woodpecker
           Method</UiSubheading
         >
@@ -127,7 +133,7 @@
 
     <UCard>
       <template #header>
-        <UiSubheading id="puzzle-sets" class="flex items-center"
+        <UiSubheading id="puzzle-sets" class="flex items-center scroll-mt-11"
           ><UIcon name="i-lucide-grid" class="mr-2" /> Puzzle Sets</UiSubheading
         >
       </template>
@@ -162,7 +168,9 @@
 
     <UCard>
       <template #header>
-        <UiSubheading id="progress-tracking" class="flex items-center"
+        <UiSubheading
+          id="progress-tracking"
+          class="flex items-center scroll-mt-11"
           ><UIcon name="i-lucide-bar-chart-3" class="mr-2" />Progress
           Tracking</UiSubheading
         >

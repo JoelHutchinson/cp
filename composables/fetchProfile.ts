@@ -6,7 +6,7 @@ export const useFetchProfile = () => {
   const { data: profile } = useNuxtData<Profile>(key);
 
   const fetchProfile = async () => {
-    if (!user.value || !user.value.id) {
+    if (!user.value || !user.value?.id) {
       console.warn("No user ID found, cannot fetch profile.");
       return;
     }

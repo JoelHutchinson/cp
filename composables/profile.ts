@@ -107,8 +107,8 @@ export const useProfile = () => {
     const { data, error } = await supabase.auth.signInAnonymously({
       options: {
         data: {
-          // id: crypto.randomUUID(), // Generate a unique ID for the guest
-          username: `guest_${Date.now()}`, // Simple guest username
+          id: crypto.randomUUID(),
+          username: `guest_${Date.now()}`,
           first_name: "Guest",
           last_name: "User",
           type: "guest",

@@ -8,7 +8,7 @@
     <AppLogo class="hidden md:flex" />
     <div class="flex flex-row items-center gap-2">
       <AppColorModeButton />
-      <ProfileDropdown v-if="profile" :profile="profile" />
+      <ProfileDropdown :profile="profile" />
     </div>
   </header>
 </template>

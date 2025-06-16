@@ -1,6 +1,6 @@
 <template>
   <UDropdown
-    v-if="profile.type === 'user'"
+    v-if="profile?.type === 'user'"
     :items="items"
     :ui="{ width: 'w-fit', item: { disabled: 'cursor-text select-text' } }"
     :popper="{ placement: 'bottom-start' }"
@@ -17,13 +17,6 @@
             {{ item.email }}
           </p>
         </div>
-        <!-- TODO: Add this once puzzle rating is implemented -->
-        <!-- <span
-          class="flex flex-row text-sm text-gray-500 dark:text-gray-400 items-center gap-0.5"
-        >
-          <UIcon name="i-heroicons-puzzle-piece-20-solid" />
-          {{ item.puzzleRating }}
-        </span> -->
       </div>
     </template>
 
@@ -36,15 +29,20 @@
       />
     </template>
   </UDropdown>
-  <div v-else>
-    <UButton @click="signOutAndNavigate" variant="link"> Sign Up </UButton>
+
+  <div v-else-if="profile?.type === 'guest'">
+    <UButton @click="signOutAndNavigate" variant="link">Sign Up</UButton>
+  </div>
+
+  <div v-else class="flex flex-col gap-2">
+    <UButton @click="signOutAndNavigate" variant="link"> Sign In </UButton>
   </div>
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{ profile: Profile }>();
+const props = defineProps<{ profile: Profile | null }>();
 const fullName = computed(
-  () => `${props.profile.first_name} ${props.profile.last_name}`
+  () => `${props.profile?.first_name} ${props.profile?.last_name}`
 );
 
 const { signOut } = useProfile();
@@ -52,7 +50,7 @@ const { signOut } = useProfile();
 const items = [
   [
     {
-      email: props.profile.email,
+      email: props.profile?.email,
       name: fullName,
       puzzleRating: 600, // TODO: Add puzzle_rating to the profile
       slot: "account",
