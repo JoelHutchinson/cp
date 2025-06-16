@@ -1,6 +1,6 @@
 <template>
   <aside
-    class="hidden md:flex shrink-0 basis-48 flex-col gap-6 overflow-auto p-2.5"
+    class="hidden md:flex shrink-0 basis-48 flex-col gap-6 overflow-auto p-2.5 list-none marker:content-none"
   >
     <AppSidebarNavigation />
   </aside>
