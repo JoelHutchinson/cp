@@ -35,11 +35,19 @@ export const generatePuzzleSet = async (
     params.themes.some((theme) => puzzle.themes.split(" ").includes(theme))
   );
 
+  let puzzles = [];
+
   // Select a sample of puzzles evenly distributed across the range
   const step = Math.floor(data.length / params.numberOfPuzzles);
-  const puzzles = filteredData
+  const sampledPuzzles = filteredData
     .filter((_, i) => i % step === 0)
     .slice(0, params.numberOfPuzzles);
+
+  if (sampledPuzzles.length < params.numberOfPuzzles) {
+    puzzles = filteredData.slice(0, params.numberOfPuzzles);
+  } else {
+    puzzles = sampledPuzzles;
+  }
 
   return {
     id: crypto.randomUUID(),
