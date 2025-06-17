@@ -128,7 +128,7 @@ export const useProfile = () => {
     }
 
     const { data, error } = await supabase.auth.signUp({
-      email: profile.email,
+      email: profile.email!,
       password,
       options: {
         data: {
@@ -164,7 +164,7 @@ export const useProfile = () => {
     pendingProfile.value = profile;
 
     const { error: updateEmailError } = await supabase.auth.updateUser({
-      email: profile.email,
+      email: profile.email!,
     });
 
     if (updateEmailError) {

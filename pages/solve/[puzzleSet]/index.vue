@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-row gap-4">
+  <div class="flex flex-row gap-4 h-full">
     <ChessPuzzleInterface
       v-if="currentPuzzle"
       :puzzle="currentPuzzle"

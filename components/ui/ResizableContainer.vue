@@ -36,8 +36,8 @@ const props = defineProps({
   disabled: { type: Boolean, default: false },
 });
 
-const width = defineModel<number>("width", { default: 600, required: true });
-const height = defineModel<number>("height", { default: 600 });
+const width = defineModel<number>("width", { default: 658, required: true });
+const height = defineModel<number>("height", { default: 658 });
 
 const emit = defineEmits(["update:width", "update:height"]);
 

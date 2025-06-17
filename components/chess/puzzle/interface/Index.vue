@@ -1,7 +1,33 @@
 <template>
   <div
-    class="flex sm:p-4 flex-col lg:flex-row sm:gap-4 items-center lg:items-start lg:max-w-[75vw]"
+    class="flex sm:p-4 flex-col w-full lg:w-fit lg:flex-row sm:gap-4 items-center lg:items-start lg:max-w-[75vw]"
   >
+    <!-- On Mobile, the Puzzle panel is displayed as a small banner above the board -->
+    <div
+      class="flex flex-row gap-4 w-full sm:hidden justify-between items-center max-h-32"
+    >
+      <ChessPuzzleInterfaceMessage :status="status" />
+
+      <div class="flex justify-between items-center">
+        <div class="flex flex-row">
+          <UButton
+            icon="i-heroicons-forward"
+            @click="handleSolved"
+            variant="ghost"
+          />
+
+          <ChessPuzzleBoardButton
+            icon="i-heroicons-chevron-left"
+            @click="handlePrev"
+          />
+          <ChessPuzzleBoardButton
+            icon="i-heroicons-chevron-right"
+            @click="handleNext"
+          />
+        </div>
+      </div>
+    </div>
+
     <!-- Puzzle Board -->
     <ChessPuzzleBoard
       ref="chessPuzzleBoard"
@@ -13,13 +39,13 @@
 
     <!-- Puzzle Details -->
     <div
-      class="flex w-screen md:w-full lg:w-fit lg:flex-col sm:gap-4 md:gap-4 h-full"
+      class="flex w-screen sm:w-full lg:w-fit lg:flex-col sm:gap-4 md:gap-4 h-full"
     >
       <ChessPuzzleInterfaceCard v-if="$slots.leading" class="flex-1">
         <slot name="leading"></slot>
       </ChessPuzzleInterfaceCard>
 
-      <ChessPuzzleInterfaceCard class="flex-1">
+      <ChessPuzzleInterfaceCard class="flex-1 hidden sm:flex">
         <div class="grid grid-rows-[1fr_auto] gap-4 h-full">
           <div class="flex justify-center items-center">
             <ChessPuzzleInterfaceMessage :status="status" />

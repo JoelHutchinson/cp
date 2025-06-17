@@ -32,8 +32,8 @@ const deviceType = computed(() => {
   return "mobile";
 });
 
-const width = defineModel<number>("width", { default: 600, required: true });
-const height = defineModel<number>("height", { default: 600, required: true });
+const width = defineModel<number>("width", { default: 658, required: true });
+const height = defineModel<number>("height", { default: 658, required: true });
 
 const props = defineProps<{
   viewOnly: boolean;
@@ -82,13 +82,13 @@ const boardApi: Ref<ChessBoardAPI | null> = ref(null);
 const maxBoardWidth = computed(() => {
   switch (deviceType.value) {
     case "desktop":
-      return 600;
+      return 658;
     case "tablet":
       return 400;
     case "mobile":
       return windowWidth.value;
     default:
-      return 600;
+      return 658;
   }
 });
 

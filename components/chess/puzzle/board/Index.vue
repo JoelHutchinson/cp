@@ -32,8 +32,8 @@ defineShortcuts({
 });
 
 const status: Ref<PuzzleStatus> = ref("notStarted");
-const width = ref(600);
-const height = ref(600);
+const width = ref(700);
+const height = ref(700);
 
 // Initially, make the first solution move and orient the board
 onMounted(() => {

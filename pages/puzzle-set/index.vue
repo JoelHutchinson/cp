@@ -572,28 +572,28 @@ const tableColumns = [
   {
     label: "Name",
     key: "name",
-    class: "min-w-36 w-1/4", // flexible but has a min width
+    class: "min-w-36 w-1/4",
   },
   {
     key: "is_default",
-    class: "w-fit text-center", // small boolean column
+    class: "w-fit text-center",
   },
   {
     label: "Progress",
     key: "cycles",
     icon: "i-heroicons-arrows-arrow-path",
-    class: "min-w-[100px] w-1/4", // progress info
+    class: "min-w-[100px] w-1/4",
   },
   {
     label: "Created at",
     key: "created_at",
-    class: "hidden sm:table-cell w-1/4", // hide on very small screens
-    rowClass: "hidden sm:table-cell p-2", // hide on very small screens
+    class: "hidden sm:table-cell w-1/4",
+    rowClass: "hidden sm:table-cell p-2",
   },
   {
     key: "actions",
     class: "w-12",
-    rowClass: "w-12 min-w-12 max-w-12", // hide on very small screens
+    rowClass: "w-12 min-w-12 max-w-12",
   },
 ];
 

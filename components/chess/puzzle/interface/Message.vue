@@ -1,10 +1,10 @@
 <template>
-  <div class="flex flex-col items-center gap-2 p-2 w-4/5">
+  <div class="flex flex-row sm:flex-col items-center gap-2 p-2">
     <UIcon
       :key="statusMeta.icon"
       :name="statusMeta.icon"
       :class="statusMeta.iconClass"
-      class="size-8"
+      class="hidden sm:block sm:size-8"
     />
     <span :class="statusMeta.spanClass">
       {{ statusMeta.message }}
@@ -44,7 +44,7 @@ const statusMeta = computed(() => {
     icon: icons[props.status],
     iconClass: `${iconClasses[props.status]} w-full`,
     spanClass:
-      "text-gray-500 dark:text-gray-400 text-xl font-semibold text-center",
+      "text-gray-600 dark:text-gray-300 text-sm truncate sm:text-xl font-semibold text-center whitespace-nowrap truncate sm:whitespace-normal",
   };
 });
 </script>

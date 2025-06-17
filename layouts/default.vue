@@ -7,7 +7,7 @@
     <div class="flex flex-row grow h-full overflow-hidden">
       <AppSidebar v-model="sidebarIsOpen" />
       <main
-        class="w-full md:p-6 overflow-auto shadow-lg border-l-[1px] border-t-[1px] md:rounded-l-xl dark:border-gray-800 bg-gray-50 dark:bg-gray-900 h-full"
+        class="w-full md:p-6 overflow-y-auto overflow-x-hidden shadow-lg border-l-[1px] border-t-[1px] md:rounded-l-xl dark:border-gray-800 bg-gray-50 dark:bg-gray-900 h-full"
         :class="{ 'p-4': layoutMobilePadding }"
       >
         <slot />
