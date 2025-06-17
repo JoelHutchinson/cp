@@ -32,14 +32,7 @@ export default defineNuxtConfig({
     redirectOptions: {
       login: "/login",
       callback: "/puzzle-set",
-      exclude: [
-        "/register",
-        "/login",
-        "/about",
-        "/contact",
-        "/privacy-policy",
-        "/cookie-policy",
-      ],
+      exclude: ["/register", "/login"],
       cookieRedirect: false,
     },
   },
