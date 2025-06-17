@@ -10,7 +10,7 @@
         }"
       >
         <template #header>
-          <UiSubheading class="capitalize">{{ title }}</UiSubheading>
+          <UiHeading class="capitalize">{{ title }}</UiHeading>
 
           <div class="flex items-center gap-1">
             <slot name="header-actions"></slot>

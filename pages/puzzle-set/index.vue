@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-row justify-between items-center mb-4 md:p-0">
+  <div class="flex flex-row justify-between items-center mb-6 md:p-0">
     <UiHeading>Your Puzzle Sets</UiHeading>
 
     <div class="flex flex-col sm:flex-row gap-2">
@@ -31,8 +31,15 @@
     </template>
 
     <template #is_default-data="{ row }">
-      <div>
-        <UBadge v-if="row.is_default" color="white">Default</UBadge>
+      <div class="flex items-center justify-center">
+        <UBadge v-if="row.is_default" color="white" class="hidden sm:inline"
+          >Default</UBadge
+        >
+        <UIcon
+          v-if="row.is_default"
+          name="i-heroicons-star-20-solid"
+          class="sm:hidden text-primary-400"
+        />
       </div>
     </template>
 
@@ -47,7 +54,7 @@
     </template>
 
     <template #created_at-data="{ row }">
-      <UiFormattedDate :date="row.created_at" />
+      <UiFormattedDate :date="row.created_at" class="hidden sm:block" />
     </template>
 
     <template #actions-data="{ row }">
@@ -75,6 +82,20 @@
           ],
         ]"
       />
+    </template>
+
+    <template #empty-state>
+      <div
+        class="flex flex-col items-center justify-center flex-1 px-6 py-14 sm:px-14"
+      >
+        <UIcon
+          name="i-heroicons-puzzle-piece-20-solid"
+          class="w-6 h-6 mx-auto text-gray-400 dark:text-gray-500 mb-4"
+        />
+        <span class="text-sm text-center text-gray-900 dark:text-white"
+          >No Puzzle Sets.</span
+        >
+      </div>
     </template>
   </UTable>
 
@@ -551,23 +572,29 @@ const tableColumns = [
   {
     label: "Name",
     key: "name",
-    // class: "w-1/6",
+    class: "min-w-36 w-1/4", // flexible but has a min width
   },
   {
     key: "is_default",
+    class: "w-fit text-center", // small boolean column
   },
   {
     label: "Progress",
     key: "cycles",
     icon: "i-heroicons-arrows-arrow-path",
-    // class: "w-1/12",
+    class: "min-w-[100px] w-1/4", // progress info
   },
   {
     label: "Created at",
     key: "created_at",
-    // class: "w-1/3",
+    class: "hidden sm:table-cell w-1/4", // hide on very small screens
+    rowClass: "hidden sm:table-cell p-2", // hide on very small screens
   },
-  { key: "actions", class: "w-[52px]" },
+  {
+    key: "actions",
+    class: "w-12",
+    rowClass: "w-12 min-w-12 max-w-12", // hide on very small screens
+  },
 ];
 
 const createPuzzleSet = async () => {
