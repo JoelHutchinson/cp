@@ -3,10 +3,6 @@
 </template>
 
 <script setup lang="ts">
-definePageMeta({
-  middleware: "02-solve",
-});
-
 const notifications = useNotification();
 
 const { defaultPuzzleSet, fetchDefaultPuzzleSet, fetchDefaultPuzzleSetError } =
