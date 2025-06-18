@@ -2,6 +2,7 @@
 export default defineNuxtConfig({
   app: {
     head: {
+      title: "ChessPecker",
       meta: [
         {
           name: "description",
