@@ -97,21 +97,12 @@ const navigateToSignUp = async () => {
 const tryAsGuest = async () => {
   isGuestLoggingIn.value = true;
 
-  const { error } = await createGuestProfile();
+  notifications.success({
+    title: "Logged in as Guest",
+    message: "Enjoy your time!",
+  });
 
-  if (error) {
-    notifications.error({
-      title: "Guest login failed",
-      message: error.message,
-    });
-  } else {
-    notifications.success({
-      title: "Logged in as Guest",
-      message: "Enjoy your time!",
-    });
-
-    await navigateTo("/about");
-  }
+  await navigateTo("/about");
 
   isGuestLoggingIn.value = false;
 };

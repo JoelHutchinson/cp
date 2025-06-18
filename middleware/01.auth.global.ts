@@ -4,12 +4,12 @@ export default defineNuxtRouteMiddleware(async (to) => {
   if (user.value) {
     if (to.path === "/") return navigateTo("/about");
   } else {
-    if (to.path === "/login" || to.path === "/register") {
-      // If the user is not authenticated and trying to access login or register, allow access
+    if (to.path !== "/puzzle-set" && to.path !== "/solve") {
+      // If the user is not authenticated and trying to access a none-protected route allow access
       return;
     } else {
-      // If the user is not authenticated and trying to access a protected route, redirect to login
-      return navigateTo("/login");
+      // If the user is not authenticated and trying to access a protected route, redirect to about page
+      return navigateTo("/about");
     }
   }
 });

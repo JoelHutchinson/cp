@@ -13,7 +13,7 @@
       class="absolute bottom-4 right-4"
       variant="link"
       color="gray"
-      to="/privacy-policy.html"
+      to="/privacy-policy"
       target="_blank"
     >
       Privacy Policy

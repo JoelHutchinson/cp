@@ -31,11 +31,12 @@
   </UDropdown>
 
   <div v-else-if="profile?.type === 'guest'">
-    <UButton @click="signOutAndNavigate" variant="link">Sign Up</UButton>
+    <UButton @click="navigateToSignIn" variant="link"> Sign In </UButton>
+    <UButton @click="navigateToSignUp" variant="link">Sign Up</UButton>
   </div>
 
   <div v-else class="flex flex-col gap-2">
-    <UButton @click="signOutAndNavigate" variant="link"> Sign In </UButton>
+    <USkeleton class="w-24 h-6" />
   </div>
 </template>
 
@@ -45,7 +46,7 @@ const fullName = computed(
   () => `${props.profile?.first_name} ${props.profile?.last_name}`
 );
 
-const { signOut } = useProfile();
+const { signOut, createGuestProfile } = useProfile();
 
 const items = [
   [
@@ -62,14 +63,19 @@ const items = [
       label: "Sign out",
       icon: "i-heroicons-arrow-left-on-rectangle",
       click: async () => {
-        await signOutAndNavigate();
+        await signOut();
+        await createGuestProfile();
+        await navigateToSignIn();
       },
     },
   ],
 ];
 
-const signOutAndNavigate = async () => {
-  await signOut();
+const navigateToSignIn = async () => {
   await navigateTo("/login");
+};
+
+const navigateToSignUp = async () => {
+  await navigateTo("/register");
 };
 </script>
