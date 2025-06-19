@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-row gap-4 h-full">
+  <div class="flex flex-row gap-4 h-full lg:h-fit">
     <ChessPuzzleInterface
       v-if="currentPuzzle"
       :puzzle="currentPuzzle"
@@ -21,34 +21,12 @@
     </ChessPuzzleInterface>
 
     <ChessPuzzleInterfaceSkeleton v-else-if="puzzleStatus === 'pending'" />
-
-    <!-- Ezoic - sidebar_right_desktop - sidebar_floating_1 -->
-    <div id="ezoic-pub-ad-placeholder-118"></div>
-    <!-- End Ezoic - sidebar_right_desktop - sidebar_floating_1 -->
   </div>
-
-  <!-- TODO: Implement mobile ad -->
-  <!-- Ezoic - sidebar_bottom_mobile - sidebar_bottom -->
-  <!-- <div id="ezoic-pub-ad-placeholder-119"></div> -->
-  <!-- End Ezoic - sidebar_bottom_mobile - sidebar_bottom -->
 </template>
 
 <script setup lang="ts">
 definePageMeta({
   layoutMobileNoPadding: true,
-});
-
-useHead({
-  script: [
-    {
-      children: `
-        ezstandalone.cmd.push(function () {
-          ezstandalone.showAds(118);
-        });
-      `,
-      type: "text/javascript",
-    },
-  ],
 });
 
 const { puzzleSet } = useRoute().params as { puzzleSet: string };

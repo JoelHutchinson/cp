@@ -30,13 +30,9 @@
     </template>
   </UDropdown>
 
-  <div v-else-if="profile?.type === 'guest'">
+  <div v-else>
     <UButton @click="navigateToSignIn" variant="link"> Sign In </UButton>
     <UButton @click="navigateToSignUp" variant="link">Sign Up</UButton>
-  </div>
-
-  <div v-else class="flex flex-col gap-2">
-    <USkeleton class="w-24 h-6" />
   </div>
 </template>
 

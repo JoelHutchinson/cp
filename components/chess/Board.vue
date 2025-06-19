@@ -3,7 +3,10 @@
     :board-config="boardConfig"
     @move="handleMove"
     @board-created="handleBoardCreated"
-    :style="{ width: `${currentWidth}px`, height: `${currentHeight}px` }"
+    :style="{
+      width: `${currentWidth}px`,
+      height: `${currentHeight}px`,
+    }"
     reactive-config
   />
 </template>
@@ -18,6 +21,15 @@ import type { Reactive } from "vue";
 import { useWindowSize, useBreakpoints } from "@vueuse/core";
 
 const { width: windowWidth } = useWindowSize();
+
+// TESTING START
+const largeWidth = computed(() => {
+  const calculated = windowWidth.value - 800;
+  const floor = 420;
+  const ceiling = 600;
+  return Math.min(Math.max(calculated, floor), ceiling);
+});
+// TESTING END
 
 const breakpoints = useBreakpoints({
   sm: 520,
@@ -95,7 +107,7 @@ const maxBoardWidth = computed(() => {
 const currentWidth = computed(() => {
   switch (deviceType.value) {
     case "desktop":
-      return maxBoardWidth.value;
+      return largeWidth.value;
     case "tablet":
     case "mobile":
       return maxBoardWidth.value;
@@ -103,13 +115,19 @@ const currentWidth = computed(() => {
       return width.value;
   }
 });
+
 const currentHeight = computed(() => currentWidth.value);
 
 watch([windowWidth, deviceType], () => {
-  const newSize = maxBoardWidth.value;
-  if (width.value > newSize) {
-    width.value = newSize;
-    height.value = newSize;
+  if (deviceType.value === "desktop") {
+    width.value = largeWidth.value;
+    height.value = largeWidth.value;
+  } else {
+    const newSize = maxBoardWidth.value;
+    if (width.value > newSize) {
+      width.value = newSize;
+      height.value = newSize;
+    }
   }
 });
 
