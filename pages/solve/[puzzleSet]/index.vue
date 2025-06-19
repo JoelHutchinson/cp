@@ -27,8 +27,9 @@
     <!-- End Ezoic - sidebar_right_desktop - sidebar_floating_1 -->
   </div>
 
+  <!-- TODO: Implement mobile ad -->
   <!-- Ezoic - sidebar_bottom_mobile - sidebar_bottom -->
-  <div id="ezoic-pub-ad-placeholder-119"></div>
+  <!-- <div id="ezoic-pub-ad-placeholder-119"></div> -->
   <!-- End Ezoic - sidebar_bottom_mobile - sidebar_bottom -->
 </template>
 
@@ -42,7 +43,7 @@ useHead({
     {
       children: `
         ezstandalone.cmd.push(function () {
-          ezstandalone.showAds(118, 119);
+          ezstandalone.showAds(118);
         });
       `,
       type: "text/javascript",
