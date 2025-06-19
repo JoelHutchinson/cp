@@ -9,6 +9,10 @@ export default defineNuxtConfig({
           content:
             "An online chess tactics trainer based on the Woodpecker Method, designed to boost pattern recognition through repetition.",
         },
+        {
+          name: "google-adsense-account",
+          content: "ca-pub-7565192673545193",
+        },
       ],
       link: [{ rel: "icon", type: "image/png", href: "/favicon.png" }],
       script: [
