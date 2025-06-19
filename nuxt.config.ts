@@ -33,6 +33,11 @@ export default defineNuxtConfig({
           `,
           type: "text/javascript",
         },
+        // Google Analytics script
+        {
+          src: "https://www.googletagmanager.com/gtag/js?id=G-90BV3BMJRP",
+          async: true,
+        },
         {
           src: "https://www.googletagmanager.com/gtag/js?id=G-90BV3BMJRP",
           async: true,
@@ -45,6 +50,12 @@ export default defineNuxtConfig({
           gtag('config', 'G-90BV3BMJRP');
           `,
           type: "text/javascript",
+        },
+        // Google Adsense script
+        {
+          src: "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7565192673545193",
+          async: true,
+          crossorigin: "anonymous",
         },
       ],
     },
