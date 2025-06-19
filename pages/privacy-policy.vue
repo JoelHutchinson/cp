@@ -127,6 +127,8 @@
             >here</a
           >.
         </p>
+
+        <span id="ezoic-privacy-policy-embed"></span>
       </section>
     </div>
   </UCard>
