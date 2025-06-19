@@ -11,6 +11,21 @@ export default defineNuxtConfig({
         },
       ],
       link: [{ rel: "icon", type: "image/png", href: "/favicon.png" }],
+      script: [
+        {
+          src: "https://www.googletagmanager.com/gtag/js?id=G-90BV3BMJRP",
+          async: true,
+        },
+        {
+          children: `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-90BV3BMJRP');
+          `,
+          type: "text/javascript",
+        },
+      ],
     },
   },
   compatibilityDate: "2024-04-03",
