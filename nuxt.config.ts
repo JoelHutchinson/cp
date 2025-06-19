@@ -12,6 +12,27 @@ export default defineNuxtConfig({
       ],
       link: [{ rel: "icon", type: "image/png", href: "/favicon.png" }],
       script: [
+        // Ezoic scripts for ad management and consent
+        {
+          src: "https://cmp.gatekeeperconsent.com/min.js",
+          "data-cfasync": "false",
+        },
+        {
+          src: "https://the.gatekeeperconsent.com/cmp.min.js",
+          "data-cfasync": "false",
+        },
+        // Ezoic standalone script
+        {
+          src: "https://www.ezojs.com/ezoic/sa.min.js",
+          async: true,
+        },
+        {
+          children: `
+          window.ezstandalone = window.ezstandalone || {};
+          ezstandalone.cmd = ezstandalone.cmd || [];
+          `,
+          type: "text/javascript",
+        },
         {
           src: "https://www.googletagmanager.com/gtag/js?id=G-90BV3BMJRP",
           async: true,
