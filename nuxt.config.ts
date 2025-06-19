@@ -16,7 +16,12 @@ export default defineNuxtConfig({
       ],
       link: [{ rel: "icon", type: "image/png", href: "/favicon.png" }],
       script: [
-        // Ezoic scripts for ad management and consent
+        // Ezoic consent script
+        {
+          src: "https://the.gatekeeperconsent.com/cmp.min.js",
+          "data-cfasync": false,
+        },
+        // Ezoic scripts for ad management
         {
           src: "https://cmp.gatekeeperconsent.com/min.js",
           "data-cfasync": "false",
