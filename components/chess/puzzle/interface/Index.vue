@@ -4,7 +4,7 @@
   >
     <!-- On Mobile, the Puzzle panel is displayed as a small banner above the board -->
     <div
-      class="flex flex-row gap-4 w-full sm:hidden justify-between items-center max-h-32"
+      class="flex flex-row gap-4 w-full sm:hidden justify-between items-center max-h-32 bg-white"
     >
       <ChessPuzzleInterfaceMessage :status="status" />
 
