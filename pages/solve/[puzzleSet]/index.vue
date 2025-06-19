@@ -21,12 +21,33 @@
     </ChessPuzzleInterface>
 
     <ChessPuzzleInterfaceSkeleton v-else-if="puzzleStatus === 'pending'" />
+
+    <!-- Ezoic - sidebar_right_desktop - sidebar_floating_1 -->
+    <div id="ezoic-pub-ad-placeholder-118"></div>
+    <!-- End Ezoic - sidebar_right_desktop - sidebar_floating_1 -->
   </div>
+
+  <!-- Ezoic - sidebar_bottom_mobile - sidebar_bottom -->
+  <div id="ezoic-pub-ad-placeholder-119"></div>
+  <!-- End Ezoic - sidebar_bottom_mobile - sidebar_bottom -->
 </template>
 
 <script setup lang="ts">
 definePageMeta({
   layoutMobileNoPadding: true,
+});
+
+useHead({
+  script: [
+    {
+      children: `
+        ezstandalone.cmd.push(function () {
+          ezstandalone.showAds(118, 119);
+        });
+      `,
+      type: "text/javascript",
+    },
+  ],
 });
 
 const { puzzleSet } = useRoute().params as { puzzleSet: string };
