@@ -20,20 +20,19 @@ export default defineNuxtConfig({
         {
           src: "https://the.gatekeeperconsent.com/cmp.min.js",
           "data-cfasync": false,
+          tagPriority: "critical",
         },
         // Ezoic scripts for ad management
         {
           src: "https://cmp.gatekeeperconsent.com/min.js",
           "data-cfasync": "false",
-        },
-        {
-          src: "https://the.gatekeeperconsent.com/cmp.min.js",
-          "data-cfasync": "false",
+          tagPriority: "critical",
         },
         // Ezoic standalone script
         {
           src: "https://www.ezojs.com/ezoic/sa.min.js",
           async: true,
+          tagPriority: "high",
         },
         {
           children: `
@@ -41,15 +40,13 @@ export default defineNuxtConfig({
           ezstandalone.cmd = ezstandalone.cmd || [];
           `,
           type: "text/javascript",
+          tagPriority: "high",
         },
         // Google Analytics script
         {
           src: "https://www.googletagmanager.com/gtag/js?id=G-90BV3BMJRP",
           async: true,
-        },
-        {
-          src: "https://www.googletagmanager.com/gtag/js?id=G-90BV3BMJRP",
-          async: true,
+          tagPriority: "low",
         },
         {
           children: `
@@ -65,6 +62,7 @@ export default defineNuxtConfig({
           src: "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7565192673545193",
           async: true,
           crossorigin: "anonymous",
+          tagPriority: "low",
         },
       ],
     },
