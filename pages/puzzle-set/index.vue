@@ -110,7 +110,6 @@
     buttonText="Create"
     buttonColor="primary"
     prevent-close
-    :ui="{ wrapper: 'z-40' }"
   >
     <div class="flex flex-col gap-4">
       <UFormGroup label="Name">
@@ -202,7 +201,12 @@
     buttonText="Done"
     buttonColor="primary"
     @action="selectThemes"
-    :ui="{ width: 'md:max-w-3xl lg:max-w-6xl' }"
+    :ui="{
+      width: 'md:max-w-3xl lg:max-w-6xl',
+    }"
+    :card-ui="{
+      base: 'overflow-y-auto max-h-[95vh]',
+    }"
   >
     <div class="flex flex-col gap-4">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

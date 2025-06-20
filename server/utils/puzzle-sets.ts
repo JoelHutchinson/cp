@@ -21,7 +21,8 @@ export const generatePuzzleSet = async (
     .select("*")
     .order("rating", { ascending: true })
     .lte("rating", params.rating + 250)
-    .gte("rating", params.rating - 250);
+    .gte("rating", params.rating - 250)
+    .overlaps("themes", params.themes);
 
   if (error) {
     throw createError({
@@ -29,6 +30,8 @@ export const generatePuzzleSet = async (
       message: `Error fetching puzzles. (Message: ${error.message})`,
     });
   }
+
+  console.log(data.length, "puzzles found in range");
 
   // Filter puzzles for themes provided
   const filteredData = data.filter((puzzle) =>
