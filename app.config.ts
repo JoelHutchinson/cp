@@ -6,7 +6,7 @@ export default defineAppConfig({
       default: { variant: "soft" },
       color: {
         gray: {
-          soft: "dark:bg-gray-800 dark:hover:bg-gray-700 dark:disabled:bg-gray-950 dark:aria-disabled:bg-gray-950 dark:focus-visible:ring-gray-400",
+          soft: "text-gray-500 dark:text-gray-400 bg-gray-50 hover:bg-gray-100 disabled:bg-gray-50 aria-disabled:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:disabled:bg-gray-950 dark:aria-disabled:bg-gray-950 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-gray-500 dark:focus-visible:ring-gray-400",
         },
       },
     },
