@@ -200,7 +200,7 @@ export type Database = {
           puzzle_id: string;
           rating: number;
           rating_deviation: number;
-          themes: string;
+          themes: string[];
         };
         Insert: {
           fen: string;
@@ -213,7 +213,7 @@ export type Database = {
           puzzle_id: string;
           rating: number;
           rating_deviation: number;
-          themes: string;
+          themes: string[];
         };
         Update: {
           fen?: string;
@@ -226,7 +226,7 @@ export type Database = {
           puzzle_id?: string;
           rating?: number;
           rating_deviation?: number;
-          themes?: string;
+          themes?: string[];
         };
         Relationships: [];
       };

@@ -35,7 +35,7 @@ export const generatePuzzleSet = async (
 
   // Filter puzzles for themes provided
   const filteredData = data.filter((puzzle) =>
-    params.themes.some((theme) => puzzle.themes.split(" ").includes(theme))
+    params.themes.some((theme) => puzzle.themes.includes(theme))
   );
 
   let puzzles = [];
