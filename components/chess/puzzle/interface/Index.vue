@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex sm:p-4 flex-col w-full lg:w-full lg:flex-row sm:gap-4 items-center lg:grid lg:grid-cols-[1fr_minmax(200px,300px)] lg:justify-items-start lg:gap-4"
+    class="flex sm:p-4 flex-col w-full lg:w-full lg:flex-row sm:gap-4 items-center lg:grid lg:grid-cols-[auto_minmax(200px,300px)] lg:gap-4"
   >
     <!-- On Mobile, the Puzzle panel is displayed as a small banner above the board -->
     <div

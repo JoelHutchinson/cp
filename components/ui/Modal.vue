@@ -20,9 +20,7 @@
         <slot></slot>
 
         <template #footer>
-          <UButton color="white" @click="isOpen = false" block>
-            Cancel
-          </UButton>
+          <UButton color="gray" @click="isOpen = false" block> Cancel </UButton>
 
           <UButton
             :loading="loading"
@@ -49,7 +47,7 @@ defineProps<{
   buttonText: string;
   buttonColor?: ButtonColor;
   cardUi?: any;
-  loading: boolean;
+  loading?: boolean;
 }>();
 
 defineEmits<{

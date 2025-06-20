@@ -4,6 +4,11 @@ export default defineAppConfig({
     gray: "neutral",
     button: {
       default: { variant: "soft" },
+      color: {
+        gray: {
+          soft: "dark:bg-gray-800 dark:hover:bg-gray-700 dark:disabled:bg-gray-950 dark:aria-disabled:bg-gray-950 dark:focus-visible:ring-gray-400",
+        },
+      },
     },
     card: {
       background: "dark:bg-black/10", // 90% opacity
