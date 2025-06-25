@@ -5,6 +5,17 @@
 <script setup lang="ts">
 const notifications = useNotification();
 
+const { user } = useProfile();
+
+if (!user.value) {
+  notifications.info({
+    title: "Not logged in",
+    message: "You must be logged in to solve puzzles.",
+  });
+
+  await navigateTo("/login");
+}
+
 const { defaultPuzzleSet, fetchDefaultPuzzleSet, fetchDefaultPuzzleSetError } =
   useFetchDefaultPuzzleSet();
 

@@ -6,6 +6,8 @@ export const useProfile = () => {
   const user = useSupabaseUser();
   const supabase = useSupabaseClient();
 
+  const { createSamplePuzzleSet } = useCreatePuzzleSet();
+
   const conversionStatus = ref<ConversionStatus>("idle");
   const pendingPassword = ref("");
   const pendingProfile = ref<Profile | null>(null);
@@ -104,18 +106,29 @@ export const useProfile = () => {
       return { error: { message: "User already exists" } };
     }
 
-    const { data, error } = await supabase.auth.signInAnonymously({
-      options: {
-        data: {
-          id: crypto.randomUUID(),
-          username: `guest_${Date.now()}`,
-          first_name: "Guest",
-          last_name: "User",
-          type: "guest",
+    // Sign in anonymously
+    const { data: signInData, error: signInError } =
+      await supabase.auth.signInAnonymously({
+        options: {
+          data: {
+            id: crypto.randomUUID(),
+            username: `guest_${Date.now()}`,
+            first_name: "Guest",
+            last_name: "User",
+            type: "guest",
+          },
         },
-      },
-    });
-    return { data, error };
+      });
+
+    // Create a sample puzzle set for the guest in the background
+    if (!signInError && signInData?.user) {
+      createSamplePuzzleSet();
+    } else {
+      console.error("Guest sign-in error:", signInError);
+      return { error: signInError };
+    }
+
+    return { signInData, error };
   };
 
   /**
