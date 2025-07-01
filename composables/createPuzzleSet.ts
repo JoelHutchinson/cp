@@ -19,7 +19,7 @@ export const useCreatePuzzleSet = () => {
     const samplePuzzleSet = {
       name: "Sample Puzzle Set",
       numberOfPuzzles: 10,
-      rating: 800,
+      rating: 1000,
       totalCycles: 5,
       themes: PUZZLE_THEMES.map((t) => t.value),
     };
