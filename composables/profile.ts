@@ -7,6 +7,8 @@ export const useProfile = () => {
   const supabase = useSupabaseClient();
 
   const { createSamplePuzzleSet } = useCreatePuzzleSet();
+  const { refresh: refreshPuzzleSets } = useFetchPuzzleSets();
+  const { fetchDefaultPuzzleSet } = useFetchDefaultPuzzleSet();
 
   const conversionStatus = ref<ConversionStatus>("idle");
   const pendingPassword = ref("");
@@ -73,6 +75,22 @@ export const useProfile = () => {
   };
 
   setupEmailVerificationListener();
+
+  // Set up auth state change listener to initialize user data
+  const { data: authListener } = supabase.auth.onAuthStateChange(
+    async (event, session) => {
+      if (event === "INITIAL_SESSION" || event === "SIGNED_IN") {
+        console.info("[Auth] Initial session or sign-in detected");
+        await initializeUserData();
+      } else if (event === "SIGNED_OUT") {
+        console.info("[Auth] Signed out");
+      }
+    }
+  );
+
+  onUnmounted(() => {
+    authListener?.subscription.unsubscribe();
+  });
 
   const signIn = async (email: string, password: string) => {
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -189,6 +207,16 @@ export const useProfile = () => {
     return {
       message: "Verification email sent. Please confirm your email.",
     };
+  };
+
+  const initializeUserData = async () => {
+    if (!user.value?.id) {
+      console.warn("No user ID found, cannot initialize user data.");
+      return;
+    }
+
+    await refreshPuzzleSets();
+    await fetchDefaultPuzzleSet();
   };
 
   return {

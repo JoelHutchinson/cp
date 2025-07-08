@@ -9,7 +9,6 @@
       <!-- Left sidebar -->
       <AppSidebar v-model="sidebarIsOpen" />
 
-      <!-- Main area including scrollable content and fixed-width sticky ad -->
       <div
         class="flex overflow-y-auto flex-row w-full h-full shadow-lg border-l-[1px] border-t-[1px] md:rounded-l-xl dark:border-gray-800 bg-gray-50 dark:bg-gray-900"
       >
@@ -20,15 +19,6 @@
         >
           <slot />
         </main>
-
-        <!-- Sticky ad sidebar (not scrollable) -->
-        <aside
-          class="hidden border-l border-gray-200 dark:border-gray-700 lg:flex p-4 shrink-0 w-[192px]"
-        >
-          <div class="sticky">
-            <div id="ezoic-pub-ad-placeholder-118"></div>
-          </div>
-        </aside>
       </div>
     </div>
   </div>
@@ -49,11 +39,13 @@ useHead({
 });
 
 const { profile, fetchProfile } = useFetchProfile();
-const { data: puzzleSets } = await useFetchPuzzleSets();
-const { fetchDefaultPuzzleSet } = useFetchDefaultPuzzleSet();
+//const { data: puzzleSets } = await useFetchPuzzleSets();
+//const { fetchDefaultPuzzleSet } = useFetchDefaultPuzzleSet();
 
 await fetchProfile();
-await fetchDefaultPuzzleSet();
+//await fetchDefaultPuzzleSet();
+
+useProfile();
 
 const route = useRoute();
 const layoutMobilePadding = computed(() => !route.meta.layoutMobileNoPadding);

@@ -24,15 +24,15 @@ const { width: windowWidth } = useWindowSize();
 
 // TESTING START
 const largeWidth = computed(() => {
-  const calculated = windowWidth.value - 800;
-  const floor = 420;
+  const calculated = windowWidth.value - 600;
+  const floor = 500;
   const ceiling = 600;
   return Math.min(Math.max(calculated, floor), ceiling);
 });
 // TESTING END
 
 const breakpoints = useBreakpoints({
-  sm: 520,
+  sm: 460,
   md: 768,
   lg: 1024,
   xl: 1280,
