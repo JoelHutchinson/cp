@@ -34,8 +34,11 @@
     <!-- No Puzzle Sets Exist -->
     <div v-else class="flex items-center justify-center h-full">
       <UiTypography>
-        No puzzles sets have been created yet. Please create a puzzle set to
-        start solving.
+        No puzzles sets have been created yet. Please
+        <UButton to="/puzzle-set" variant="link" class="p-0 m-0"
+          >create a puzzle set</UButton
+        >
+        to start solving.
       </UiTypography>
     </div>
   </div>
