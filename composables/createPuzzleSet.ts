@@ -1,13 +1,13 @@
 const key = "create-puzzle-set";
 
 export const useCreatePuzzleSet = () => {
-  const { profile } = useFetchProfile();
+  const user = useSupabaseUser();
   const { refreshDefaultPuzzleSet } = useFetchDefaultPuzzleSet();
 
   const createPuzzleSet = async (puzzleSet: any) => {
-    if (!profile.value) throw createError("Profile is not loaded");
+    if (!user.value) throw createError("Profile is not loaded");
 
-    const res = await $fetch(`/api/profiles/${profile.value.id}/puzzle-sets`, {
+    await $fetch(`/api/profiles/${user.value.id}/puzzle-sets`, {
       method: "POST",
       body: puzzleSet,
     });
