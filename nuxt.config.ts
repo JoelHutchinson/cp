@@ -77,12 +77,7 @@ export default defineNuxtConfig({
     },
   },
   devtools: { enabled: true },
-  modules: [
-    "@nuxt/ui",
-    "@nuxtjs/supabase",
-    "@nuxt/image",
-    "@nuxt/test-utils/module",
-  ],
+  modules: ["@nuxt/ui", "@nuxtjs/supabase", "@nuxt/image", "@nuxt/test-utils/module", "@pinia/nuxt"],
   supabase: {
     redirectOptions: {
       login: "/login",
