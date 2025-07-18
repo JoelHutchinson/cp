@@ -70,7 +70,7 @@ const state = reactive({
   username: "",
 });
 
-const { createUserProfile } = useProfile();
+const { createUserProfile, signOut } = useProfile();
 
 const notifications = useNotification();
 
@@ -78,6 +78,8 @@ const isRegistering = ref(false);
 
 const onSubmit = async (event: FormSubmitEvent<Schema>) => {
   isRegistering.value = true;
+
+  await signOut();
 
   const { error } = await createUserProfile(
     {
