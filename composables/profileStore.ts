@@ -1,3 +1,5 @@
+import { defineStore } from "pinia";
+
 const key = "profile";
 
 type ConversionStatus = "idle" | "awaiting_verification" | "verified" | "done";
@@ -235,3 +237,70 @@ export const useProfile = () => {
     convertGuestToUserProfile,
   };
 };
+
+interface ProfileStoreState {
+  profile: Profile | null;
+  conversionStatus: ConversionStatus;
+  pendingLoginData: {
+    email: string;
+    password: string;
+  } | null;
+}
+
+export const useProfileStore = defineStore("profile", {
+  state: (): ProfileStoreState => ({
+    profile: null,
+    conversionStatus: "idle",
+    pendingLoginData: null,
+  }),
+
+  actions: {
+    // If there is a user, fetch their profile. Otherwise, create a guest profile
+    async initialize() {
+      const user = useSupabaseUser();
+
+      if (user.value && !this.profile) {
+        this.profile = await $fetch<Profile>(`/api/profiles/${user.value.id}`);
+      } else {
+        await this.createGuestProfile();
+      }
+    },
+
+    // Delete guest user and sign in to user profile
+    signIn() {},
+
+    // Sign out and create a new guest user
+    signOut() {},
+
+    // Create a new guest profile
+    async createGuestProfile() {
+      const supabase = useSupabaseClient();
+
+      const { data: signInData, error: signInError } =
+        await supabase.auth.signInAnonymously({
+          options: {
+            data: {
+              id: crypto.randomUUID(),
+              username: `guest_${Date.now()}`,
+              first_name: "Guest",
+              last_name: "User",
+              type: "guest",
+            },
+          },
+        });
+
+      if (signInError) {
+        console.error("Guest sign-in error:", signInError);
+        return { error: signInError };
+      }
+
+      // Fetch the newly created guest profile
+      this.profile = await $fetch<Profile>(
+        `/api/profiles/${signInData.user?.id}`
+      );
+    },
+
+    // Convert guest profile to user profile
+    createUserProfile() {},
+  },
+});
