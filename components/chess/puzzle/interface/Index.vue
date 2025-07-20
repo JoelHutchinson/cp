@@ -11,7 +11,7 @@
       <div class="flex justify-between items-center">
         <div class="flex flex-row">
           <UButton
-            icon="i-heroicons-forward"
+            icon="i-heroicons-forward-20-solid"
             @click="handleSolved"
             variant="ghost"
           />
@@ -50,7 +50,7 @@
           </div>
 
           <div class="flex justify-between items-center">
-            <UButton icon="i-heroicons-forward" @click="handleSolved">
+            <UButton icon="i-heroicons-forward-20-solid" @click="handleSolved">
               Skip</UButton
             >
             <div>
