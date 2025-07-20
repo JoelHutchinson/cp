@@ -70,7 +70,7 @@ const state = reactive({
   username: "",
 });
 
-const { createUserProfile, signOut } = useProfile();
+const { initiateUserProfileCreation, signOut } = useProfileStore();
 
 const notifications = useNotification();
 
@@ -81,7 +81,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
 
   await signOut();
 
-  const { error } = await createUserProfile(
+  const { data, error } = await initiateUserProfileCreation(
     {
       id: crypto.randomUUID(),
       email: event.data.email,
@@ -102,7 +102,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
     notifications.success({
       title: "Success",
       message:
-        "Account created successfully. Please check your email to verify your account.",
+        "Please check your email to verify your account. Your account will be created after verification.",
     });
 
     await navigateTo("/login");

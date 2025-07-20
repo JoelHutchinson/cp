@@ -62,7 +62,7 @@ const state = reactive({
   password: "",
 });
 
-const { signIn, createGuestProfile } = useProfile();
+const profileStore = useProfileStore();
 const notifications = useNotification();
 
 const isUserLoggingIn = ref(false);
@@ -71,7 +71,10 @@ const isGuestLoggingIn = ref(false);
 const onSubmit = async (event: FormSubmitEvent<Schema>) => {
   isUserLoggingIn.value = true;
 
-  const { error } = await signIn(event.data.email, event.data.password);
+  const { error } = await profileStore.signIn(
+    event.data.email,
+    event.data.password
+  );
 
   if (error) {
     notifications.error({

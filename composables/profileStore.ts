@@ -241,17 +241,16 @@ export const useProfile = () => {
 interface ProfileStoreState {
   profile: Profile | null;
   conversionStatus: ConversionStatus;
-  pendingLoginData: {
-    email: string;
-    password: string;
-  } | null;
+  pendingProfile: Profile | null;
+  pendingPassword: string | null;
 }
 
 export const useProfileStore = defineStore("profile", {
   state: (): ProfileStoreState => ({
     profile: null,
     conversionStatus: "idle",
-    pendingLoginData: null,
+    pendingProfile: null,
+    pendingPassword: null,
   }),
 
   actions: {
@@ -266,11 +265,37 @@ export const useProfileStore = defineStore("profile", {
       }
     },
 
-    // Delete guest user and sign in to user profile
-    signIn() {},
+    // Sign in to user profile
+    async signIn(email: string, password: string) {
+      const supabase = useSupabaseClient();
 
-    // Sign out and create a new guest user
-    signOut() {},
+      if (this.profile) await supabase.auth.signOut();
+
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) {
+        console.error("Sign-in error:", error);
+        return { error };
+      }
+
+      return { data };
+    },
+
+    // Sign out and re-initialize
+    async signOut() {
+      const supabase = useSupabaseClient();
+
+      await supabase.auth.signOut();
+      this.profile = null;
+      this.conversionStatus = "idle";
+      this.pendingProfile = null;
+      this.pendingPassword = null;
+
+      this.initialize(); // Reinitialize to create a new guest profile
+    },
 
     // Create a new guest profile
     async createGuestProfile() {
@@ -301,6 +326,22 @@ export const useProfileStore = defineStore("profile", {
     },
 
     // Convert guest profile to user profile
-    createUserProfile() {},
+    async initiateUserProfileCreation(profile: Profile, password: string) {
+      if (!this.profile) {
+        await this.createGuestProfile();
+      }
+
+      const supabase = useSupabaseClient();
+
+      const { data, error } = await supabase.auth.updateUser({
+        email: this.profile!.email!,
+      });
+
+      this.pendingProfile = profile;
+      this.pendingPassword = password;
+      this.conversionStatus = "awaiting_verification";
+
+      return { data, error };
+    },
   },
 });

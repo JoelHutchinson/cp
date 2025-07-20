@@ -38,15 +38,6 @@ useHead({
   ],
 });
 
-const { profile, fetchProfile } = useFetchProfile();
-//const { data: puzzleSets } = await useFetchPuzzleSets();
-//const { fetchDefaultPuzzleSet } = useFetchDefaultPuzzleSet();
-
-await fetchProfile();
-//await fetchDefaultPuzzleSet();
-
-useProfile();
-
 const route = useRoute();
 const layoutMobilePadding = computed(() => !route.meta.layoutMobileNoPadding);
 const sidebarIsOpen = ref(false);
