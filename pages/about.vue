@@ -2,13 +2,6 @@
   <div
     class="relative overflow-hidden py-12 px-4 sm:px-8 mb-12 rounded-xl shadow-lg flex flex-col items-center text-center bg-gradient-to-br from-orange-100 via-white to-orange-50 border border-orange-200 dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 dark:border-gray-700"
   >
-    <!-- <NuxtImg
-      src="/logo-light.png"
-      alt="ChessPecker Logo"
-      class="mx-auto mb-4"
-      width="80"
-      height="80"
-    /> -->
     <NuxtImg
       src="logo-light.png"
       alt="Logo"
@@ -55,7 +48,7 @@
 
   <section class="space-y-12">
     <UCard
-      class="shadow-md rounded-xl border-l-4 border-orange-400 bg-orange-50/80 p-8 dark:bg-gray-800/80 dark:border-orange-600"
+      class="shadow-md rounded-xl border-l-4 border-orange-400 bg-orange-50/80 px-8 py-4 dark:bg-gray-800/80 dark:border-orange-600"
     >
       <UiParagraph class="mb-4 dark:text-gray-300">
         <UIcon
@@ -75,7 +68,7 @@
     </UCard>
 
     <UCard
-      class="shadow-md rounded-xl border-l-4 border-sky-400 bg-sky-50/80 p-8 dark:bg-gray-800/80 dark:border-sky-500"
+      class="shadow-md rounded-xl border-l-4 border-sky-400 bg-sky-50/80 px-8 py-4 dark:bg-gray-800/80 dark:border-sky-500"
     >
       <template #header>
         <UiSubheading
@@ -146,7 +139,7 @@
     </UCard>
 
     <UCard
-      class="shadow-md rounded-xl border-l-4 border-amber-400 bg-amber-50/80 p-8 dark:bg-gray-800/80 dark:border-amber-500"
+      class="shadow-md rounded-xl border-l-4 border-amber-400 bg-amber-50/80 px-8 py-4 dark:bg-gray-800/80 dark:border-amber-500"
     >
       <template #header>
         <UiSubheading
@@ -199,7 +192,7 @@
     </UCard>
 
     <UCard
-      class="shadow-md rounded-xl border-l-4 border-emerald-400 bg-emerald-50/80 p-8 dark:bg-gray-800/80 dark:border-emerald-500"
+      class="shadow-md rounded-xl border-l-4 border-emerald-400 bg-emerald-50/80 px-8 py-4 dark:bg-gray-800/80 dark:border-emerald-500"
     >
       <template #header>
         <UiSubheading
@@ -249,7 +242,7 @@
     </UCard>
 
     <UCard
-      class="shadow-md rounded-xl border-l-4 border-sky-400 bg-sky-50/80 p-8 dark:bg-gray-800/80 dark:border-sky-500"
+      class="shadow-md rounded-xl border-l-4 border-sky-400 bg-sky-50/80 px-8 py-4 dark:bg-gray-800/80 dark:border-sky-500"
     >
       <template #header>
         <UiSubheading
