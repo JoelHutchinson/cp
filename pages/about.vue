@@ -10,14 +10,10 @@
       height="80"
     />
     <h1
-      class="text-4xl md:text-5xl font-extrabold mb-2 text-orange-600 drop-shadow-lg"
+      class="text-4xl md:text-5xl font-extrabold mb-4 text-orange-600 drop-shadow-lg"
     >
       About ChessPecker
     </h1>
-    <p class="text-lg md:text-xl text-gray-700 max-w-2xl mx-auto mb-4">
-      Sharpen your tactical vision with the Woodpecker Method. Train, repeat,
-      and improve your chess with custom puzzle sets and progress tracking.
-    </p>
     <div class="flex flex-wrap gap-3 justify-center mt-4 z-10">
       <a href="#getting-started"
         ><UButton variant="solid" color="primary" icon="i-lucide-circle-help"
