@@ -1,13 +1,15 @@
 <template>
   <div
-    class="relative overflow-hidden py-12 px-4 sm:px-8 mb-12 rounded-xl shadow-lg flex flex-col items-center text-center bg-gradient-to-br from-sky-100 via-white to-sky-50 border border-sky-200 dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 dark:border-gray-700"
+    class="relative overflow-hidden py-6 px-4 sm:px-8 mb-12 rounded-xl shadow-lg flex flex-col items-center justify-center bg-gradient-to-br from-sky-100 via-white to-sky-50 border border-sky-200 dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 dark:border-gray-700"
   >
-    <UIcon name="i-lucide-mail" class="mx-auto mb-4 text-sky-500 w-20 h-20" />
-    <h1
-      class="text-4xl md:text-5xl font-extrabold mb-2 text-sky-700 drop-shadow-lg dark:text-sky-300"
-    >
-      Contact Us
-    </h1>
+    <div class="flex items-center justify-center gap-3">
+      <UIcon name="i-lucide-mail" class="mb-2 text-sky-500 size-12" />
+      <h1
+        class="text-4xl md:text-5xl font-extrabold mb-2 text-sky-700 drop-shadow-lg dark:text-sky-300 text-center"
+      >
+        Contact Us
+      </h1>
+    </div>
   </div>
 
   <section class="flex flex-col items-center">
