@@ -1,31 +1,29 @@
 <template>
   <div
-    class="relative overflow-hidden py-12 px-4 sm:px-8 mb-12 rounded-xl shadow-lg flex flex-col items-center text-center bg-gradient-to-br from-sky-100 via-white to-sky-50 border border-sky-200"
+    class="relative overflow-hidden py-12 px-4 sm:px-8 mb-12 rounded-xl shadow-lg flex flex-col items-center text-center bg-gradient-to-br from-sky-100 via-white to-sky-50 border border-sky-200 dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 dark:border-gray-700"
   >
     <UIcon name="i-lucide-mail" class="mx-auto mb-4 text-sky-500 w-20 h-20" />
     <h1
-      class="text-4xl md:text-5xl font-extrabold mb-2 text-sky-700 drop-shadow-lg"
+      class="text-4xl md:text-5xl font-extrabold mb-2 text-sky-700 drop-shadow-lg dark:text-sky-300"
     >
       Contact Us
     </h1>
-    <p class="text-lg md:text-xl text-gray-700 max-w-2xl mx-auto mb-4">
-      We'd love to hear from you! Fill out the form below and our team will get
-      back to you as soon as possible.
-    </p>
   </div>
 
   <section class="flex flex-col items-center">
     <UCard
-      class="shadow-md rounded-xl border-l-4 border-sky-400 bg-sky-50/80 p-8 max-w-2xl w-full"
+      class="shadow-md rounded-xl border-l-4 border-sky-400 bg-sky-50/80 p-8 max-w-2xl w-full dark:bg-gray-800/80 dark:border-sky-500"
     >
       <div class="mb-4 text-center">
         <UIcon
           name="i-lucide-message-circle"
-          class="inline-block align-middle mb-1 mr-2 text-sky-400 w-7 h-7"
+          class="inline-block align-middle mb-1 mr-2 text-sky-400 w-7 h-7 dark:text-sky-300"
         />
-        <span class="text-2xl font-bold text-sky-700">Send us a message</span>
+        <span class="text-2xl font-bold text-sky-700 dark:text-sky-300"
+          >Send us a message</span
+        >
       </div>
-      <div class="border-b border-sky-100 my-4"></div>
+      <div class="border-b border-sky-100 my-4 dark:border-sky-700"></div>
       <UForm
         :schema="schema"
         :state="state"
