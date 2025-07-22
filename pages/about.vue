@@ -66,7 +66,7 @@
       <template #header>
         <UiSubheading
           id="getting-started"
-          class="flex items-center scroll-mt-11 text-sky-700 text-xl"
+          class="flex items-center scroll-mt-11 text-sky-700 text-2xl"
         >
           <UIcon name="i-lucide-circle-help" class="mr-2 text-sky-500" /> How to
           Use the App
@@ -134,7 +134,7 @@
       <template #header>
         <UiSubheading
           id="woodpecker-method"
-          class="flex items-center scroll-mt-11 text-amber-700 text-xl"
+          class="flex items-center scroll-mt-11 text-amber-700"
         >
           <UIcon
             name="i-lucide-book-open-check"
@@ -187,7 +187,7 @@
       <template #header>
         <UiSubheading
           id="puzzle-sets"
-          class="flex items-center scroll-mt-11 text-emerald-700 text-xl"
+          class="flex items-center scroll-mt-11 text-emerald-700"
         >
           <UIcon name="i-lucide-grid" class="mr-2 text-emerald-500" /> Puzzle
           Sets
@@ -234,7 +234,7 @@
       <template #header>
         <UiSubheading
           id="progress-tracking"
-          class="flex items-center scroll-mt-11 text-sky-700 text-xl"
+          class="flex items-center scroll-mt-11 text-sky-700"
         >
           <UIcon
             name="i-lucide-bar-chart-3"
