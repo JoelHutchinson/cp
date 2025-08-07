@@ -57,7 +57,7 @@
         />
         <strong>ChessPecker</strong> is a training tool inspired by the
         <AmazonWoodpeckerAffiliateLink
-          ><em>Woodpecker Method</em></AmazonWoodpeckerAffiliateLink
+          ><em>The Woodpecker Method</em></AmazonWoodpeckerAffiliateLink
         >, designed to sharpen your tactical vision through deliberate
         repetition and focused practice. Create custom puzzle sets, track your
         progress, and repeat cycles to build lasting improvement.

@@ -2,7 +2,7 @@
   <UButton
     :padded="false"
     variant="link"
-    to="https://amzn.to/41whqKb"
+    to="https://amzn.to/3J5274S"
     target="_blank"
   >
     <slot>The Woodpecker Method</slot>
