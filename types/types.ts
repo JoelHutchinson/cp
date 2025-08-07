@@ -1,3 +1,4 @@
+import type { number } from "zod";
 import type { Database } from "./database.types";
 
 type TableRow<T extends keyof Database["public"]["Tables"]> =
@@ -9,11 +10,30 @@ export type Profile = Omit<TableRow<"profiles">, "created_at">;
 // Puzzles
 export type Puzzle = TableRow<"puzzles">;
 
-export type PuzzleStatus =
-  | "notStarted"
-  | "inProgressCorrect"
-  | "inProgressIncorrect"
-  | "solved";
+// Puzzle Board State
+
+export type PuzzleStatus = "not_started" | "in_progress" | "finished";
+
+export interface PuzzleMoveAttempt {
+  move: string;
+  isCorrect: boolean;
+}
+
+export type PlayerColor = "white" | "black";
+
+export type PuzzleBoardState = {
+  status: PuzzleStatus;
+  moveAttempts: PuzzleMoveAttempt[];
+  hintUsed: boolean;
+  nextToMove: PlayerColor;
+};
+
+export const INITIAL_PUZZLE_BOARD_STATE: PuzzleBoardState = {
+  status: "not_started",
+  moveAttempts: [],
+  hintUsed: false,
+  nextToMove: "white",
+};
 
 // Puzzle Sets
 export type PuzzleSet = Omit<TableRow<"puzzle_sets">, "created_at">;

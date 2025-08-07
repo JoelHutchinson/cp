@@ -25,25 +25,9 @@
 </template>
 
 <script setup lang="ts">
-useHead({
-  script: [
-    {
-      children: `
-        ezstandalone.cmd.push(function () {
-          ezstandalone.showAds(118);
-        });
-      `,
-      type: "text/javascript",
-    },
-  ],
-});
-
 const { profile, fetchProfile } = useFetchProfile();
-//const { data: puzzleSets } = await useFetchPuzzleSets();
-//const { fetchDefaultPuzzleSet } = useFetchDefaultPuzzleSet();
 
 await fetchProfile();
-//await fetchDefaultPuzzleSet();
 
 useProfile();
 

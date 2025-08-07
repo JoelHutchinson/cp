@@ -8,7 +8,7 @@ export const useProfile = () => {
 
   const { createSamplePuzzleSet } = useCreatePuzzleSet();
   const { refresh: refreshPuzzleSets } = useFetchPuzzleSets();
-  const { fetchDefaultPuzzleSet } = useFetchDefaultPuzzleSet();
+  const { refreshDefaultPuzzleSet } = useFetchDefaultPuzzleSet();
 
   const conversionStatus = ref<ConversionStatus>("idle");
   const pendingPassword = ref("");
@@ -216,7 +216,7 @@ export const useProfile = () => {
     }
 
     await refreshPuzzleSets();
-    await fetchDefaultPuzzleSet();
+    await refreshDefaultPuzzleSet();
   };
 
   return {

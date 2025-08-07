@@ -16,32 +16,6 @@ export default defineNuxtConfig({
       ],
       link: [{ rel: "icon", type: "image/png", href: "/favicon.png" }],
       script: [
-        // Ezoic consent script
-        {
-          src: "https://the.gatekeeperconsent.com/cmp.min.js",
-          "data-cfasync": false,
-          tagPriority: "critical",
-        },
-        // Ezoic scripts for ad management
-        {
-          src: "https://cmp.gatekeeperconsent.com/min.js",
-          "data-cfasync": "false",
-          tagPriority: "critical",
-        },
-        // Ezoic standalone script
-        {
-          src: "https://www.ezojs.com/ezoic/sa.min.js",
-          async: true,
-          tagPriority: "high",
-        },
-        {
-          children: `
-          window.ezstandalone = window.ezstandalone || {};
-          ezstandalone.cmd = ezstandalone.cmd || [];
-          `,
-          type: "text/javascript",
-          tagPriority: "high",
-        },
         // Google Analytics script
         {
           src: "https://www.googletagmanager.com/gtag/js?id=G-90BV3BMJRP",

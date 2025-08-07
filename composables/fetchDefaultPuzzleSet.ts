@@ -2,26 +2,25 @@ const key = "fetch-default-puzzle-set";
 
 export const useFetchDefaultPuzzleSet = () => {
   const { profile } = useFetchProfile();
-
-  const { data: defaultPuzzleSet } = useNuxtData<PuzzleSet>(key);
-
   const fetchDefaultPuzzleSetError = ref<any>(null);
 
-  const fetchDefaultPuzzleSet = async () => {
-    if (!profile.value || !profile.value?.id) {
+  const defaultPuzzleSet = useAsyncData<PuzzleSet | null>(key, async () => {
+    if (!profile.value?.id) {
       console.warn("No profile ID found, cannot fetch default puzzle set.");
-      return;
+      return null;
     }
 
-    const { error } = await useFetch(
-      `/api/profiles/${profile.value!.id}/puzzle-sets/default`,
-      {
-        key,
-      }
-    );
-
-    fetchDefaultPuzzleSetError.value = error.value;
-  };
+    try {
+      const data = await $fetch<PuzzleSet>(
+        `/api/profiles/${profile.value.id}/puzzle-sets/default`
+      );
+      return data;
+    } catch (error) {
+      console.error("Error fetching default puzzle set:", error);
+      fetchDefaultPuzzleSetError.value = error;
+      return null;
+    }
+  });
 
   const refreshDefaultPuzzleSet = async () => {
     clearNuxtData(key);
@@ -29,9 +28,8 @@ export const useFetchDefaultPuzzleSet = () => {
   };
 
   return {
-    defaultPuzzleSet,
-    fetchDefaultPuzzleSet,
-    refreshDefaultPuzzleSet,
+    defaultPuzzleSet: defaultPuzzleSet.data,
     fetchDefaultPuzzleSetError,
+    refreshDefaultPuzzleSet,
   };
 };

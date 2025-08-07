@@ -6,7 +6,7 @@
     <div
       class="flex flex-row gap-4 w-full sm:hidden justify-between items-center max-h-32 bg-white dark:bg-gray-900"
     >
-      <ChessPuzzleInterfaceMessage :status="status" />
+      <ChessPuzzleInterfaceMessage :puzzle-board-state="state" />
 
       <div class="flex justify-between items-center">
         <div class="flex flex-row">
@@ -46,7 +46,7 @@
       <ChessPuzzleInterfaceCard class="flex-1 hidden sm:flex">
         <div class="grid grid-rows-[1fr_auto] gap-4 h-full">
           <div class="flex justify-center items-center">
-            <ChessPuzzleInterfaceMessage :status="status" />
+            <ChessPuzzleInterfaceMessage :puzzle-board-state="state" />
           </div>
 
           <div class="flex justify-between items-center">
@@ -87,8 +87,8 @@ const emit = defineEmits<{
 
 const chessPuzzleBoard = ref();
 
-const status: Ref<PuzzleStatus> = computed(
-  () => chessPuzzleBoard.value?.status ?? "notStarted"
+const state = computed(
+  () => chessPuzzleBoard.value?.state || INITIAL_PUZZLE_BOARD_STATE
 );
 
 const handleNext = () => {

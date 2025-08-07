@@ -14,35 +14,48 @@
 
 <script setup lang="ts">
 const props = defineProps<{
-  status: PuzzleStatus;
+  puzzleBoardState: PuzzleBoardState;
 }>();
 
+function colorText(color: string) {
+  if (color === "white") return "white";
+  if (color === "black") return "black";
+  return "";
+}
+
 const statusMeta = computed(() => {
-  const messages = {
-    notStarted: `Find the best move`,
-    inProgressCorrect: "Keep going, you're on the right track!",
-    inProgressIncorrect: "Incorrect, try again.",
-    solved: "Puzzle solved! Great job!",
-  };
+  // Determine correctness of last move, if any
+  const lastAttempt = props.puzzleBoardState?.moveAttempts?.at(-1);
+  const lastCorrect = lastAttempt?.isCorrect ?? null;
 
-  const icons = {
-    notStarted: "i-heroicons-light-bulb-20-solid",
-    inProgressCorrect: "i-heroicons-check-circle-20-solid",
-    inProgressIncorrect: "i-heroicons-x-circle-20-solid",
-    solved: "i-heroicons-cake-20-solid",
-  };
+  let message = "";
+  let icon = "";
+  let iconClass = "text-primary-500 dark:text-primary-400 w-full";
+  const color = colorText(props.puzzleBoardState.nextToMove);
 
-  const iconClasses = {
-    notStarted: "text-primary-500 dark:text-primary-400",
-    inProgressCorrect: "text-primary-500 dark:text-primary-400",
-    inProgressIncorrect: "text-primary-500 dark:text-primary-400",
-    solved: "text-primary-500 dark:text-primary-400",
-  };
+  if (props.puzzleBoardState.status === "not_started") {
+    message = color ? `Find the best move for ${color}` : "Find the best move";
+    icon = "i-heroicons-light-bulb-20-solid";
+  } else if (props.puzzleBoardState.status === "in_progress") {
+    if (lastCorrect === true) {
+      message = "Keep going, you're on the right track!";
+      icon = "i-heroicons-check-circle-20-solid";
+    } else if (lastCorrect === false) {
+      message = "Incorrect, try again.";
+      icon = "i-heroicons-x-circle-20-solid";
+    } else {
+      message = "Puzzle in progress...";
+      icon = "i-heroicons-light-bulb-20-solid";
+    }
+  } else if (props.puzzleBoardState.status === "finished") {
+    message = "Puzzle solved! Great job!";
+    icon = "i-heroicons-cake-20-solid";
+  }
 
   return {
-    message: messages[props.status],
-    icon: icons[props.status],
-    iconClass: `${iconClasses[props.status]} w-full`,
+    message,
+    icon,
+    iconClass,
     spanClass:
       "text-gray-600 dark:text-gray-300 text-sm truncate sm:text-xl font-semibold text-center whitespace-nowrap truncate sm:whitespace-normal",
   };

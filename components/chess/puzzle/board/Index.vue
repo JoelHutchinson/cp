@@ -31,40 +31,20 @@ defineShortcuts({
   },
 });
 
-const status: Ref<PuzzleStatus> = ref("notStarted");
+const boardApi: Ref<ChessBoardAPI | null> = ref(null);
+
+const state = ref<PuzzleBoardState>(jsonCopy(INITIAL_PUZZLE_BOARD_STATE));
+
 const width = ref(700);
 const height = ref(700);
 
-// Initially, make the first solution move and orient the board
-onMounted(() => {
-  boardApi.value?.resetBoard();
-  boardApi.value?.setPosition(props.puzzle.fen);
-  boardApi.value?.makeMove(solutionMoves.value[0]);
+const solutionMoves = computed(() => props.puzzle.moves.split(" "));
+const solutionMovesMade = ref<string[]>([]);
+const viewMovesMade = ref<string[]>([]);
 
-  if (boardApi.value?.getTurnColor() === "black")
-    boardApi.value?.toggleOrientation();
-});
+const solutionMovesMadeStr = computed(() => solutionMovesMade.value.join(" "));
+const viewMovesMadeStr = computed(() => viewMovesMade.value.join(" "));
 
-// If the puzzle prop changes, reset the moves made and set the position
-watch(
-  () => props.puzzle,
-  (puzzle) => {
-    status.value = "notStarted";
-    solutionMovesMade.value = [];
-    viewMovesMade.value = [];
-
-    boardApi.value?.resetBoard();
-    boardApi.value?.setPosition(puzzle.fen);
-    boardApi.value?.makeMove(solutionMoves.value[0]);
-
-    if (boardApi.value?.getTurnColor() === "black")
-      boardApi.value?.toggleOrientation();
-  }
-);
-
-const boardApi: Ref<ChessBoardAPI | null> = ref(null);
-
-// If the solution moves made string is equal to the puzzle moves string, the puzzle is solved
 const puzzleSolved = computed(
   () => solutionMovesMadeStr.value === props.puzzle.moves
 );
@@ -76,71 +56,97 @@ const isViewOnly = computed(() => {
   );
 });
 
-// Puzzle solution
-const solutionMoves = computed(() => props.puzzle.moves.split(" "));
+onMounted(() => {
+  boardApi.value?.resetBoard();
+  boardApi.value?.setPosition(props.puzzle.fen);
+  boardApi.value?.makeMove(solutionMoves.value[0]);
 
-// Solution moves made (all of the solution moves that have been made)
-const solutionMovesMade = ref<string[]>([]);
-const solutionMovesMadeStr = computed(() => solutionMovesMade.value.join(" "));
+  state.value.nextToMove = boardApi.value?.getTurnColor() || "white";
 
-// View moves made (what is shown on the board)
-const viewMovesMade = ref<string[]>([]);
-const viewMovesMadeStr = computed(() => viewMovesMade.value.join(" "));
+  if (state.value.nextToMove === "black") {
+    boardApi.value?.toggleOrientation();
+  }
+});
+
+watch(
+  () => props.puzzle,
+  (puzzle) => {
+    state.value = {
+      status: "not_started",
+      moveAttempts: [],
+      hintUsed: false,
+      nextToMove: boardApi.value?.getTurnColor() || "white",
+    };
+
+    solutionMovesMade.value = [];
+    viewMovesMade.value = [];
+
+    boardApi.value?.resetBoard();
+    boardApi.value?.setPosition(puzzle.fen);
+    boardApi.value?.makeMove(solutionMoves.value[0]);
+
+    if (boardApi.value?.getTurnColor() === "black") {
+      boardApi.value?.toggleOrientation();
+    }
+  }
+);
 
 const onMove = (move: MoveEvent) => {
-  // Check if the move is a solution move or a view move (i.e. has it been made before)
   if (!solutionMovesMade.value.includes(move.lan)) {
     handleSolutionMove(move.lan);
 
     if (solutionMovesMadeStr.value === props.puzzle.moves) {
-      status.value = "solved";
-
+      state.value.status = "finished";
       emit("solved");
     }
   }
 };
 
 const handleSolutionMove = (move: string) => {
-  // Check if the move is correct
-  if (solutionMoves.value[solutionMovesMade.value.length] === move) {
-    if (status.value === "notStarted" && solutionMovesMade.value.length === 1) {
-      status.value = "inProgressCorrect";
-    }
+  const expectedMove = solutionMoves.value[solutionMovesMade.value.length];
+  const isCorrect = expectedMove === move;
 
+  // If it is a user-made-move, push to moveAttempts
+  if (solutionMovesMade.value.length % 2 !== 0) {
+    state.value.moveAttempts.push({ move, isCorrect });
+
+    if (state.value.status === "not_started") {
+      state.value.status = "in_progress";
+    }
+  }
+
+  if (isCorrect) {
     emit("correct-move", move);
 
     solutionMovesMade.value.push(move);
     nextViewMove();
 
-    // Make the next move if the puzzle is not solved AND it is not the user's turn
+    // Auto-play opponent move if required
     if (
       solutionMovesMadeStr.value !== props.puzzle.moves &&
       solutionMovesMade.value.length % 2 === 0
     ) {
       setTimeout(() => {
-        boardApi.value?.makeMove(
-          solutionMoves.value[solutionMovesMade.value.length]
-        );
+        const replyMove = solutionMoves.value[solutionMovesMade.value.length];
+        if (replyMove) {
+          boardApi.value?.makeMove(replyMove);
+        }
       }, 500);
     }
   } else {
-    if (status.value === "notStarted" || status.value === "inProgressCorrect") {
-      status.value = "inProgressIncorrect";
-    }
-
     emit("incorrect-move", move);
 
-    // After a delay, undo the move
     setTimeout(() => {
       boardApi.value?.undoLastMove();
     }, 500);
   }
+
+  // Update whose turn it is
+  state.value.nextToMove = boardApi.value?.getTurnColor() || "white";
 };
 
 const prevViewMove = () => {
-  if (viewMovesMade.value.length === 0) {
-    return;
-  }
+  if (viewMovesMade.value.length === 0) return;
 
   const lastMove = viewMovesMade.value.pop();
   if (lastMove) {
@@ -149,18 +155,17 @@ const prevViewMove = () => {
 };
 
 const nextViewMove = () => {
-  if (solutionMovesMadeStr.value === viewMovesMadeStr.value) {
-    return;
-  }
+  if (solutionMovesMadeStr.value === viewMovesMadeStr.value) return;
 
   const nextMove = solutionMovesMade.value[viewMovesMade.value.length];
-
-  boardApi.value?.makeMove(nextMove);
-  viewMovesMade.value.push(nextMove);
+  if (nextMove) {
+    boardApi.value?.makeMove(nextMove);
+    viewMovesMade.value.push(nextMove);
+  }
 };
 
 defineExpose({
-  status,
+  state,
   nextViewMove,
   prevViewMove,
 });
