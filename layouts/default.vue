@@ -26,8 +26,10 @@
 
 <script setup lang="ts">
 const { profile, fetchProfile } = useFetchProfile();
+const { refresh: refreshPuzzleSets } = await useFetchPuzzleSets();
 
 await fetchProfile();
+await refreshPuzzleSets();
 
 useProfile();
 
