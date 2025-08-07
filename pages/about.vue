@@ -56,10 +56,11 @@
           class="inline-block mr-2 text-orange-500 dark:text-orange-300"
         />
         <strong>ChessPecker</strong> is a training tool inspired by the
-        <em>Woodpecker Method</em>, designed to sharpen your tactical vision
-        through deliberate repetition and focused practice. Create custom puzzle
-        sets, track your progress, and repeat cycles to build lasting
-        improvement.
+        <AmazonWoodpeckerAffiliateLink
+          ><em>Woodpecker Method</em></AmazonWoodpeckerAffiliateLink
+        >, designed to sharpen your tactical vision through deliberate
+        repetition and focused practice. Create custom puzzle sets, track your
+        progress, and repeat cycles to build lasting improvement.
       </UiParagraph>
       <UiParagraph class="mb-4 dark:text-gray-300">
         Whether you're a club player or a serious improver, ChessPecker provides
@@ -175,17 +176,23 @@
               name="i-lucide-lightbulb"
               class="inline-block mr-2 text-amber-400 dark:text-amber-200"
             />
-            The <strong>Woodpecker Method</strong> is a structured chess
-            training system developed by Grandmasters Axel Smith and Hans
-            Tikkanen, first introduced in their book The Woodpecker Method
-            (Quality Chess, 2018). The method focuses on systematic repetition
-            of tactical exercises to dramatically enhance a player's tactical
-            awareness, calculation speed, and pattern recognition — foundational
-            skills for competitive success. The approach was inspired by
-            Tikkanen’s personal training regimen, which helped him achieve three
-            GM norms in a short span. The method works on the principle that
-            repetition solidifies learning, especially when spaced repetition is
-            combined with focused effort.
+            <AmazonWoodpeckerAffiliateLink />
+            is a structured chess training system developed by Grandmasters Axel
+            Smith and Hans Tikkanen, first introduced in their book The
+            Woodpecker Method (Quality Chess, 2018). The method focuses on
+            systematic repetition of tactical exercises to dramatically enhance
+            a player's tactical awareness, calculation speed, and pattern
+            recognition — foundational skills for competitive success. The
+            approach was inspired by Tikkanen’s personal training regimen, which
+            helped him achieve three GM norms in a short span. The method works
+            on the principle that repetition solidifies learning, especially
+            when spaced repetition is combined with focused effort. More
+            recently, Smith and Tikkanen released a follow-up book,
+            <AmazonWoodpecker2AffiliateLink /> (Quality Chess, 2023), which
+            implements the original method with positional puzzles. The focus is
+            on acquiring pattern recognition for typical pawn structures,
+            material imbalances, and strategic plans. I highly recommend both of
+            these books!
           </UiParagraph>
         </div>
       </div>
