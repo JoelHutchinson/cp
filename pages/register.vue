@@ -102,7 +102,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
     notifications.success({
       title: "Success",
       message:
-        "Account created successfully. Please check your email to verify your account.",
+        "Account created successfully. Please check your email to verify your account before logging in.",
     });
 
     await navigateTo("/login");
