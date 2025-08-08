@@ -79,8 +79,8 @@ export const useProfile = () => {
   // Set up auth state change listener to initialize user data
   const { data: authListener } = supabase.auth.onAuthStateChange(
     async (event, session) => {
-      if (event === "INITIAL_SESSION" || event === "SIGNED_IN") {
-        console.info("[Auth] Initial session or sign-in detected");
+      if (event === "INITIAL_SESSION") {
+        console.info("[Auth] Initial session detected");
         await initializeUserData();
       } else if (event === "SIGNED_OUT") {
         console.info("[Auth] Signed out");
