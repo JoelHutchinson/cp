@@ -1,10 +1,5 @@
 <template>
-  <UButton
-    :padded="false"
-    variant="link"
-    to="https://amzn.to/4oG5PSW"
-    target="_blank"
-  >
+  <AmazonAffiliateLink linkUrl="https://amzn.to/4oG5PSW">
     <slot>The Woodpecker Method 2</slot>
-  </UButton>
+  </AmazonAffiliateLink>
 </template>
