@@ -1,6 +1,6 @@
 <template>
   <div
-    class="relative overflow-hidden py-12 px-4 sm:px-8 mb-12 rounded-xl shadow-lg flex flex-col items-center text-center bg-gradient-to-br from-orange-100 via-white to-orange-50 border border-orange-200 dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 dark:border-gray-700"
+    class="relative overflow-hidden py-12 px-4 sm:px-4 mb-12 rounded-xl shadow-lg flex flex-col items-center text-center bg-gradient-to-br from-orange-100 via-white to-orange-50 border border-orange-200 dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 dark:border-gray-700"
   >
     <NuxtImg
       src="logo-light.png"
@@ -48,7 +48,7 @@
 
   <section class="space-y-12">
     <UCard
-      class="shadow-md rounded-xl border-l-4 border-orange-400 bg-orange-50/80 px-8 py-4 dark:bg-gray-800/80 dark:border-orange-600"
+      class="shadow-md rounded-xl border-1 dark:border-2 bg-orange-50/80 px-4 py-4 dark:bg-gray-800/80 dark:border-gray-700"
     >
       <UiParagraph class="mb-4 dark:text-gray-300">
         <UIcon
@@ -69,12 +69,12 @@
     </UCard>
 
     <UCard
-      class="shadow-md rounded-xl border-l-4 border-sky-400 bg-sky-50/80 px-8 py-4 dark:bg-gray-800/80 dark:border-sky-500"
+      class="shadow-md rounded-xl border-1 dark:border-2 bg-orange-50/80 px-4 py-4 dark:bg-gray-800/80 dark:border-gray-700"
     >
       <template #header>
         <UiSubheading
           id="getting-started"
-          class="flex items-center scroll-mt-11 text-sky-700 text-2xl dark:text-sky-300"
+          class="flex items-center scroll-mt-11 text-2xl"
         >
           <UIcon
             name="i-lucide-circle-help"
@@ -140,12 +140,12 @@
     </UCard>
 
     <UCard
-      class="shadow-md rounded-xl border-l-4 border-amber-400 bg-amber-50/80 px-8 py-4 dark:bg-gray-800/80 dark:border-amber-500"
+      class="shadow-md rounded-xl border-1 dark:border-2 bg-orange-50/80 px-4 py-4 dark:bg-gray-800/80 dark:border-gray-700"
     >
       <template #header>
         <UiSubheading
           id="woodpecker-method"
-          class="flex items-center scroll-mt-11 text-amber-700 dark:text-amber-300"
+          class="flex items-center scroll-mt-11"
         >
           <UIcon
             name="i-lucide-book-open-check"
@@ -199,13 +199,10 @@
     </UCard>
 
     <UCard
-      class="shadow-md rounded-xl border-l-4 border-emerald-400 bg-emerald-50/80 px-8 py-4 dark:bg-gray-800/80 dark:border-emerald-500"
+      class="shadow-md rounded-xl border-1 dark:border-2 bg-orange-50/80 px-4 py-4 dark:bg-gray-800/80 dark:border-gray-700"
     >
       <template #header>
-        <UiSubheading
-          id="puzzle-sets"
-          class="flex items-center scroll-mt-11 text-emerald-700 dark:text-emerald-300"
-        >
+        <UiSubheading id="puzzle-sets" class="flex items-center scroll-mt-11">
           <UIcon
             name="i-lucide-grid"
             class="mr-2 text-emerald-500 dark:text-emerald-300"
@@ -249,12 +246,12 @@
     </UCard>
 
     <UCard
-      class="shadow-md rounded-xl border-l-4 border-sky-400 bg-sky-50/80 px-8 py-4 dark:bg-gray-800/80 dark:border-sky-500"
+      class="shadow-md rounded-xl border-1 dark:border-2 bg-orange-50/80 px-4 py-4 dark:bg-gray-800/80 dark:border-gray-700"
     >
       <template #header>
         <UiSubheading
           id="progress-tracking"
-          class="flex items-center scroll-mt-11 text-sky-700 dark:text-sky-300"
+          class="flex items-center scroll-mt-11"
         >
           <UIcon
             name="i-lucide-bar-chart-3"
@@ -302,20 +299,20 @@
     ></div>
 
     <UCard
-      class="shadow-md rounded-xl border-l-4 border-fuchsia-400 bg-fuchsia-50/80 text-center py-10 dark:bg-gray-800/80 dark:border-fuchsia-500"
+      class="shadow-md rounded-xl border-1 dark:border-2 bg-orange-50/80 text-center py-10 dark:bg-gray-800/80 dark:border-gray-700"
     >
-      <h2
-        class="text-2xl md:text-3xl font-bold mb-2 text-fuchsia-700 flex items-center justify-center dark:text-fuchsia-300"
+      <UiSubheading
+        class="text-2xl md:text-3xl font-bold mb-3 flex items-center justify-center"
       >
         <UIcon
           name="i-lucide-rocket"
           class="mr-2 text-fuchsia-500 dark:text-fuchsia-300"
         />Ready to Train?
-      </h2>
-      <p class="mb-4 text-lg text-fuchsia-600 dark:text-fuchsia-200">
+      </UiSubheading>
+      <UiTypography>
         Start your journey to tactical mastery. Register now or jump right in
         and try a puzzle set!
-      </p>
+      </UiTypography>
       <div class="flex flex-wrap gap-4 justify-center mt-4">
         <NuxtLink to="/register"
           ><UButton color="fuchsia" size="lg" icon="i-lucide-user-plus"
