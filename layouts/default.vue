@@ -27,11 +27,9 @@
 <script setup lang="ts">
 const { profile, fetchProfile } = useFetchProfile();
 const { refresh: refreshPuzzleSets } = await useFetchPuzzleSets();
-const { refreshDefaultPuzzleSet } = useFetchDefaultPuzzleSet();
 
 await fetchProfile();
 await refreshPuzzleSets();
-await refreshDefaultPuzzleSet();
 
 useProfile();
 
