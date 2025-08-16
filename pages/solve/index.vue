@@ -70,7 +70,10 @@ const {
   status: puzzleSetsStatus,
 } = await useFetchPuzzleSets();
 
+const { refreshDefaultPuzzleSet } = useFetchDefaultPuzzleSet();
+
 refreshPuzzleSets();
+refreshDefaultPuzzleSet();
 
 const selectedPuzzleSetSlug: Ref<string> = ref(
   puzzleSets?.value?.[0]?.slug || ""
