@@ -64,16 +64,16 @@ definePageMeta({
   layoutMobileNoPadding: true,
 });
 
+const { fetchDefaultPuzzleSet } = useFetchDefaultPuzzleSet();
+await fetchDefaultPuzzleSet();
+
 const {
   data: puzzleSets,
   refresh: refreshPuzzleSets,
   status: puzzleSetsStatus,
 } = await useFetchPuzzleSets();
 
-const { refreshDefaultPuzzleSet } = useFetchDefaultPuzzleSet();
-
 refreshPuzzleSets();
-refreshDefaultPuzzleSet();
 
 const selectedPuzzleSetSlug: Ref<string> = ref(
   puzzleSets?.value?.[0]?.slug || ""
