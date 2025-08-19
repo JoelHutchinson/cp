@@ -84,7 +84,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
       message: "Welcome back!",
     });
 
-    await navigateTo("/puzzle-set");
+    await navigateTo("/about");
   }
 
   isUserLoggingIn.value = false;
