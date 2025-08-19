@@ -15,14 +15,10 @@ export const generatePuzzleSet = async (
 ): Promise<PuzzleSetWithPuzzles> => {
   const supabase = await serverSupabaseClient<Database>(event);
 
-  // Order puzzles by rating, and pick within a range of +-250 elo
-  const { data, error } = await supabase
-    .from("puzzles")
-    .select("*")
-    .order("rating", { ascending: true })
-    .lte("rating", params.rating + 250)
-    .gte("rating", params.rating - 250)
-    .overlaps("themes", params.themes);
+  const { data, error } = await supabase.rpc("get_closest_puzzles", {
+    target_rating: params.rating,
+    theme_list: params.themes,
+  });
 
   if (error) {
     throw createError({
@@ -31,23 +27,23 @@ export const generatePuzzleSet = async (
     });
   }
 
-  console.log(data.length, "puzzles found in range");
-
-  // Filter puzzles for themes provided
-  const filteredData = data.filter((puzzle) =>
-    params.themes.some((theme) => puzzle.themes.includes(theme))
-  );
+  if (data.length === 0) {
+    throw createError({
+      statusCode: 500,
+      message: `Error fetching puzzles. (Message: No puzzles of this theme were found)`,
+    });
+  }
 
   let puzzles = [];
 
   // Select a sample of puzzles evenly distributed across the range
   const step = Math.floor(data.length / params.numberOfPuzzles);
-  const sampledPuzzles = filteredData
+  const sampledPuzzles = data
     .filter((_, i) => i % step === 0)
     .slice(0, params.numberOfPuzzles);
 
   if (sampledPuzzles.length < params.numberOfPuzzles) {
-    puzzles = filteredData.slice(0, params.numberOfPuzzles);
+    puzzles = data.slice(0, params.numberOfPuzzles);
   } else {
     puzzles = sampledPuzzles;
   }
