@@ -1,61 +1,60 @@
 <template>
-  <!-- Puzzle Sets Loaded -->
-  <div v-if="puzzleSetsStatus === 'success'" class="h-full">
-    <!-- Puzzle Sets Exist -->
-    <div
-      v-if="puzzleSets && puzzleSets.length > 0"
-      class="flex flex-col sm:flex-row gap-4 h-full lg:h-fit"
-    >
-      <ChessPuzzleInterface
-        v-if="currentPuzzle"
-        :puzzle="currentPuzzle"
-        @solved="solvePuzzle"
-        @correct-move="makePuzzleMove(true)"
-        @incorrect-move="makePuzzleMove(false)"
-      >
-        <template #leading class="hidden md:flex">
-          <ChessPuzzleSetInterface
-            v-if="selectedPuzzleSetSlug && puzzleSets && puzzleSetProgress"
-            v-model:selected-puzzle-set-slug="selectedPuzzleSetSlug"
-            :puzzle-sets="puzzleSets"
-            :puzzle-set-progress="puzzleSetProgress"
-          />
-        </template>
-      </ChessPuzzleInterface>
-
-      <div
-        v-else-if="puzzleStatus === 'pending'"
-        class="flex items-center justify-center w-full h-full"
-      >
-        <ChessPuzzleInterfaceSkeleton />
-      </div>
-    </div>
-
-    <!-- No Puzzle Sets Exist -->
-    <div v-else class="flex items-center justify-center h-full">
-      <UiTypography>
-        No puzzles sets have been created yet. Please
-        <UButton to="/puzzle-set" variant="link" class="p-0 m-0"
-          >create a puzzle set</UButton
-        >
-        to start solving.
-      </UiTypography>
-    </div>
-  </div>
-
-  <!-- Puzzle Sets Pending -->
+  <!-- prettier-ignore -->
   <div
-    v-else-if="puzzleSetsStatus === 'pending'"
-    class="flex items-center justify-center w-full h-full"
+    class="size-full grid
+    grid-rows-[auto_auto_auto] grid-cols-1 items-center
+    sm:gap-4 sm:p-4 sm:grid-rows-2 sm:grid-cols-[minmax(400px,600px)_minmax(200px,350px)] sm:items-stretch
+    md:p-0 md:grid-rows-2 md:grid-cols-[600px_minmax(200px,350px)]
+    xl:grid-rows-2 xl:grid-cols-[600px_minmax(200px,350px)_minmax(200px,350px)]"
   >
-    <ChessPuzzleInterfaceSkeleton />
-  </div>
+    <!-- Puzzle Details -->
+    <div
+      class="row-start-1 row-end-2 sm:row-start-2 sm:row-end-3 sm:col-start-2 sm:col-end-3"
+    >
+      <ChessPuzzleDetails
+        v-if="puzzleBoardState"
+        :puzzle-board-state="puzzleBoardState"
+        @next-move="handleNext"
+        @prev-move="handlePrev"
+        @skip="solvePuzzle"
+        class="h-full"
+      />
+      
+      <USkeleton v-else class="size-full" />
+    </div>
 
-  <!-- Puzzle Sets Failed to Load -->
-  <div v-else class="flex items-center justify-center h-full">
-    <UiTypography class="text-gray-500">
-      Failed to load puzzle sets. Please try again later.
-    </UiTypography>
+    <!-- Puzzle Set Details -->
+    <div
+      class="row-start-3 row-end-4 sm:row-start-1 sm:row-end-2 sm:col-start-2 sm:col-end-3"
+    >
+      <ChessPuzzleSetDetails
+        v-if="selectedPuzzleSetSlug && puzzleSets && puzzleSetProgress"
+        v-model:selected-puzzle-set-slug="selectedPuzzleSetSlug"
+        :puzzle-sets="puzzleSets"
+        :puzzle-set-progress="puzzleSetProgress"
+        class="size-full"
+      />
+      <USkeleton v-else class="size-full" />
+    </div>
+
+    <ChessPuzzleBoard
+      v-if="currentPuzzle"
+      ref="chessPuzzleBoard"
+      :puzzle="currentPuzzle"
+      @solved="solvePuzzle"
+      @correct-move="makePuzzleMove(true)"
+      @incorrect-move="makePuzzleMove(false)"
+      class="row-start-2 row-end-3 max-w-[400px] place-self-center
+      sm:max-w-full sm:col-start-1 sm:col-end-2 sm:row-start-1 sm:row-end-3"
+    />
+    <USkeleton v-else class="size-full" />
+
+    <!-- Ad -->
+    <div
+      class="bg-purple-500 col-start-3 col-end-4 row-start-1 row-end-3 hidden xl:block"
+    >
+      <AmazonSidebarAd :products="AMAZON_BOOKS" />
+    </div>
   </div>
 </template>
 
@@ -97,4 +96,20 @@ watch(selectedPuzzleSetSlug, async (newSelectedPuzzleSetSlug) => {
   await fetchCurrentPuzzle();
   await refreshProgress();
 });
+
+// Previous ChessPuzzleInterface Script Below
+
+const chessPuzzleBoard = ref();
+
+const puzzleBoardState = computed(
+  () => chessPuzzleBoard.value?.state || INITIAL_PUZZLE_BOARD_STATE
+);
+
+const handleNext = () => {
+  chessPuzzleBoard.value.nextViewMove();
+};
+
+const handlePrev = () => {
+  chessPuzzleBoard.value.prevViewMove();
+};
 </script>

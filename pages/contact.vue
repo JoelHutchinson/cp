@@ -31,7 +31,7 @@
     <!-- Right: Form -->
     <div class="flex-1 flex flex-col items-center">
       <UCard
-        class="shadow-md rounded-xl border-l-4 border-primary-400 bg-primary-50/80 p-8 w-full max-w-xl dark:bg-gray-800/80 dark:border-primary-500"
+        class="shadow-md rounded-xl bg-primary-50/80 p-8 w-full max-w-xl dark:bg-gray-800/80 dark:border-primary-500"
       >
         <UForm
           :schema="schema"

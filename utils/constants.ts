@@ -108,3 +108,115 @@ export const PUZZLE_THEME_GROUPS = [
 export const PUZZLE_THEMES = PUZZLE_THEME_GROUPS.flatMap(
   (group) => group.themes
 );
+
+export const AMAZON_BOOKS = [
+  {
+    title: "The Woodpecker Method",
+    author: "Axel Smith & Hans Tikkanen",
+    description:
+      "The book that this application is based on! Try the original set of high-quality puzzles that Tikkanen trained on to achieve three GM norms with this paperback.",
+    image: "https://covers.openlibrary.org/b/isbn/1784830542-L.jpg",
+    link: "https://amzn.to/3JnABjm",
+  },
+  {
+    title: "The Woodpecker Method 2",
+    author: "Axel Smith",
+    description:
+      "Building upon the original Woodpecker Method, this sequel shifts focus from tactics to positional chess. The book covers various aspects of positional chess, including pawn structures, piece activity, and weak squares.",
+    image: "woodpecker-method-2-cover.png",
+    link: "https://amzn.to/417McZS",
+  },
+  {
+    title: "The Art of Attack in Chess",
+    author: "Vladimir Vukovic",
+    description:
+      "A classic work focusing on attacking strategies and sacrifices in chess.",
+    image: "https://covers.openlibrary.org/b/isbn/1857444000-L.jpg",
+    link: "https://amzn.to/418zYjB",
+  },
+];
+
+// TODO: Add these
+
+/*
+  {
+    title: "Learn Chess the Right Way: Book 1 – Must-Know Checkmates",
+    author: "Susan Polgar",
+    description:
+      "The first volume in a five-book series aimed at novices and intermediate players, focusing on essential checkmate patterns.",
+    image: "https://covers.openlibrary.org/b/isbn/1941270212-L.jpg",
+    link: "https://www.amazon.com/dp/1941270212?tag=your-affiliate-id",
+  },
+  {
+    title: "Learn Chess the Right Way: Book 2 – Essential Tactics",
+    author: "Susan Polgar",
+    description:
+      "The second volume in the series, covering fundamental tactical motifs and exercises.",
+    image: "https://covers.openlibrary.org/b/isbn/1941270220-L.jpg",
+    link: "https://www.amazon.com/dp/1941270220?tag=your-affiliate-id",
+  },
+  {
+    title: "Learn Chess the Right Way: Book 3 – Winning Material",
+    author: "Susan Polgar",
+    description:
+      "The third volume focusing on techniques for gaining material advantage in games.",
+    image: "https://covers.openlibrary.org/b/isbn/1941270239-L.jpg",
+    link: "https://www.amazon.com/dp/1941270239?tag=your-affiliate-id",
+  },
+  {
+    title: "Learn Chess the Right Way: Book 4 – Mastering the Endgame",
+    author: "Susan Polgar",
+    description:
+      "The fourth volume dedicated to endgame strategies and techniques.",
+    image: "https://covers.openlibrary.org/b/isbn/1941270247-L.jpg",
+    link: "https://www.amazon.com/dp/1941270247?tag=your-affiliate-id",
+  },
+  {
+    title: "Learn Chess the Right Way: Book 5 – Finding Winning Moves",
+    author: "Susan Polgar",
+    description:
+      "The fifth volume focusing on recognizing and executing decisive moves.",
+    image: "https://covers.openlibrary.org/b/isbn/1941270662-L.jpg",
+    link: "https://www.amazon.com/dp/1941270662?tag=your-affiliate-id",
+  },
+  {
+    title: "Chess Tactics for the Tournament Player",
+    author: "Lev Alburt & Sam Palatnik",
+    description:
+      "A comprehensive guide to chess tactics aimed at players rated 1200–2000.",
+    image: "https://covers.openlibrary.org/b/isbn/1889323020-L.jpg",
+    link: "https://www.amazon.com/dp/1889323020?tag=your-affiliate-id",
+  },
+  {
+    title: "The Art of Sacrifice in Chess",
+    author: "Rudolf Spielmann",
+    description:
+      "An in-depth look at the art of sacrificing material for positional advantage.",
+    image: "https://covers.openlibrary.org/b/isbn/1936490781-L.jpg",
+    link: "https://www.amazon.com/dp/1936490781?tag=your-affiliate-id",
+  },
+  {
+    title: "Combinative Motifs",
+    author: "Maxim Blokh",
+    description:
+      "A collection of over 1,400 exercises focusing on combinational tactics.",
+    image: "https://covers.openlibrary.org/b/isbn/1857444000-L.jpg",
+    link: "https://www.amazon.com/dp/1857444000?tag=your-affiliate-id",
+  },
+  {
+    title: "Excelling at Chess Calculation",
+    author: "Jacob Aagaard",
+    description:
+      "A guide to improving calculation skills and tactical awareness in chess.",
+    image: "https://covers.openlibrary.org/b/isbn/1857443608-L.jpg",
+    link: "https://www.amazon.com/dp/1857443608?tag=your-affiliate-id",
+  },
+  {
+    title: "Perfect Your Chess",
+    author: "Andrei Volokitin & Vladimir Grabinsky",
+    description:
+      "A collection of 369 positions designed to improve tactical vision and decision-making.",
+    image: "https://covers.openlibrary.org/b/isbn/1915328063-L.jpg",
+    link: "https://www.amazon.com/dp/1915328063?tag=your-affiliate-id",
+  },
+*/

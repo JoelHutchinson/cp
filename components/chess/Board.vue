@@ -3,10 +3,7 @@
     :board-config="boardConfig"
     @move="handleMove"
     @board-created="handleBoardCreated"
-    :style="{
-      width: `${currentWidth}px`,
-      height: `${currentHeight}px`,
-    }"
+    style="width: 100%; height: 100%"
     reactive-config
   />
 </template>
@@ -18,39 +15,8 @@ import "vue3-chessboard/style.css";
 import type { BoardApi, BoardConfig, MoveEvent } from "vue3-chessboard";
 import type { Reactive } from "vue";
 
-import { useWindowSize, useBreakpoints } from "@vueuse/core";
-
-const { width: windowWidth } = useWindowSize();
-
-// TESTING START
-const largeWidth = computed(() => {
-  const calculated = windowWidth.value - 600;
-  const floor = 500;
-  const ceiling = 600;
-  return Math.min(Math.max(calculated, floor), ceiling);
-});
-// TESTING END
-
-const breakpoints = useBreakpoints({
-  sm: 460,
-  md: 768,
-  lg: 1024,
-  xl: 1280,
-});
-
-const deviceType = computed(() => {
-  if (breakpoints.greater("lg").value) return "desktop";
-  if (breakpoints.greater("sm").value) return "tablet";
-  return "mobile";
-});
-
-const width = defineModel<number>("width", { default: 658, required: true });
-const height = defineModel<number>("height", { default: 658, required: true });
-
 const props = defineProps<{
   viewOnly: boolean;
-  width: number;
-  height: number;
 }>();
 
 const emit = defineEmits<{
@@ -59,7 +25,7 @@ const emit = defineEmits<{
 }>();
 
 const boardConfig: Reactive<BoardConfig> = reactive({
-  viewOnly: false,
+  viewOnly: props.viewOnly,
   coordinates: true,
   autoCastle: false,
   orientation: "white",
@@ -91,53 +57,6 @@ const boardConfig: Reactive<BoardConfig> = reactive({
 const vue3ChessboardApi: Ref<BoardApi | null> = ref(null);
 const boardApi: Ref<ChessBoardAPI | null> = ref(null);
 
-const maxBoardWidth = computed(() => {
-  switch (deviceType.value) {
-    case "desktop":
-      return 658;
-    case "tablet":
-      return 400;
-    case "mobile":
-      return windowWidth.value;
-    default:
-      return 658;
-  }
-});
-
-const currentWidth = computed(() => {
-  switch (deviceType.value) {
-    case "desktop":
-      return largeWidth.value;
-    case "tablet":
-    case "mobile":
-      return maxBoardWidth.value;
-    default:
-      return width.value;
-  }
-});
-
-const currentHeight = computed(() => currentWidth.value);
-
-watch([windowWidth, deviceType], () => {
-  if (deviceType.value === "desktop") {
-    width.value = largeWidth.value;
-    height.value = largeWidth.value;
-  } else {
-    const newSize = maxBoardWidth.value;
-    if (width.value > newSize) {
-      width.value = newSize;
-      height.value = newSize;
-    }
-  }
-});
-
-onMounted(() => {
-  const newSize = maxBoardWidth.value;
-  width.value = newSize;
-  height.value = newSize;
-});
-
-// Emitters
 const handleMove = (move: MoveEvent) => {
   emit("move", move);
 };

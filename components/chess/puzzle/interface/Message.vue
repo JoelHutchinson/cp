@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-row sm:flex-col items-center gap-2 p-2">
+  <div class="flex flex-row sm:flex-col items-center gap-2 p-2 truncate">
     <UIcon
       :key="statusMeta.icon"
       :name="statusMeta.icon"
