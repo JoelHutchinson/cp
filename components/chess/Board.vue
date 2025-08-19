@@ -27,7 +27,7 @@ const emit = defineEmits<{
 const boardConfig: Reactive<BoardConfig> = reactive({
   viewOnly: props.viewOnly,
   coordinates: true,
-  autoCastle: false,
+  autoCastle: true,
   orientation: "white",
   drawable: {
     enabled: true,
