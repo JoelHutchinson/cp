@@ -18,7 +18,6 @@
       >
     </div>
   </div>
-
   <!-- Puzzle Set Table -->
   <UTable
     :columns="tableColumns"
@@ -109,8 +108,72 @@
     title="Create a puzzle set"
     buttonText="Create"
     buttonColor="primary"
-    prevent-close
   >
+    <!-- Puzzle Set Theme Selector Modal -->
+    <UiModal
+      v-model="isThemeSelectorModalOpen"
+      title="Select Puzzle Set Themes"
+      buttonText="Done"
+      buttonColor="primary"
+      @action="selectThemes"
+      :ui="{
+        width: 'md:max-w-3xl lg:max-w-6xl',
+      }"
+      :card-ui="{
+        base: 'overflow-y-auto max-h-[95vh]',
+      }"
+    >
+      <div class="flex flex-col gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div v-for="group in PUZZLE_THEME_GROUPS">
+            <UButton
+              class="mb-4"
+              variant="link"
+              :color="
+                selectedThemes.length &&
+                group.themes.some((t) => selectedThemes.includes(t.value))
+                  ? 'primary'
+                  : 'gray'
+              "
+              @click="toggleThemeGroup(group.label)"
+            >
+              {{ group.label }}
+            </UButton>
+
+            <UiTagSelect
+              v-model="selectedThemes"
+              :options="group.themes"
+              option-attribute="label"
+              value-attribute="value"
+            />
+          </div>
+        </div>
+
+        <div class="self-end">
+          <UButton
+            color="primary"
+            variant="ghost"
+            trailing-icon="i-heroicons-cursor-arrow-rays-20-solid"
+            size="xs"
+            class="ml-auto"
+            @click="selectedThemes = PUZZLE_THEMES.map((t) => t.value)"
+          >
+            Select All
+          </UButton>
+
+          <UButton
+            color="primary"
+            variant="ghost"
+            trailing-icon="i-heroicons-x-mark"
+            size="xs"
+            @click="selectedThemes = []"
+          >
+            Deselect All
+          </UButton>
+        </div>
+      </div>
+    </UiModal>
+
     <div class="flex flex-col gap-4">
       <UFormGroup label="Name">
         <UInput v-model="state.name" placeholder="Puzzle set name" />
@@ -192,71 +255,6 @@
       }}</strong
       >'? This action cannot be reversed.
     </p>
-  </UiModal>
-
-  <!-- Puzzle Set Theme Selector Modal -->
-  <UiModal
-    v-model="isThemeSelectorModalOpen"
-    title="Select Puzzle Set Themes"
-    buttonText="Done"
-    buttonColor="primary"
-    @action="selectThemes"
-    :ui="{
-      width: 'md:max-w-3xl lg:max-w-6xl',
-    }"
-    :card-ui="{
-      base: 'overflow-y-auto max-h-[95vh]',
-    }"
-  >
-    <div class="flex flex-col gap-4">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div v-for="group in PUZZLE_THEME_GROUPS">
-          <UButton
-            class="mb-4"
-            variant="link"
-            :color="
-              selectedThemes.length &&
-              group.themes.some((t) => selectedThemes.includes(t.value))
-                ? 'primary'
-                : 'gray'
-            "
-            @click="toggleThemeGroup(group.label)"
-          >
-            {{ group.label }}
-          </UButton>
-
-          <UiTagSelect
-            v-model="selectedThemes"
-            :options="group.themes"
-            option-attribute="label"
-            value-attribute="value"
-          />
-        </div>
-      </div>
-
-      <div class="self-end">
-        <UButton
-          color="primary"
-          variant="ghost"
-          trailing-icon="i-heroicons-cursor-arrow-rays-20-solid"
-          size="xs"
-          class="ml-auto"
-          @click="selectedThemes = PUZZLE_THEMES.map((t) => t.value)"
-        >
-          Select All
-        </UButton>
-
-        <UButton
-          color="primary"
-          variant="ghost"
-          trailing-icon="i-heroicons-x-mark"
-          size="xs"
-          @click="selectedThemes = []"
-        >
-          Deselect All
-        </UButton>
-      </div>
-    </div>
   </UiModal>
 </template>
 
