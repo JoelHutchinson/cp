@@ -72,6 +72,7 @@ const handleBoardCreated = (newBoardApi: BoardApi) => {
     undoLastMove,
     toggleOrientation,
     getTurnColor,
+    getIsCheckmate,
   };
 
   emit("boardCreated", boardApi.value);
@@ -85,6 +86,7 @@ const clearBoard = () => vue3ChessboardApi.value?.clearBoard();
 const undoLastMove = () => vue3ChessboardApi.value?.undoLastMove();
 const toggleOrientation = () => vue3ChessboardApi.value?.toggleOrientation();
 const getTurnColor = () => vue3ChessboardApi.value?.getTurnColor() || "white";
+const getIsCheckmate = () => vue3ChessboardApi.value?.getIsCheckmate() || false;
 
 watch(
   () => props.viewOnly,

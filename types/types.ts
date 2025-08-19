@@ -80,4 +80,5 @@ export type ChessBoardAPI = {
   undoLastMove: () => void;
   toggleOrientation: () => void;
   getTurnColor: () => "white" | "black";
+  getIsCheckmate: () => boolean;
 };

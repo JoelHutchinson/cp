@@ -95,7 +95,8 @@ const onMove = (move: MoveEvent) => {
   if (!solutionMovesMade.value.includes(move.lan)) {
     handleSolutionMove(move.lan);
 
-    if (solutionMovesMadeStr.value === props.puzzle.moves) {
+    const isCheckmate = boardApi.value?.getIsCheckmate() || false;
+    if (solutionMovesMadeStr.value === props.puzzle.moves || isCheckmate) {
       state.value.status = "finished";
       emit("solved");
     }
@@ -104,7 +105,8 @@ const onMove = (move: MoveEvent) => {
 
 const handleSolutionMove = (move: string) => {
   const expectedMove = solutionMoves.value[solutionMovesMade.value.length];
-  const isCorrect = expectedMove === move;
+  const isCheckmate = boardApi.value?.getIsCheckmate() || false;
+  const isCorrect = expectedMove === move || isCheckmate;
 
   // If it is a user-made-move, push to moveAttempts
   if (solutionMovesMade.value.length % 2 !== 0) {
