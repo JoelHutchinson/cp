@@ -5,8 +5,22 @@
     >
       {{ linkSection.sectionTitle }}
     </h6>
-
-    <UVerticalNavigation :links="linkSection.links" />
+    <UVerticalNavigation :links="linkSection.links">
+      <template #default="{ link }">
+        <UChip
+          v-if="link.slot === 'stats'"
+          position="top-right"
+          text="Coming soon!"
+          size="lg"
+          :ui="{
+            translate: {
+              'top-right': '-translate-y-1/3 translate-x-[65px] transform',
+            },
+          }"
+          >{{ link.label }}</UChip
+        >
+      </template>
+    </UVerticalNavigation>
   </div>
 </template>
 
@@ -24,6 +38,11 @@ const linkSections = [
         label: "Puzzle Sets",
         to: "/puzzle-set",
         icon: "i-heroicons-queue-list-20-solid",
+      },
+      {
+        label: "Stats",
+        icon: "i-heroicons-chart-bar-20-solid",
+        slot: "stats",
       },
     ],
   },
