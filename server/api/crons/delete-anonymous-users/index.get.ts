@@ -22,6 +22,7 @@ export const deleteAnonymousUsers = async (event: H3Event) => {
   const { error } = await supabase.rpc("delete_anonymous_users");
 
   if (error) {
+    console.error(error.message);
     throw createError({
       statusCode: 500,
       message: `Error deleting anonymous users. (Message: ${error.message})`,
