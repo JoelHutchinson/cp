@@ -7,7 +7,6 @@
       item: 'basis-full',
       container: 'h-full',
       background: 'bg-white dark:bg-black/10',
-      // ring: 'ring-0',
       rounded: 'rounded-none',
     }"
     class="overflow-hidden h-full pb-8 ring-1 ring-gray-200 dark:ring-gray-800 border-gray-800 dark:bg-black/10 bg-white"
@@ -22,35 +21,38 @@
           alt="Book cover"
           class="w-auto h-auto max-w-52 object-cover rounded shadow mb-4"
         />
-        <h3 class="font-bold text-lg mb-0.5">{{ item.title }}</h3>
-        <UiTypography class="text-sm mb-3">by {{ item.author }}</UiTypography>
+        <h3 class="font-bold text-lg mb-1">{{ item.title }}</h3>
+        <UiTypography class="text-sm mb-4">by {{ item.author }}</UiTypography>
 
-        <UiTypography class="text-sm">{{ item.description }}</UiTypography>
+        <UiTypography class="text-sm w-4/5">{{
+          item.description
+        }}</UiTypography>
       </div>
 
       <div class="flex flex-row justify-between">
-        <AmazonAffiliateLinkTooltip>
-          <UButton
-            :to="item.link"
-            target="_blank"
-            rel="noopener noreferrer"
-            size="xs"
-          >
-            Buy on Amazon
-          </UButton>
+        <UButton
+          :to="item.link"
+          target="_blank"
+          rel="noopener noreferrer"
+          size="xs"
+        >
+          See on Amazon
+        </UButton>
 
-          <template #text>
-            <p>This is an amazon affiliate ad.</p>
-            <p>I may earn a commission on purchases made through this link.</p>
-          </template>
+        <AmazonAffiliateLinkTooltip>
           <UButton
             icon="i-heroicons-information-circle"
             class="text-xs text-gray-500 dark:text-gray-400 mt-2 text-wrap overflow-auto"
             variant="link"
             size="xs"
           >
-            Amazon affiliate ad
+            Affiliate Ad
           </UButton>
+
+          <template #text>
+            <p>This is an amazon affiliate ad.</p>
+            <p>I may earn a commission on purchases made through this link.</p>
+          </template>
         </AmazonAffiliateLinkTooltip>
       </div>
     </div>

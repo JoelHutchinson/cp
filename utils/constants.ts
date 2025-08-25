@@ -122,7 +122,7 @@ export const AMAZON_BOOKS = [
     title: "The Woodpecker Method 2",
     author: "Axel Smith",
     description:
-      "Building upon the original Woodpecker Method, this sequel shifts focus from tactics to positional chess. The book covers various aspects of positional chess, including pawn structures, piece activity, and weak squares.",
+      "Building upon the original Woodpecker Method, this sequel shifts focus from tactics to positional chess. Exercises cover pawn structures, piece activity, and weak squares.",
     image: "woodpecker-method-2-cover.png",
     link: "https://amzn.to/417McZS",
   },
@@ -134,19 +134,27 @@ export const AMAZON_BOOKS = [
     image: "https://covers.openlibrary.org/b/isbn/1857444000-L.jpg",
     link: "https://amzn.to/418zYjB",
   },
+  {
+    title: "Learn Chess the Right Way: Must-Know Checkmates",
+    author: "Susan Polgar",
+    description:
+      "The first volume in a five-book puzzle series aimed at intermediate players, focusing on essential checkmate patterns.",
+    image: "https://covers.openlibrary.org/b/isbn/1941270212-L.jpg",
+    link: "https://amzn.to/4mF6ZwE",
+  },
+  {
+    title: "Chess Scorebook Journal",
+    author: "Joel Hutchinson",
+    description:
+      "Organise Your Chess Tournament Journey with Detailed Scoresheets. The combination of its functional scoresheets and premium matte cover makes an ideal companion for tournament players.",
+    image: "chess-scorebook-journal-green-gold-cover.jpg",
+    link: "https://amzn.to/4mF6ZwE",
+  },
 ];
 
 // TODO: Add these
 
 /*
-  {
-    title: "Learn Chess the Right Way: Book 1 – Must-Know Checkmates",
-    author: "Susan Polgar",
-    description:
-      "The first volume in a five-book series aimed at novices and intermediate players, focusing on essential checkmate patterns.",
-    image: "https://covers.openlibrary.org/b/isbn/1941270212-L.jpg",
-    link: "https://www.amazon.com/dp/1941270212?tag=your-affiliate-id",
-  },
   {
     title: "Learn Chess the Right Way: Book 2 – Essential Tactics",
     author: "Susan Polgar",
