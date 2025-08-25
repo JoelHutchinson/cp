@@ -8,7 +8,7 @@
       </div>
     </template>
 
-    <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
+    <UForm :state="state" class="space-y-4" @submit="onSubmit">
       <UFormGroup label="Email">
         <UInput
           v-model="state.email"
@@ -53,8 +53,11 @@ import { z } from "zod";
 type Schema = z.output<typeof schema>;
 
 const schema = z.object({
-  email: z.string().email(),
-  password: z.string(),
+  email: z
+    .string()
+    .min(1, "Email field cannot be empty")
+    .email("Email field is not a valid email address"),
+  password: z.string().min(1, "Password field cannot be empty"),
 });
 
 const state = reactive({
@@ -70,6 +73,19 @@ const isGuestLoggingIn = ref(false);
 
 const onSubmit = async (event: FormSubmitEvent<Schema>) => {
   isUserLoggingIn.value = true;
+
+  try {
+    schema.parse(state);
+  } catch (error: any) {
+    notifications.error({
+      title: "Login failed",
+      message: JSON.parse(error)[0].message,
+    });
+
+    isUserLoggingIn.value = false;
+
+    return;
+  }
 
   const { error } = await signIn(event.data.email, event.data.password);
 
