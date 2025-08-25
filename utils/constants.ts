@@ -150,6 +150,22 @@ export const AMAZON_BOOKS = [
     image: "chess-scorebook-journal-green-gold-cover.jpg",
     link: "https://amzn.to/4mF6ZwE",
   },
+  {
+    title: "Chessnut Air",
+    author: "Chessnut",
+    description:
+      "A sleek, lightweight electronic chessboard with app integration for online and offline play. Perfect for portable training and competitive games.",
+    image: "chessnut-air.jpg",
+    link: "https://amzn.to/4mvZdor",
+  },
+  {
+    title: "DGT Centaur",
+    author: "Digital Game Technology",
+    description:
+      "An adaptive electronic chessboard that adjusts its strength to your level, offering a natural and enjoyable over-the-board experience.",
+    image: "dgt-centaur.jpg",
+    link: "https://amzn.to/4oOTprI",
+  },
 ];
 
 // TODO: Add these
