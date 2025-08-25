@@ -19,7 +19,9 @@ export default defineEventHandler(async (event) => {
 export const deleteAnonymousUsers = async (event: H3Event) => {
   const supabase = serverSupabaseServiceRole<Database>(event);
 
-  const { error } = await supabase.rpc("delete_anonymous_users");
+  const { error } = await supabase.rpc("delete_anonymous_users", {
+    secret: process.env.CRON_SECRET!,
+  });
 
   if (error) {
     console.error(error.message);
