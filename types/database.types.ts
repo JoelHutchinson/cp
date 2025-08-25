@@ -240,6 +240,10 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
+      delete_anonymous_users: {
+        Args: Record<PropertyKey, never>;
+        Returns: undefined;
+      };
       get_closest_puzzles: {
         Args: { target_rating: number; theme_list: string[] };
         Returns: {
