@@ -13,7 +13,6 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  console.log("Running anonymous user deletion cron job");
   await deleteAnonymousUsers(event);
 });
 
@@ -25,7 +24,7 @@ export const deleteAnonymousUsers = async (event: H3Event) => {
   if (error) {
     throw createError({
       statusCode: 500,
-      message: `Error fetching puzzles. (Message: ${error.message})`,
+      message: `Error deleting anonymous users. (Message: ${error.message})`,
     });
   }
 };
