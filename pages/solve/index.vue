@@ -67,7 +67,7 @@
 
     <!-- Ad -->
     <div class="col-start-3 col-end-4 row-start-1 row-end-3 hidden xl:block">
-      <AmazonSidebarAd :products="AMAZON_BOOKS" />
+      <AdsterraSidebarAd />
     </div>
   </div>
 </template>
