@@ -140,7 +140,7 @@ export const useProfile = () => {
 
     // Create a sample puzzle set for the guest in the background
     if (!signInError && signInData?.user) {
-      createSamplePuzzleSet();
+      // Add any guest account initialization processes here
     } else {
       console.error("Guest sign-in error:", signInError);
       return { error: signInError };
