@@ -13,6 +13,10 @@ export default defineNuxtConfig({
           name: "google-adsense-account",
           content: "ca-pub-7565192673545193",
         },
+        {
+          name: "monetag",
+          content: "4747e646ea29753824f38ad16f66c433",
+        },
       ],
       link: [{ rel: "icon", type: "image/png", href: "/favicon.png" }],
       script: [
