@@ -1,6 +1,7 @@
 <template>
-  <!-- Outer wrapper that will be cleared/reloaded -->
+  <!-- Outer wrapper where scripts are injected -->
   <div ref="adRef"></div>
+  <!-- Inner container where Adsterra paints the ad -->
   <div :id="containerId" class="flex items-center justify-center"></div>
 </template>
 
@@ -9,20 +10,25 @@ import { onMounted, onBeforeUnmount, ref, watch, computed } from "vue";
 
 interface Props {
   adslot: string;
-  refreshInterval?: number; // in ms, e.g. 30000 for 30s
+  refreshInterval?: number; // ms, default 60000 (60s)
 }
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  refreshInterval: 60000,
+});
 
 const adRef = ref<HTMLElement | null>(null);
+const isAdVisible = ref(false);
 let refreshTimer: number | null = null;
+let isTabVisible = true;
+let observer: IntersectionObserver | null = null;
 
 const containerId = computed(() => `atContainer-${props.adslot}`);
 
 const loadAd = () => {
   if (!adRef.value || !props.adslot) return;
 
-  // Clear any previous content
+  // Clear old ad scripts
   adRef.value.innerHTML = "";
 
   const atAsyncOptions = {
@@ -49,22 +55,49 @@ const loadAd = () => {
   adRef.value.appendChild(script);
 };
 
-onMounted(() => {
-  loadAd();
-
-  // Optional auto-refresh
+const startRefresh = () => {
   if (props.refreshInterval && props.refreshInterval > 0) {
     refreshTimer = window.setInterval(() => {
-      loadAd();
+      if (isTabVisible && isAdVisible.value) {
+        loadAd();
+      }
     }, props.refreshInterval);
   }
+};
+
+const stopRefresh = () => {
+  if (refreshTimer) {
+    clearInterval(refreshTimer);
+    refreshTimer = null;
+  }
+};
+
+onMounted(() => {
+  loadAd();
+  startRefresh();
+
+  // Track tab focus
+  document.addEventListener("visibilitychange", () => {
+    isTabVisible = !document.hidden;
+  });
+
+  // Track ad element visibility
+  observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        isAdVisible.value = entry.isIntersecting;
+      });
+    },
+    { threshold: 0.5 } // visible at least 50%
+  );
+
+  if (adRef.value) observer.observe(adRef.value);
 });
 
 watch(() => props.adslot, loadAd);
 
 onBeforeUnmount(() => {
-  if (refreshTimer) {
-    clearInterval(refreshTimer);
-  }
+  stopRefresh();
+  if (observer && adRef.value) observer.unobserve(adRef.value);
 });
 </script>
