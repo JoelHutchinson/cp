@@ -68,7 +68,7 @@
 
     <!-- Desktop / Table 720x90 Leaderboard Ad -->
     <div id="adstera-leaderboard" class="hidden sm:block sm:col-start-1 sm:col-end-3 sm:row-start-3 sm:row-end-4">
-      <AdsterraLeaderboardAd v-if="screenSize !== 'mobile'" :refresh-interval="40000" />
+      <AdsterraLeaderboardAd v-if="screenSize !== 'mobile'" :refresh-interval="120000" />
     </div>
 
     <!-- Desktop 160x600 Sidebar Ad -->
@@ -78,7 +78,7 @@
 
     <!-- Mobile 320x50 Ad -->
      <div id="adstera-mobile" class="sm:hidden row-start-1 row-end-2 items-center justify-center">
-      <AdsterraMobileAd v-if="screenSize === 'mobile'" :refresh-interval="40000" />
+      <AdsterraMobileAd v-if="screenSize === 'mobile'" :refresh-interval="120000" />
      </div>
   </div>
 </template>
