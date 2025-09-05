@@ -1,6 +1,6 @@
 <template>
   <div ref="adRef"></div>
-  <div :id="containerId"></div>
+  <div :id="containerId" class="flex items-center justify-center"></div>
 </template>
 
 <script setup lang="ts">

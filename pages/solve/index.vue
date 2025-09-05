@@ -39,7 +39,7 @@
 
     <!-- Puzzle Set Details -->
     <div
-      class="row-start-3 row-end-4 sm:row-start-1 sm:row-end-2 sm:col-start-2 sm:col-end-3"
+      class="row-start-3 row-end-4 sm:row-start-1 sm:row-end-2 sm:col-start-2 sm:col-end-3 h-full"
     >
       <ChessPuzzleSetDetails
         v-if="selectedPuzzleSetSlug && puzzleSets && puzzleSetProgress"
