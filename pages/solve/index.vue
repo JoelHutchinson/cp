@@ -73,7 +73,7 @@
 
     <!-- Desktop 160x600 Sidebar Ad -->
     <div id="adstera-sidebar" class="col-start-3 col-end-4 row-start-1 row-end-3 hidden xl:block">
-      <AdsterraSidebarAd v-if="screenSize === 'xl'" :refresh-interval="40000" />
+      <AdsterraSidebarAd v-if="screenSize === 'xl'" :refresh-interval="120000" />
     </div>
 
     <!-- Mobile 320x50 Ad -->
