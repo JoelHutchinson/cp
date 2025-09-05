@@ -2,7 +2,7 @@
   <!-- No puzzle sets -->
   <div
     v-if="puzzleSets && puzzleSets.length === 0"
-    class="flex items-center justify-center h-full"
+    class="p-6 sm:p-0 flex items-center justify-center size-full"
   >
     <UiTypography>
       No puzzles sets have been created yet. Please
@@ -35,7 +35,7 @@
         class="h-full"
       />
 
-      <USkeleton v-else class="size-full" />
+      <USkeleton v-else class="h-full" />
     </div>
 
     <!-- Puzzle Set Details -->
