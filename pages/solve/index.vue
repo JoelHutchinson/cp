@@ -21,7 +21,7 @@
     sm:gap-4 sm:p-4 sm:grid-rows-[auto_auto_90px] sm:grid-cols-[minmax(400px,600px)_minmax(200px,350px)] sm:items-stretch
     md:p-0 md:grid-rows-[auto_auto_90px] md:grid-cols-[600px_minmax(200px,350px)]
     xl:grid-rows-[auto_auto_90px] xl:grid-cols-[600px_minmax(200px,350px)_minmax(200px,350px)]">
-    
+
     <!-- Puzzle Details -->
     <div
       class="row-start-2 row-end-3 sm:row-start-2 sm:row-end-3 sm:col-start-2 sm:col-end-3 h-full"
@@ -68,17 +68,17 @@
 
     <!-- Desktop / Table 720x90 Leaderboard Ad -->
     <div id="adstera-leaderboard" class="hidden sm:block sm:col-start-1 sm:col-end-3 sm:row-start-3 sm:row-end-4">
-      <AdsterraLeaderboardAd />
+      <AdsterraLeaderboardAd :refresh-interval="30000" />
     </div>
 
     <!-- Desktop 160x600 Sidebar Ad -->
     <div id="adstera-sidebar" class="col-start-3 col-end-4 row-start-1 row-end-3 hidden xl:block">
-      <AdsterraSidebarAd />
+      <AdsterraSidebarAd :refresh-interval="30000" />
     </div>
 
     <!-- Mobile 320x50 Ad -->
      <div id="adstera-mobile" class="sm:hidden row-start-1 row-end-2 items-center justify-center">
-      <AdsterraMobileAd  />
+      <AdsterraMobileAd :refresh-interval="30000" />
      </div>
   </div>
 </template>

@@ -1,23 +1,29 @@
 <template>
+  <!-- Outer wrapper that will be cleared/reloaded -->
   <div ref="adRef"></div>
   <div :id="containerId" class="flex items-center justify-center"></div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch, computed } from "vue";
+import { onMounted, onBeforeUnmount, ref, watch, computed } from "vue";
 
 interface Props {
   adslot: string;
+  refreshInterval?: number; // in ms, e.g. 30000 for 30s
 }
 
 const props = defineProps<Props>();
 
 const adRef = ref<HTMLElement | null>(null);
+let refreshTimer: number | null = null;
 
 const containerId = computed(() => `atContainer-${props.adslot}`);
 
 const loadAd = () => {
-  if (!adRef.value || !props.adslot || adRef.value.firstChild) return;
+  if (!adRef.value || !props.adslot) return;
+
+  // Clear any previous content
+  adRef.value.innerHTML = "";
 
   const atAsyncOptions = {
     key: props.adslot,
@@ -43,8 +49,22 @@ const loadAd = () => {
   adRef.value.appendChild(script);
 };
 
-onMounted(loadAd);
+onMounted(() => {
+  loadAd();
 
-// Optional: reload if slot prop changes dynamically
+  // Optional auto-refresh
+  if (props.refreshInterval && props.refreshInterval > 0) {
+    refreshTimer = window.setInterval(() => {
+      loadAd();
+    }, props.refreshInterval);
+  }
+});
+
 watch(() => props.adslot, loadAd);
+
+onBeforeUnmount(() => {
+  if (refreshTimer) {
+    clearInterval(refreshTimer);
+  }
+});
 </script>
