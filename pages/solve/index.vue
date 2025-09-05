@@ -17,13 +17,13 @@
   <div
     v-else
     class="size-full grid
-    grid-rows-[auto_auto_auto] grid-cols-1 items-center
+    grid-rows-[auto_1fr_1fr_50px] grid-cols-1 items-center
     sm:gap-4 sm:p-4 sm:grid-rows-2 sm:grid-cols-[minmax(400px,600px)_minmax(200px,350px)] sm:items-stretch
     md:p-0 md:grid-rows-2 md:grid-cols-[600px_minmax(200px,350px)]
     xl:grid-rows-2 xl:grid-cols-[600px_minmax(200px,350px)_minmax(200px,350px)]">
     <!-- Puzzle Details -->
     <div
-      class="row-start-1 row-end-2 sm:row-start-2 sm:row-end-3 sm:col-start-2 sm:col-end-3"
+      class="row-start-1 row-end-2 sm:row-start-2 sm:row-end-3 sm:col-start-2 sm:col-end-3 h-full"
     >
       <ChessPuzzleDetails
         v-if="puzzleBoardState"
@@ -65,10 +65,15 @@
       class="size-full row-start-2 row-end-3 place-self-center sm:max-w-full sm:col-start-1 sm:col-end-2 sm:row-start-1 sm:row-end-3"
     />
 
-    <!-- Ad -->
-    <div class="col-start-3 col-end-4 row-start-1 row-end-3 hidden xl:block">
+    <!-- Desktop 160x600 Sidebar Ad -->
+    <div id="adstera-sidebar" class="col-start-3 col-end-4 row-start-1 row-end-3 hidden xl:block">
       <AdsterraSidebarAd />
     </div>
+
+    <!-- Mobile 320x50 Ad -->
+     <div id="adstera-mobile" class="sm:hidden row-start-4 row-end-5 items-center justify-center">
+      <AdsterraMobileAd  />
+     </div>
   </div>
 </template>
 
