@@ -17,6 +17,10 @@ export default defineNuxtConfig({
           name: "monetag",
           content: "4747e646ea29753824f38ad16f66c433",
         },
+        {
+          name: "purpleads-verification",
+          content: "cf730b575d38dbf6f585e0af",
+        },
       ],
       link: [{ rel: "icon", type: "image/png", href: "/favicon.png" }],
       script: [
