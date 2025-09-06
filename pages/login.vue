@@ -28,6 +28,7 @@
 
       <UButton type="submit" :loading="isUserLoggingIn" block> Log in </UButton>
 
+      <!--       
       <UDivider><span class="text-sm text-gray-500">Or</span></UDivider>
 
       <UButton
@@ -38,6 +39,7 @@
       >
         Try as a Guest
       </UButton>
+      -->
     </UForm>
   </UCard>
 </template>

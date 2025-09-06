@@ -10,6 +10,7 @@ import { until } from "@vueuse/core";
 
 const { user, createGuestProfile } = useProfile();
 
+/*
 // Wait for auth to hydrate and trigger guest creation if needed
 onMounted(async () => {
   await until(user).toMatch((u) => u !== undefined);
@@ -26,4 +27,5 @@ onMounted(async () => {
     console.info("User already exists, no need to create guest profile.");
   }
 });
+*/
 </script>

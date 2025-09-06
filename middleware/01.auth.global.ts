@@ -9,7 +9,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
       return;
     } else {
       // If the user is not authenticated and trying to access a protected route, redirect to about page
-      return navigateTo("/about");
+      return navigateTo("/login");
     }
   }
 });
