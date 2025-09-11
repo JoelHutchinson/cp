@@ -176,39 +176,6 @@ export const useProfile = () => {
     return { data, error };
   };
 
-  /**
-   * Converts an anonymous guest into a full user
-   * - Sends email verification
-   * - Waits for `onAuthStateChange` to pick up confirmation
-   * - Then updates password and metadata
-   */
-  const convertGuestToUserProfile = async (
-    profile: Profile,
-    password: string
-  ) => {
-    if (!user.value?.id) {
-      console.warn("No user ID found, cannot convert guest to user profile.");
-      return;
-    }
-
-    pendingPassword.value = password;
-    pendingProfile.value = profile;
-
-    const { error: updateEmailError } = await supabase.auth.updateUser({
-      email: profile.email!,
-    });
-
-    if (updateEmailError) {
-      console.error("Failed to update email:", updateEmailError);
-      return { updateEmailError };
-    }
-
-    conversionStatus.value = "awaiting_verification";
-    return {
-      message: "Verification email sent. Please confirm your email.",
-    };
-  };
-
   const initializeUserData = async () => {
     if (!user.value?.id) {
       console.warn("No user ID found, cannot initialize user data.");
@@ -232,6 +199,5 @@ export const useProfile = () => {
     signOut,
     createGuestProfile,
     createUserProfile,
-    convertGuestToUserProfile,
   };
 };
