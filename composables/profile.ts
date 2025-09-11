@@ -26,56 +26,6 @@ export const useProfile = () => {
     return await $fetch(`/api/profiles/${user.value.id}`);
   });
 
-  /**
-   * Set up email verification listener
-   * Completes the guest → user transition
-   */
-  const setupEmailVerificationListener = () => {
-    const { data: listener } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        if (event === "USER_UPDATED") {
-          const updatedUser = session?.user;
-          if (
-            updatedUser?.email_confirmed_at &&
-            pendingPassword.value &&
-            pendingProfile.value
-          ) {
-            console.info("Email verified. Updating password and metadata...");
-
-            const { error: updateError } = await supabase.auth.updateUser({
-              password: pendingPassword.value,
-              data: {
-                username: pendingProfile.value.username,
-                first_name: pendingProfile.value.first_name,
-                last_name: pendingProfile.value.last_name,
-                email: pendingProfile.value.email,
-                type: "user",
-              },
-            });
-
-            if (!updateError) {
-              conversionStatus.value = "done";
-              pendingPassword.value = "";
-              pendingProfile.value = null;
-              await refresh();
-            } else {
-              console.error(
-                "Error updating password or metadata:",
-                updateError
-              );
-            }
-          }
-        }
-      }
-    );
-
-    onUnmounted(() => {
-      listener?.subscription.unsubscribe();
-    });
-  };
-
-  setupEmailVerificationListener();
-
   // Set up auth state change listener to initialize user data
   const { data: authListener } = supabase.auth.onAuthStateChange(
     async (event, session) => {
