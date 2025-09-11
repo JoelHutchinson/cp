@@ -10,8 +10,11 @@
     <template #account="{ item }">
       <div class="flex flex-col gap-1 text-left">
         <div>
+          <p class="truncate font-medium text-gray-900 dark:text-white">
+            <strong>{{ profile.username }}</strong>
+          </p>
           <p class="truncate text-gray-900 dark:text-white">
-            <strong>{{ item.email }}</strong>
+            {{ item.email }}
           </p>
         </div>
       </div>
