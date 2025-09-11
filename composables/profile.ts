@@ -165,8 +165,8 @@ export const useProfile = () => {
         data: {
           id: profile.id,
           username: profile.username,
-          first_name: profile.first_name,
-          last_name: profile.last_name,
+          first_name: "",
+          last_name: "",
           email: profile.email,
           type: "user",
         },
