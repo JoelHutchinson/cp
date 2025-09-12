@@ -91,6 +91,9 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
 
   const { error } = await signIn(event.data.email, event.data.password);
 
+  state.email = "";
+  state.password = "";
+
   if (error) {
     notifications.error({
       title: "Login failed",
