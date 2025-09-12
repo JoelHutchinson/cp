@@ -17,7 +17,7 @@
   <div
     v-else
     class="size-full grid
-    grid-rows-[50px_auto_1fr_1fr] grid-cols-1 items-center
+    grid-rows-[auto_1fr_1fr] grid-cols-1 items-center
     sm:gap-4 sm:p-4 sm:grid-rows-[auto_auto_90px] sm:grid-cols-[minmax(400px,600px)_minmax(200px,350px)] sm:items-stretch
     md:p-0 md:grid-rows-[auto_auto_90px] md:grid-cols-[600px_minmax(200px,350px)]
     xl:grid-rows-[auto_auto_90px] xl:grid-cols-[600px_minmax(200px,350px)_minmax(200px,350px)]">
@@ -77,9 +77,9 @@
     </div>
 
     <!-- Mobile 320x50 Ad -->
-     <div id="adstera-mobile" class="sm:hidden row-start-1 row-end-2 items-center justify-center">
-      <!-- <AdsterraMobileAd v-if="screenSize === 'mobile'" :refresh-interval="120000" /> -->
-     </div>
+     <!-- <div id="adstera-mobile" class="sm:hidden row-start-1 row-end-2 items-center justify-center">
+      <AdsterraMobileAd v-if="screenSize === 'mobile'" :refresh-interval="120000" />
+     </div> -->
   </div>
 </template>
 
