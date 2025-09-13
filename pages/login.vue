@@ -12,6 +12,7 @@
       <UFormGroup label="Email">
         <UInput
           v-model="state.email"
+          autocomplete="email"
           placeholder="Enter your email"
           icon="i-heroicons-envelope"
         />
@@ -20,6 +21,7 @@
       <UFormGroup label="Password">
         <UInput
           v-model="state.password"
+          autocomplete="current-password"
           icon="i-heroicons-lock-closed"
           placeholder="Enter your password"
           type="password"

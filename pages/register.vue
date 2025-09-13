@@ -16,6 +16,7 @@
       <UFormGroup label="Email" name="email">
         <UInput
           v-model="state.email"
+          autocomplete="email"
           placeholder="sallybish@example.com"
           icon="i-heroicons-envelope"
         />
@@ -24,6 +25,7 @@
       <UFormGroup label="Password" name="password">
         <UInput
           v-model="state.password"
+          autocomplete="new-password"
           type="password"
           placeholder="secure_password47#P!@d"
         />
