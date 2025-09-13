@@ -11,8 +11,6 @@ export const useProfile = () => {
   const { fetchDefaultPuzzleSet } = useFetchDefaultPuzzleSet();
 
   const conversionStatus = ref<ConversionStatus>("idle");
-  const pendingPassword = ref("");
-  const pendingProfile = ref<Profile | null>(null);
 
   // Load the profile for a logged-in user
   const {
