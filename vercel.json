@@ -1,8 +1,0 @@
-{
-  "crons": [
-    {
-      "path": "/api/crons/delete-anonymous-users",
-      "schedule": "0 0 * * *"
-    }
-  ]
-}
