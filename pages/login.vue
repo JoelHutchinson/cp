@@ -67,7 +67,7 @@ const state = reactive({
   password: "",
 });
 
-const { signIn, createGuestProfile } = useProfile();
+const { signIn } = useProfile();
 const notifications = useNotification();
 
 const isUserLoggingIn = ref(false);
