@@ -6,7 +6,6 @@ export const useProfile = () => {
   const user = useSupabaseUser();
   const supabase = useSupabaseClient();
 
-  const { createSamplePuzzleSet } = useCreatePuzzleSet();
   const { refresh: refreshPuzzleSets } = useFetchPuzzleSets();
   const { fetchDefaultPuzzleSet } = useFetchDefaultPuzzleSet();
 
@@ -64,40 +63,6 @@ export const useProfile = () => {
   };
 
   /**
-   * Creates an anonymous guest user
-   */
-  const createGuestProfile = async () => {
-    if (user.value) {
-      console.warn("User already exists, cannot create guest profile.");
-      return { error: { message: "User already exists" } };
-    }
-
-    // Sign in anonymously
-    const { data: signInData, error: signInError } =
-      await supabase.auth.signInAnonymously({
-        options: {
-          data: {
-            id: crypto.randomUUID(),
-            username: `guest_${Date.now()}`,
-            first_name: "Guest",
-            last_name: "User",
-            type: "guest",
-          },
-        },
-      });
-
-    // Create a sample puzzle set for the guest in the background
-    if (!signInError && signInData?.user) {
-      // Add any guest account initialization processes here
-    } else {
-      console.error("Guest sign-in error:", signInError);
-      return { error: signInError };
-    }
-
-    return { signInData, error };
-  };
-
-  /**
    * Creates a fully registered user from scratch (skipping guest flow)
    */
   const createUserProfile = async (profile: Profile, password: string) => {
@@ -145,7 +110,6 @@ export const useProfile = () => {
 
     signIn,
     signOut,
-    createGuestProfile,
     createUserProfile,
   };
 };

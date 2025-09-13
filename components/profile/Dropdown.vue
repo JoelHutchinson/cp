@@ -39,7 +39,7 @@
 <script setup lang="ts">
 const props = defineProps<{ profile: Profile | null }>();
 
-const { signOut, createGuestProfile } = useProfile();
+const { signOut } = useProfile();
 
 const items = [
   [
@@ -56,7 +56,6 @@ const items = [
       icon: "i-heroicons-arrow-left-on-rectangle",
       click: async () => {
         await signOut();
-        //await createGuestProfile();
         await navigateToSignIn();
       },
     },
