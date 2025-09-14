@@ -18,9 +18,9 @@
     v-else
     class="size-full grid
     grid-rows-[40px_1fr_1fr] grid-cols-1 items-center
-    sm:gap-4 sm:p-4 sm:grid-rows-[auto_auto_90px] sm:grid-cols-[minmax(400px,600px)_minmax(200px,350px)] sm:items-stretch
-    md:p-0 md:grid-rows-[auto_auto_90px] md:grid-cols-[600px_minmax(200px,350px)]
-    xl:grid-rows-[auto_auto_90px] xl:grid-cols-[600px_minmax(200px,350px)_minmax(200px,350px)]">
+    sm:gap-4 sm:p-4 sm:grid-rows-[1fr_1fr] sm:grid-cols-[minmax(400px,600px)_minmax(200px,350px)] sm:items-stretch
+    md:p-0 md:grid-rows-[1fr_1fr] md:grid-cols-[600px_minmax(200px,350px)]
+    xl:grid-rows-[1fr_1fr] xl:grid-cols-[600px_minmax(200px,350px)]">
 
     <!-- Puzzle Details -->
     <div
