@@ -29,19 +29,6 @@
       </UFormGroup>
 
       <UButton type="submit" :loading="isUserLoggingIn" block> Log in </UButton>
-
-      <!--       
-      <UDivider><span class="text-sm text-gray-500">Or</span></UDivider>
-
-      <UButton
-        @click="tryAsGuest"
-        :loading="isGuestLoggingIn"
-        variant="outline"
-        block
-      >
-        Try as a Guest
-      </UButton>
-      -->
     </UForm>
   </UCard>
 </template>
@@ -83,7 +70,8 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
   } catch (error: any) {
     notifications.error({
       title: "Login failed",
-      message: JSON.parse(error)[0].message,
+      message:
+        "Failed to log-in. Ensure that you have verified your email address.",
     });
 
     isUserLoggingIn.value = false;

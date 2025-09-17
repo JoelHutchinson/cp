@@ -23,30 +23,6 @@ export default defineNuxtConfig({
         },
       ],
       link: [{ rel: "icon", type: "image/png", href: "/favicon.png" }],
-      script: [
-        // Google Analytics script
-        {
-          src: "https://www.googletagmanager.com/gtag/js?id=G-90BV3BMJRP",
-          async: true,
-          tagPriority: "low",
-        },
-        {
-          children: `
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-90BV3BMJRP');
-          `,
-          type: "text/javascript",
-        },
-        // Google Adsense script
-        {
-          src: "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7565192673545193",
-          async: true,
-          crossorigin: "anonymous",
-          tagPriority: "low",
-        },
-      ],
     },
   },
   compatibilityDate: "2024-04-03",
@@ -59,7 +35,13 @@ export default defineNuxtConfig({
     },
   },
   devtools: { enabled: true },
-  modules: ["@nuxt/ui", "@nuxtjs/supabase", "@nuxt/image", "@nuxt/test-utils/module", "@nuxtjs/seo"],
+  modules: [
+    "@nuxt/ui",
+    "@nuxtjs/supabase",
+    "@nuxt/image",
+    "@nuxt/test-utils/module",
+    "@nuxtjs/seo",
+  ],
   supabase: {
     redirectOptions: {
       login: "/login",
