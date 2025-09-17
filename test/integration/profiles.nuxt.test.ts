@@ -9,7 +9,7 @@ import {
   type Mock,
 } from "vitest";
 import type { H3Event } from "h3";
-import { fetchProfileById, fetchProfiles } from "~/server/utils/profiles"; // adjust path as needed
+import { fetchProfileById } from "~/server/utils/profiles"; // adjust path as needed
 import { serverSupabaseClient } from "#supabase/server";
 
 const mockProfile = {
