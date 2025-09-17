@@ -21,17 +21,3 @@ export const fetchProfileById = async (
 
   return data;
 };
-
-export const fetchProfiles = async (event: H3Event) => {
-  const supabase = await serverSupabaseClient<Database>(event);
-  const { data, error } = await supabase.from("profiles").select("*");
-
-  if (error) {
-    throw createError({
-      statusCode: 500,
-      message: `Error fetching profiles. (Message: ${error.message})`,
-    });
-  }
-
-  return data;
-};
