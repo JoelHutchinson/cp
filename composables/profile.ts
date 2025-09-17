@@ -46,7 +46,6 @@ export const useProfile = () => {
     });
 
     if (error) {
-      console.error("Sign-in error:", error);
       return { error };
     }
 
@@ -56,7 +55,6 @@ export const useProfile = () => {
   const signOut = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) {
-      console.error("Sign-out error:", error);
       return { error };
     }
     return { message: "Signed out successfully" };
