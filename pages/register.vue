@@ -81,6 +81,10 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
     event.data.password
   );
 
+  state.email = "";
+  state.password = "";
+  state.username = "";
+
   if (error) {
     notifications.error({
       title: "Error",
