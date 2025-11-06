@@ -112,7 +112,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
   } catch (error: any) {
     notifications.error({
       title: "Error creating contact form entry",
-      message: error.data.message,
+      message: error?.data?.message,
     });
   }
 
