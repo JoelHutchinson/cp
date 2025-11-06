@@ -88,7 +88,7 @@ const state = reactive({
   message: "",
 });
 
-const { profile } = useProfile();
+const profile = useProfile();
 
 const isSubmitting = ref(false);
 
@@ -100,7 +100,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
       firstName: "BLANK",
       lastName: "BLANK",
       username: "BLANK",
-      email: profile.email,
+      email: profile.value.email,
       subject: state.subject,
       message: state.message,
     });
