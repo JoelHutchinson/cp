@@ -95,6 +95,10 @@ const isSubmitting = ref(false);
 const onSubmit = async (event: FormSubmitEvent<Schema>) => {
   isSubmitting.value = true;
 
+  console.log(profile.value.email);
+  console.log(state.value.subject);
+  console.log(state.value.message);
+
   try {
     await createContactFormEntry({
       firstName: "BLANK",
