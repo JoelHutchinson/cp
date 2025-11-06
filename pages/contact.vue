@@ -101,8 +101,8 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
       lastName: "BLANK",
       username: "BLANK",
       email: profile.value.email,
-      subject: state.subject,
-      message: state.message,
+      subject: state.value.subject,
+      message: state.value.message,
     });
 
     notifications.success({
