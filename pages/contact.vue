@@ -88,7 +88,7 @@ const state = reactive({
   message: "",
 });
 
-const profile = useProfile();
+const { profile } = useProfile();
 
 const isSubmitting = ref(false);
 
