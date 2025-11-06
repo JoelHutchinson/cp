@@ -97,8 +97,8 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
 
   try {
     await createContactFormEntry({
-      firstName: "",
-      lastName: "",
+      firstName: "BLANK",
+      lastName: "BLANK",
       username: profile.username,
       email: profile.email,
       subject: state.subject,
