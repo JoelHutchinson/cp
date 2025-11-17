@@ -64,6 +64,11 @@ const linkSections = [
         to: "/privacy-policy",
         icon: "i-heroicons-shield-check-20-solid",
       },
+      {
+        label: "Support Me",
+        to: "/support",
+        icon: "i-heroicons-gift-20-solid",
+      },
     ],
   },
 ];
