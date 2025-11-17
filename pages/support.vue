@@ -4,9 +4,9 @@
       <div class="space-y-4">
         <h1 class="text-3xl font-bold">Buy Me a Coffee ☕</h1>
         <p class="text-gray-600">
-          If you enjoy this site, consider buying me a coffee! In order to cover
-          server costs and development time, your support is greatly
-          appreciated.
+          This site is made free for everyone. If you enjoy it, I would really
+          appreciate any support! The money goes towards covering server costs.
+          It is greatly appreciated.
         </p>
       </div>
 
