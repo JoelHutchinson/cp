@@ -31,7 +31,7 @@
             icon="i-heroicons-currency-dollar-20-solid"
             target="_blank"
           >
-            One-off Tip (${{ amount }})
+            One-off Tip
           </UButton>
         </div>
       </template>
@@ -45,6 +45,4 @@ const ONE_OFF_STRIPE_PAYMENT_LINK =
 
 const MONTHLY_STRIPE_PAYMENT_LINK =
   "https://buy.stripe.com/test_8x2cN69Fd4rg98SdMxdjO00";
-
-const amount = ref(5);
 </script>
