@@ -1,7 +1,7 @@
 export default defineAppConfig({
   ui: {
     primary: "orange",
-    gray: "neutral",
+    gray: "zinc",
     button: {
       default: { variant: "soft" },
       color: {
