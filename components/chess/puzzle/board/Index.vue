@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import type { MoveEvent } from "vue3-chessboard";
+import type { CmMoveEvent } from "~/types/types";
 
 const props = defineProps<{
   puzzle: Puzzle;
@@ -91,7 +91,7 @@ watch(
   }
 );
 
-const onMove = (move: MoveEvent) => {
+const onMove = (move: CmMoveEvent) => {
   if (!solutionMovesMade.value.includes(move.lan)) {
     handleSolutionMove(move.lan);
 

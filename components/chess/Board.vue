@@ -1,97 +1,156 @@
 <template>
-  <TheChessboard
-    :board-config="boardConfig"
-    @move="handleMove"
-    @board-created="handleBoardCreated"
-    style="width: 100%; height: 100%"
-    reactive-config
-  />
+  <div ref="boardEl" id="board" style="width: 100%; height: 100%" />
 </template>
 
 <script setup lang="ts">
-import { TheChessboard } from "vue3-chessboard";
-import "vue3-chessboard/style.css";
+import { Chessboard, FEN, INPUT_EVENT_TYPE } from "cm-chessboard";
+import { Chess } from "chess.js";
+import { ref, onMounted, onBeforeUnmount, watch } from "vue";
 
-import type { BoardApi, BoardConfig, MoveEvent } from "vue3-chessboard";
-import type { Reactive } from "vue";
+// Define a clean Move type
+export type CmMoveEvent = {
+  lan: string;
+  from: string;
+  to: string;
+  color: "white" | "black";
+};
 
 const props = defineProps<{
   viewOnly: boolean;
 }>();
 
 const emit = defineEmits<{
-  (e: "boardCreated", boardApi: ChessBoardAPI): void;
-  (e: "move", move: MoveEvent): void;
+  (e: "boardCreated", api: ChessBoardAPI): void;
+  (e: "move", move: CmMoveEvent): void;
 }>();
 
-const boardConfig: Reactive<BoardConfig> = reactive({
-  viewOnly: props.viewOnly,
-  coordinates: true,
-  autoCastle: true,
-  orientation: "white",
-  drawable: {
-    enabled: true,
-    visible: true,
-    defaultSnapToValidMove: true,
-    eraseOnClick: true,
-    shapes: [],
-    autoShapes: [],
-    brushes: {
-      green: { key: "g", color: "#15781B", opacity: 1, lineWidth: 10 },
-      red: { key: "r", color: "#882020", opacity: 1, lineWidth: 10 },
-      blue: { key: "b", color: "#003088", opacity: 1, lineWidth: 10 },
-      yellow: { key: "y", color: "#e68f00", opacity: 1, lineWidth: 10 },
-      paleBlue: { key: "pb", color: "#003088", opacity: 0.4, lineWidth: 15 },
-      paleGreen: { key: "pg", color: "#15781B", opacity: 0.4, lineWidth: 15 },
-      paleRed: { key: "pr", color: "#882020", opacity: 0.4, lineWidth: 15 },
-      paleGrey: {
-        key: "pgr",
-        color: "#4a4a4a",
-        opacity: 0.35,
-        lineWidth: 15,
-      },
-    },
-  },
+const boardEl = ref<HTMLElement | null>(null);
+let board: Chessboard | null = null;
+const chess = new Chess();
+
+// *** Lifecycle ***
+onMounted(() => {
+  if (!boardEl.value) return;
+
+  board = new Chessboard(boardEl.value, {
+    position: FEN.start,
+    assetsUrl: "/cm-chessboard/assets/",
+    viewOnly: props.viewOnly,
+  });
+
+  if (!props.viewOnly) {
+    board.enableMoveInput(onUserMove, undefined);
+  }
+
+  emit("boardCreated", boardApi);
 });
 
-const vue3ChessboardApi: Ref<BoardApi | null> = ref(null);
-const boardApi: Ref<ChessBoardAPI | null> = ref(null);
-
-const handleMove = (move: MoveEvent) => {
-  emit("move", move);
-};
-
-const handleBoardCreated = (newBoardApi: BoardApi) => {
-  vue3ChessboardApi.value = newBoardApi;
-
-  boardApi.value = {
-    setPosition,
-    makeMove,
-    resetBoard,
-    clearBoard,
-    undoLastMove,
-    toggleOrientation,
-    getTurnColor,
-    getIsCheckmate,
-  };
-
-  emit("boardCreated", boardApi.value);
-};
-
-// Chessboard API
-const setPosition = (fen: string) => vue3ChessboardApi.value?.setPosition(fen);
-const makeMove = (move: string) => vue3ChessboardApi.value?.move(move);
-const resetBoard = () => vue3ChessboardApi.value?.resetBoard();
-const clearBoard = () => vue3ChessboardApi.value?.clearBoard();
-const undoLastMove = () => vue3ChessboardApi.value?.undoLastMove();
-const toggleOrientation = () => vue3ChessboardApi.value?.toggleOrientation();
-const getTurnColor = () => vue3ChessboardApi.value?.getTurnColor() || "white";
-const getIsCheckmate = () => vue3ChessboardApi.value?.getIsCheckmate() || false;
+onBeforeUnmount(() => {
+  board?.destroy();
+  board = null;
+});
 
 watch(
   () => props.viewOnly,
   (viewOnly) => {
-    boardConfig.viewOnly = viewOnly;
+    board?.setViewOnly(viewOnly);
   }
 );
+
+// *** Handle user move ***
+function onUserMove(event: any) {
+  switch (event.type) {
+    case INPUT_EVENT_TYPE.validateMoveInput:
+      // event.squareFrom & event.squareTo have squares like "e2"/"e4"
+      // Return true so the board visually moves the piece
+      return true;
+
+    case INPUT_EVENT_TYPE.moveInputStarted:
+      // Accept initial click/drag
+      return true;
+
+    case INPUT_EVENT_TYPE.moveInputCanceled:
+      return;
+
+    case INPUT_EVENT_TYPE.moveInputFinished:
+      const { squareFrom, squareTo } = event;
+
+      console.log("BEFORE UPDATING INTERNAL STATE", chess.fen());
+
+      const result = chess.move({
+        from: squareFrom,
+        to: squareTo,
+        // promotion: "q",
+      });
+
+      // If move is illegal, cancel it
+      if (!result) {
+        // returning false undoes UI move
+        return false;
+      }
+
+      console.log("BEFORE UPDATING UI STATE", chess.fen());
+
+      // Update board position
+      board?.setPosition(chess.fen());
+
+      const lan = result.lan;
+
+      emit("move", {
+        lan,
+        from: squareFrom,
+        to: squareTo,
+        color: result.color === "w" ? "white" : "black",
+      });
+
+      return true;
+  }
+
+  return true;
+}
+
+// *** Exposed API for parent ***
+const boardApi: ChessBoardAPI = {
+  setPosition(fen: string) {
+    chess.load(fen);
+    board?.setPosition(fen);
+  },
+
+  makeMove(move: string) {
+    const result = chess.move(move);
+
+    if (!result) return;
+    board?.setPosition(chess.fen());
+  },
+
+  resetBoard() {
+    chess.reset();
+    board?.setPosition(FEN.start);
+  },
+
+  clearBoard() {
+    chess.clear();
+    board?.setPosition("8/8/8/8/8/8/8/8");
+  },
+
+  undoLastMove() {
+    const undone = chess.undo();
+    if (undone) {
+      board?.setPosition(chess.fen());
+    }
+  },
+
+  toggleOrientation() {
+    const current = board?.getOrientation();
+    board?.setOrientation(current === "white" ? "black" : "white");
+  },
+
+  getTurnColor() {
+    return chess.turn() === "w" ? "white" : "black";
+  },
+
+  getIsCheckmate() {
+    return chess.isCheckmate();
+  },
+};
 </script>

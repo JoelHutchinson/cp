@@ -10,7 +10,13 @@ export default defineNuxtConfig({
             "An online chess tactics trainer based on the Woodpecker Method, designed to boost pattern recognition through repetition.",
         },
       ],
-      link: [{ rel: "icon", type: "image/png", href: "/favicon.png" }],
+      link: [
+        { rel: "icon", type: "image/png", href: "/favicon.png" },
+        {
+          rel: "stylesheet",
+          href: "cm-chessboard/assets/chessboard.css",
+        },
+      ],
     },
   },
   compatibilityDate: "2024-04-03",
