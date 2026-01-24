@@ -16,14 +16,6 @@ export const usePuzzleSet = (slug: Ref<string>) => {
     return isLoading.value ? "pending" : "success";
   });
 
-  watch(
-    () => slug,
-    async () => {
-      await loadInitialData();
-    },
-    { immediate: true }
-  );
-
   const fetchCurrentPuzzle = async () => {
     const data = await $fetch<{
       puzzle: Puzzle;
@@ -64,6 +56,30 @@ export const usePuzzleSet = (slug: Ref<string>) => {
       }
     );
   };
+
+  const loadInitialData = async () => {
+    isLoading.value = true;
+    await Promise.all([fetchCurrentPuzzle(), fetchPuzzleSetProgress()]);
+
+    // Only prefetch next puzzle if not on the second to last puzzle
+    if (
+      puzzleSetProgress.value &&
+      puzzleSetProgress.value.solved_in_current_cycle !==
+      puzzleSetProgress.value.total_puzzles - 1
+    ) {
+      await fetchNextPuzzle();
+    }
+
+    isLoading.value = false;
+  };
+
+  watch(
+    () => slug,
+    async () => {
+      await loadInitialData();
+    },
+    { immediate: true }
+  );
 
   const updateLocalProgress = (solved: boolean) => {
     if (
@@ -135,22 +151,6 @@ export const usePuzzleSet = (slug: Ref<string>) => {
     if (!correct) {
       puzzleCorrectness.value = false;
     }
-  };
-
-  const loadInitialData = async () => {
-    isLoading.value = true;
-    await Promise.all([fetchCurrentPuzzle(), fetchPuzzleSetProgress()]);
-
-    // Only prefetch next puzzle if not on the second to last puzzle
-    if (
-      puzzleSetProgress.value &&
-      puzzleSetProgress.value.solved_in_current_cycle !==
-      puzzleSetProgress.value.total_puzzles - 1
-    ) {
-      await fetchNextPuzzle();
-    }
-
-    isLoading.value = false;
   };
 
   return {

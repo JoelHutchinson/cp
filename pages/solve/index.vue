@@ -31,12 +31,18 @@
       <USkeleton v-else class="size-full" />
     </div>
 
-    <ChessPuzzleBoard v-if="currentPuzzle" ref="chessPuzzleBoard" :puzzle="currentPuzzle" @solved="solvePuzzle"
-      @correct-move="makePuzzleMove(true)" @incorrect-move="makePuzzleMove(false)"
-      class="row-start-2 row-end-3 max-w-[400px] place-self-center sm:max-w-full sm:col-start-1 sm:col-end-2 sm:row-start-1 sm:row-end-3" />
-    <USkeleton v-else
-      class="size-full row-start-2 row-end-3 place-self-center sm:max-w-full sm:col-start-1 sm:col-end-2 sm:row-start-1 sm:row-end-3" />
+    <ClientOnly>
+      <ChessPuzzleBoard v-if="currentPuzzle" ref="chessPuzzleBoard" :puzzle="currentPuzzle" @solved="solvePuzzle"
+        @correct-move="makePuzzleMove(true)" @incorrect-move="makePuzzleMove(false)"
+        class="row-start-2 row-end-3 max-w-[400px] place-self-center sm:max-w-full sm:col-start-1 sm:col-end-2 sm:row-start-1 sm:row-end-3" />
+      <USkeleton v-else
+        class="size-full row-start-2 row-end-3 place-self-center sm:max-w-full sm:col-start-1 sm:col-end-2 sm:row-start-1 sm:row-end-3" />
+      <template #fallback>
+        <USkeleton
+          class="size-full row-start-2 row-end-3 place-self-center sm:max-w-full sm:col-start-1 sm:col-end-2 sm:row-start-1 sm:row-end-3" />
+      </template>
 
+    </ClientOnly>
 
     <!-- Desktop / Table 720x90 Leaderboard Ad -->
     <div id="adstera-leaderboard" class="hidden sm:block sm:col-start-1 sm:col-end-3 sm:row-start-3 sm:row-end-4">

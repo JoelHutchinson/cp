@@ -4,6 +4,10 @@
 
 <script setup lang="ts">
 import { Chessboard, FEN, INPUT_EVENT_TYPE, COLOR } from "cm-chessboard";
+import { Markers } from "~/utils/cm-chessboard/Markers.js"
+import { PromotionDialog } from "~/utils/cm-chessboard/PromotionDialog.js"
+import { RightClickAnnotator } from "~/utils/cm-chessboard/RightClickAnnotator.js"
+
 import { Chess } from "chess.js";
 import type { ChessBoardAPI } from "~/types/types";
 import { PlayerColor } from "~/types/types";
@@ -28,6 +32,9 @@ const boardEl = ref<HTMLElement | null>(null);
 let board: Chessboard | null = null;
 const chess = new Chess();
 
+// Store pending promotion move info
+let pendingPromotionMove: { from: string; to: string } | null = null;
+
 // *** Internal mapping between cm-chessboard COLOR and PlayerColor ***
 // This keeps the component self-contained and allows easy library switching
 const colorToPlayerColor = (color: typeof COLOR[keyof typeof COLOR]): PlayerColor => {
@@ -46,6 +53,8 @@ onMounted(() => {
     position: FEN.start,
     assetsUrl: "/cm-chessboard/assets/",
     viewOnly: props.viewOnly,
+    extensions: [{ class: Markers }, { class: PromotionDialog }, { class: RightClickAnnotator }],
+    style: { pieces: { file: "pieces/standard.svg" }, animationDuration: 500 }
   });
 
   if (!props.viewOnly) {
@@ -65,6 +74,10 @@ function onUserMove(event: any) {
   switch (event.type) {
     case INPUT_EVENT_TYPE.moveInputStarted:
       // Accept initial click/drag
+
+      // Remove all arrows
+      board?.removeArrows();
+      board?.removeMarkers();
       return true;
 
     case INPUT_EVENT_TYPE.validateMoveInput:
@@ -79,18 +92,81 @@ function onUserMove(event: any) {
           (move: any) => move.to === squareTo
         );
 
-        // Return true to allow the visual move, false to cancel it
+        // Check if this is a promotion move
+        const isPromotionMove = isMoveLegal &&
+          (squareTo.charAt(1) === "8" || squareTo.charAt(1) === "1") &&
+          event.piece.charAt(1) === "p";
+
+        if (isPromotionMove) {
+          // Store the move info for later processing
+          pendingPromotionMove = { from: squareFrom, to: squareTo };
+        } else {
+          pendingPromotionMove = null;
+        }
+
         return isMoveLegal;
       } catch (error) {
         return false;
       }
 
     case INPUT_EVENT_TYPE.moveInputCanceled:
+      // Clear pending promotion move if move is canceled
+      pendingPromotionMove = null;
       return;
 
     case INPUT_EVENT_TYPE.moveInputFinished:
       const { squareFrom: from, squareTo: to } = event;
 
+      // Check if this is a promotion move
+      if (pendingPromotionMove && pendingPromotionMove.from === from && pendingPromotionMove.to === to) {
+        // Get the piece color from the current turn
+        const pieceColor = chess.turn() === "w" ? "w" : "b";
+
+        // Show promotion dialog and wait for user selection
+        board?.showPromotionDialog(to, pieceColor, (result: any) => {
+          if (result && result.type === "pieceSelected" && result.piece) {
+            // Extract promotion piece letter (q, r, b, n) from piece string (e.g., "wq" -> "q")
+            const promotionPiece = result.piece.charAt(1);
+
+            try {
+              // Apply the move with the selected promotion piece
+              const moveResult = chess.move({
+                from,
+                to,
+                promotion: promotionPiece,
+              });
+
+              if (moveResult) {
+                // Update board to reflect the new position
+                board?.setPosition(chess.fen());
+
+                const lan = moveResult.lan;
+
+                emit("move", {
+                  lan,
+                  from,
+                  to,
+                  color: moveResult.color === "w" ? "white" : "black",
+                });
+              }
+            } catch (error) {
+              // If move fails, revert board position
+              board?.setPosition(chess.fen());
+            }
+          } else {
+            // User canceled - revert the board position
+            board?.setPosition(chess.fen());
+          }
+
+          // Clear pending promotion move
+          pendingPromotionMove = null;
+        });
+
+        // Return true to indicate the move input is being handled
+        return true;
+      }
+
+      // Regular (non-promotion) move
       let result;
 
       try {
@@ -98,7 +174,6 @@ function onUserMove(event: any) {
         result = chess.move({
           from,
           to,
-          promotion: "q",
         });
       } catch (error) {
         return false;

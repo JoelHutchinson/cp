@@ -16,6 +16,18 @@ export default defineNuxtConfig({
           rel: "stylesheet",
           href: "cm-chessboard/assets/chessboard.css",
         },
+        {
+          rel: "stylesheet",
+          href: "cm-chessboard/assets/extensions/markers/markers.css",
+        },
+        {
+          rel: "stylesheet",
+          href: "cm-chessboard/assets/extensions/promotion-dialog/promotion-dialog.css",
+        },
+        {
+          rel: "stylesheet",
+          href: "cm-chessboard/assets/extensions/arrows/arrows.css",
+        },
       ],
     },
   },
