@@ -3,17 +3,10 @@
 </template>
 
 <script setup lang="ts">
-import { Chessboard, FEN, INPUT_EVENT_TYPE } from "cm-chessboard";
+import { Chessboard, FEN, INPUT_EVENT_TYPE, COLOR } from "cm-chessboard";
 import { Chess } from "chess.js";
-import { ref, onMounted, onBeforeUnmount, watch } from "vue";
-
-// Define a clean Move type
-export type CmMoveEvent = {
-  lan: string;
-  from: string;
-  to: string;
-  color: "white" | "black";
-};
+import type { ChessBoardAPI } from "~/types/types";
+import { PlayerColor } from "~/types/types";
 
 const props = defineProps<{
   viewOnly: boolean;
@@ -24,9 +17,26 @@ const emit = defineEmits<{
   (e: "move", move: CmMoveEvent): void;
 }>();
 
+export type CmMoveEvent = {
+  lan: string;
+  from: string;
+  to: string;
+  color: "white" | "black";
+};
+
 const boardEl = ref<HTMLElement | null>(null);
 let board: Chessboard | null = null;
 const chess = new Chess();
+
+// *** Internal mapping between cm-chessboard COLOR and PlayerColor ***
+// This keeps the component self-contained and allows easy library switching
+const colorToPlayerColor = (color: typeof COLOR[keyof typeof COLOR]): PlayerColor => {
+  return color === COLOR.white ? PlayerColor.white : PlayerColor.black;
+};
+
+const playerColorToColor = (color: PlayerColor): typeof COLOR[keyof typeof COLOR] => {
+  return color === PlayerColor.white ? COLOR.white : COLOR.black;
+};
 
 // *** Lifecycle ***
 onMounted(() => {
@@ -50,56 +60,64 @@ onBeforeUnmount(() => {
   board = null;
 });
 
-watch(
-  () => props.viewOnly,
-  (viewOnly) => {
-    board?.setViewOnly(viewOnly);
-  }
-);
-
 // *** Handle user move ***
 function onUserMove(event: any) {
   switch (event.type) {
-    case INPUT_EVENT_TYPE.validateMoveInput:
-      // event.squareFrom & event.squareTo have squares like "e2"/"e4"
-      // Return true so the board visually moves the piece
-      return true;
-
     case INPUT_EVENT_TYPE.moveInputStarted:
       // Accept initial click/drag
       return true;
+
+    case INPUT_EVENT_TYPE.validateMoveInput:
+      // Validate the move BEFORE it's applied to the board
+      // event.squareFrom & event.squareTo have squares like "e2"/"e4"
+      const { squareFrom, squareTo } = event;
+
+      try {
+        // Try the move on a temporary state to validate without committing
+        const legalMoves = chess.moves({ square: squareFrom, verbose: true });
+        const isMoveLegal = legalMoves.some(
+          (move: any) => move.to === squareTo
+        );
+
+        // Return true to allow the visual move, false to cancel it
+        return isMoveLegal;
+      } catch (error) {
+        return false;
+      }
 
     case INPUT_EVENT_TYPE.moveInputCanceled:
       return;
 
     case INPUT_EVENT_TYPE.moveInputFinished:
-      const { squareFrom, squareTo } = event;
+      const { squareFrom: from, squareTo: to } = event;
 
-      console.log("BEFORE UPDATING INTERNAL STATE", chess.fen());
+      let result;
 
-      const result = chess.move({
-        from: squareFrom,
-        to: squareTo,
-        // promotion: "q",
-      });
-
-      // If move is illegal, cancel it
-      if (!result) {
-        // returning false undoes UI move
+      try {
+        // Now actually apply the move to chess.js
+        result = chess.move({
+          from,
+          to,
+          promotion: "q",
+        });
+      } catch (error) {
         return false;
       }
 
-      console.log("BEFORE UPDATING UI STATE", chess.fen());
+      // Double-check move was successful (should be, since we validated)
+      if (!result) {
+        return false;
+      }
 
-      // Update board position
+      // Update board to reflect the new position
       board?.setPosition(chess.fen());
 
       const lan = result.lan;
 
       emit("move", {
         lan,
-        from: squareFrom,
-        to: squareTo,
+        from,
+        to,
         color: result.color === "w" ? "white" : "black",
       });
 
@@ -117,10 +135,16 @@ const boardApi: ChessBoardAPI = {
   },
 
   makeMove(move: string) {
-    const result = chess.move(move);
+    let result;
+    try {
+      result = chess.move(move);
+    } catch (error) {
+      return undefined;
+    }
 
-    if (!result) return;
+    if (!result) return undefined;
     board?.setPosition(chess.fen());
+    return move;
   },
 
   resetBoard() {
@@ -142,14 +166,20 @@ const boardApi: ChessBoardAPI = {
 
   toggleOrientation() {
     const current = board?.getOrientation();
-    board?.setOrientation(current === "white" ? "black" : "white");
+    const nextOrientation = current === COLOR.white ? COLOR.black : COLOR.white;
+    board?.setOrientation(nextOrientation);
+  },
+
+  setOrientation(color: PlayerColor) {
+    const cmColor = playerColorToColor(color);
+    board?.setOrientation(cmColor);
   },
 
   getTurnColor() {
-    return chess.turn() === "w" ? "white" : "black";
+    return chess.turn() === "w" ? PlayerColor.white : PlayerColor.black;
   },
 
-  getIsCheckmate() {
+  getCheckmate() {
     return chess.isCheckmate();
   },
 };

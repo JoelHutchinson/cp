@@ -19,7 +19,10 @@ export interface PuzzleMoveAttempt {
   isCorrect: boolean;
 }
 
-export type PlayerColor = "white" | "black";
+export enum PlayerColor {
+  white = "white",
+  black = "black",
+}
 
 export type PuzzleBoardState = {
   status: PuzzleStatus;
@@ -32,7 +35,7 @@ export const INITIAL_PUZZLE_BOARD_STATE: PuzzleBoardState = {
   status: "not_started",
   moveAttempts: [],
   hintUsed: false,
-  nextToMove: "white",
+  nextToMove: PlayerColor.white,
 };
 
 // Puzzle Sets
@@ -79,6 +82,14 @@ export type ChessBoardAPI = {
   clearBoard: () => void;
   undoLastMove: () => void;
   toggleOrientation: () => void;
-  getTurnColor: () => "white" | "black";
-  getIsCheckmate: () => boolean;
+  setOrientation: (color: PlayerColor) => void;
+  getTurnColor: () => PlayerColor;
+  getCheckmate: () => boolean;
+};
+
+export type CmMoveEvent = {
+  lan: string;
+  from: string;
+  to: string;
+  color: "white" | "black";
 };
