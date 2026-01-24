@@ -1,5 +1,3 @@
-import { ref, computed, onMounted } from "vue";
-
 export const usePuzzleSet = (slug: Ref<string>) => {
   const { profile } = useFetchProfile();
 
@@ -22,7 +20,8 @@ export const usePuzzleSet = (slug: Ref<string>) => {
     () => slug,
     async () => {
       await loadInitialData();
-    }
+    },
+    { immediate: true }
   );
 
   const fetchCurrentPuzzle = async () => {
@@ -30,8 +29,7 @@ export const usePuzzleSet = (slug: Ref<string>) => {
       puzzle: Puzzle;
       progress: PuzzleSetPuzzleProgress;
     }>(
-      `/api/profiles/${profile.value!.id}/puzzle-sets/${
-        slug.value
+      `/api/profiles/${profile.value!.id}/puzzle-sets/${slug.value
       }/current-puzzle`,
       {
         headers: useRequestHeaders(["cookie"]),
@@ -47,8 +45,7 @@ export const usePuzzleSet = (slug: Ref<string>) => {
       puzzle: Puzzle;
       progress: PuzzleSetPuzzleProgress;
     }>(
-      `/api/profiles/${profile.value!.id}/puzzle-sets/${
-        slug.value
+      `/api/profiles/${profile.value!.id}/puzzle-sets/${slug.value
       }/next-puzzle`,
       {
         headers: useRequestHeaders(["cookie"]),
@@ -98,8 +95,7 @@ export const usePuzzleSet = (slug: Ref<string>) => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     await $fetch(
-      `/api/profiles/${profile.value!.id}/puzzle-sets/${
-        slug.value
+      `/api/profiles/${profile.value!.id}/puzzle-sets/${slug.value
       }/current-puzzle/solves`,
       {
         method: "POST",
@@ -149,15 +145,13 @@ export const usePuzzleSet = (slug: Ref<string>) => {
     if (
       puzzleSetProgress.value &&
       puzzleSetProgress.value.solved_in_current_cycle !==
-        puzzleSetProgress.value.total_puzzles - 1
+      puzzleSetProgress.value.total_puzzles - 1
     ) {
       await fetchNextPuzzle();
     }
 
     isLoading.value = false;
   };
-
-  onMounted(loadInitialData);
 
   return {
     currentPuzzle,

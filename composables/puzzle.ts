@@ -177,7 +177,19 @@ export function useChessPuzzle(
    * Lifecycle
    * ------------------------------------------------------------------ */
 
-  watch(puzzle, resetBoard, { immediate: true });
+  // Watch for puzzle changes and reset board when puzzle changes
+  watch(puzzle, () => {
+    if (boardApi.value) {
+      resetBoard();
+    }
+  }, { immediate: true });
+
+  // Watch for boardApi to become available and reset board if puzzle is already set
+  watch(boardApi, () => {
+    if (boardApi.value && puzzle.value) {
+      resetBoard();
+    }
+  });
 
   return {
     // state
