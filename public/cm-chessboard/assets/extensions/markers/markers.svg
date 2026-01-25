@@ -33,4 +33,14 @@ Author: shaack (https://shaack.com)
     <g id="markerSquare">
         <rect x="0" y="0" width="40" height="40"/>
     </g>
+    <!-- Tick in circle for correct moves -->
+    <g id="markerTickCircle" transform="translate(28, 0)">
+        <circle cx="6" cy="6" r="8" fill="#22c55e" fill-opacity="0.9"/>
+        <path d="M3 6 L5.5 8.5 L9 3" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <!-- Cross in circle for incorrect moves -->
+    <g id="markerCrossCircle" transform="translate(28, 0)">
+        <circle cx="6" cy="6" r="8" fill="#ef4444" fill-opacity="0.9"/>
+        <path d="M3 3 L9 9 M9 3 L3 9" stroke="white" stroke-width="2" stroke-linecap="round"/>
+    </g>
 </svg>

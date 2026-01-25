@@ -87,5 +87,11 @@
   fill: black;
   opacity: 0.2;
 }
+.cm-chessboard .markers .marker.marker-tick-circle {
+  opacity: 1;
+}
+.cm-chessboard .markers .marker.marker-cross-circle {
+  opacity: 1;
+}
 
 /*# sourceMappingURL=markers.css.map */

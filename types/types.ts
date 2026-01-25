@@ -76,15 +76,17 @@ export type ContactFormEntry = Omit<
 export type ContactFormState = Omit<ContactFormEntry, "id" | "profile_id">;
 
 export type ChessBoardAPI = {
-  setPosition: (fen: string) => void;
-  makeMove: (move: string) => void;
+  setPosition: (fen: string, animated?: boolean) => void;
+  makeMove: (move: string) => Promise<string | undefined>;
   resetBoard: () => void;
   clearBoard: () => void;
-  undoLastMove: () => void;
+  undoLastMove: () => Promise<void>;
   toggleOrientation: () => void;
   setOrientation: (color: PlayerColor) => void;
   getTurnColor: () => PlayerColor;
   getCheckmate: () => boolean;
+  addMarker: (type: any, square: string) => void;
+  removeMarkers: (type?: any, square?: string) => void;
 };
 
 export type CmMoveEvent = {

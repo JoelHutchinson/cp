@@ -107,7 +107,7 @@ export const usePuzzleSet = (slug: Ref<string>) => {
   const solvePuzzle = async () => {
     updateLocalProgress(puzzleCorrectness.value);
 
-    // Add a short delay to ensure UI updates before making the API call
+    // Add a short delay to ensure UI updates and animations complete before making the API call
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     await $fetch(
@@ -129,7 +129,8 @@ export const usePuzzleSet = (slug: Ref<string>) => {
         fetchPuzzleSetProgress(),
       ]);
     } else {
-      // Promote next puzzle to current
+      // Promote next puzzle to current - this will trigger the puzzle watcher
+      // which will reset the board smoothly
       currentPuzzle.value = nextPuzzle.value;
       currentPuzzleProgress.value = nextPuzzleProgress.value;
     }

@@ -18,7 +18,9 @@ export const MARKER_TYPE = {
     circleDangerFilled: {class: "marker-circle-danger-filled", slice: "markerCircleFilled"},
     square: {class: "marker-square", slice: "markerSquare"},
     dot: {class: "marker-dot", slice: "markerDot", position: 'above'},
-    bevel: {class: "marker-bevel", slice: "markerBevel"}
+    bevel: {class: "marker-bevel", slice: "markerBevel"},
+    tickCircle: {class: "marker-tick-circle", slice: "markerTickCircle", position: 'above'},
+    crossCircle: {class: "marker-cross-circle", slice: "markerCrossCircle", position: 'above'}
 }
 
 export class Markers extends Extension {

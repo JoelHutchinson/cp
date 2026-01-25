@@ -4,6 +4,8 @@ import type { Ref } from "vue";
 import type { CmMoveEvent, PuzzleBoardState, ChessBoardAPI, Puzzle } from "~/types/types";
 import { INITIAL_PUZZLE_BOARD_STATE, PlayerColor } from "~/types/types";
 import { jsonCopy } from "~/utils/utils";
+import { useChessSounds } from "~/composables/sounds";
+import { MARKER_TYPE } from "~/utils/cm-chessboard/Markers.js";
 
 export function useChessPuzzle(
   puzzle: Ref<Puzzle>,
@@ -22,6 +24,8 @@ export function useChessPuzzle(
   const solutionMoves = computed(() => puzzle.value.moves.split(" "));
   const solutionMovesMade = ref<string[]>([]);
   const viewMovesMade = ref<string[]>([]);
+  const sounds = useChessSounds();
+  const isViewNavigating = ref(false);
 
   const solutionMovesMadeStr = computed(() =>
     solutionMovesMade.value.join(" ")
@@ -62,14 +66,14 @@ export function useChessPuzzle(
    * Core board helpers
    * ------------------------------------------------------------------ */
 
-  const makeMove = (lan: string, userMade = false) => {
+  const makeMove = async (lan: string, userMade = false) => {
     if (!boardApi.value) return;
 
-    boardApi.value.makeMove(lan);
+    await boardApi.value.makeMove(lan);
     onMove(lanToCmMoveEvent(lan), userMade);
   };
 
-  const resetBoard = () => {
+  const resetBoard = async () => {
     // Reset state first (before any board updates to avoid flashing)
     solutionMovesMade.value = [];
     viewMovesMade.value = [];
@@ -81,8 +85,11 @@ export function useChessPuzzle(
       nextToMove: PlayerColor.white,
     };
 
-    // Set the position first to the puzzle FEN
-    boardApi.value?.setPosition(puzzle.value.fen);
+    // Clear all markers
+    boardApi.value?.removeMarkers();
+
+    // Set the position first to the puzzle FEN (without animation to avoid flash)
+    boardApi.value?.setPosition(puzzle.value.fen, false);
 
     // Check who should move at the start of the puzzle (before playing first move)
     const initialTurnColor = boardApi.value?.getTurnColor();
@@ -95,9 +102,18 @@ export function useChessPuzzle(
       boardApi.value?.setOrientation(PlayerColor.black);
     }
 
+    // Wait a bit to ensure position is set before playing first move
+    await new Promise(resolve => setTimeout(resolve, 50));
+
     // Now play the first forced move (this updates the internal chess state)
     if (solutionMoves.value[0]) {
-      makeMove(solutionMoves.value[0], false);
+      // Make the move directly on the board for the initial setup
+      if (boardApi.value) {
+        await boardApi.value.makeMove(solutionMoves.value[0]);
+        // Add to both arrays to keep them in sync
+        solutionMovesMade.value.push(solutionMoves.value[0]);
+        viewMovesMade.value.push(solutionMoves.value[0]);
+      }
     }
 
     // Update state with the turn color after the first move
@@ -108,19 +124,20 @@ export function useChessPuzzle(
    * Move handling
    * ------------------------------------------------------------------ */
 
-  const onMove = (move: CmMoveEvent, userMade = true) => {
+  const onMove = async (move: CmMoveEvent, userMade = true) => {
     if (!solutionMovesMade.value.includes(move.lan)) {
-      handleSolutionMove(move.lan, userMade);
+      await handleSolutionMove(move.lan, userMade);
 
       const isCheckmate = boardApi.value?.getCheckmate() || false;
       if (solutionMovesMadeStr.value === puzzle.value.moves || isCheckmate) {
         state.value.status = "finished";
+        sounds.playPuzzleSolved();
         emit("solved");
       }
     }
   };
 
-  const handleSolutionMove = (lan: string, userMade: boolean) => {
+  const handleSolutionMove = async (lan: string, userMade: boolean) => {
     const expectedMove = solutionMoves.value[solutionMovesMade.value.length];
     const isCheckmate = boardApi.value?.getCheckmate() || false;
     const isCorrect = lan === expectedMove || isCheckmate;
@@ -135,20 +152,48 @@ export function useChessPuzzle(
     if (isCorrect) {
       emit("correct-move", lan);
       solutionMovesMade.value.push(lan);
-
-      if (userMade) nextViewMove();
+      if (userMade) {
+        sounds.playCorrect();
+        // User's move is already on the board, just add it to viewMovesMade
+        viewMovesMade.value.push(lan);
+        // Add tick marker to the destination square
+        const { to } = lanToFromTo(lan);
+        boardApi.value?.addMarker(MARKER_TYPE.tickCircle, to);
+      }
 
       if (solutionMovesMadeStr.value !== puzzle.value.moves && userMade) {
-        setTimeout(() => {
+        setTimeout(async () => {
           const reply = solutionMoves.value[solutionMovesMade.value.length];
-          if (reply) makeMove(reply, false);
+          if (reply) {
+            // Make the reply move directly on the board
+            if (boardApi.value) {
+              // Clear tick/cross markers before making the reply move
+              boardApi.value.removeMarkers(MARKER_TYPE.tickCircle);
+              boardApi.value.removeMarkers(MARKER_TYPE.crossCircle);
+              await boardApi.value.makeMove(reply);
+              solutionMovesMade.value.push(reply);
+              viewMovesMade.value.push(reply);
+            }
+          }
         }, 500);
       }
     } else {
       emit("incorrect-move", lan);
-      setTimeout(() => {
-        boardApi.value?.undoLastMove();
-      }, 500);
+      if (userMade) {
+        sounds.playIncorrect();
+        // Add cross marker to the destination square
+        const { to } = lanToFromTo(lan);
+        boardApi.value?.addMarker(MARKER_TYPE.crossCircle, to);
+        // Remove the marker and undo the move after a delay
+        setTimeout(() => {
+          boardApi.value?.removeMarkers(MARKER_TYPE.crossCircle, to);
+          boardApi.value?.undoLastMove();
+        }, 750);
+      } else {
+        setTimeout(() => {
+          boardApi.value?.undoLastMove();
+        }, 750);
+      }
     }
 
     state.value.nextToMove = boardApi.value?.getTurnColor() || PlayerColor.white;
@@ -158,19 +203,42 @@ export function useChessPuzzle(
    * View navigation
    * ------------------------------------------------------------------ */
 
-  const prevViewMove = () => {
+  const prevViewMove = async () => {
+    // Prevent overlapping view navigation
+    if (isViewNavigating.value) return;
     if (!viewMovesMade.value.length) return;
-    viewMovesMade.value.pop();
-    boardApi.value?.undoLastMove();
+
+    isViewNavigating.value = true;
+    try {
+      viewMovesMade.value.pop();
+      await boardApi.value?.undoLastMove();
+    } finally {
+      isViewNavigating.value = false;
+    }
   };
 
-  const nextViewMove = () => {
-    if (solutionMovesMadeStr.value === viewMovesMadeStr.value) return;
-    const next = solutionMoves.value[viewMovesMade.value.length];
+  const nextViewMove = async () => {
+    // Prevent overlapping view navigation
+    if (isViewNavigating.value) return;
+
+    // Only allow viewing moves that have already been made (are in solutionMovesMade)
+    // Users shouldn't be able to scroll ahead to moves they haven't reached yet
+    if (viewMovesMade.value.length >= solutionMovesMade.value.length) return;
+
+    const next = solutionMovesMade.value[viewMovesMade.value.length];
     if (!next) return;
 
-    makeMove(next, false);
-    viewMovesMade.value.push(next);
+    isViewNavigating.value = true;
+    try {
+      // For view navigation, directly make the move without going through onMove
+      // This only works for moves that are already in solutionMovesMade
+      if (boardApi.value) {
+        await boardApi.value.makeMove(next);
+        viewMovesMade.value.push(next);
+      }
+    } finally {
+      isViewNavigating.value = false;
+    }
   };
 
   /* ------------------------------------------------------------------
@@ -178,16 +246,16 @@ export function useChessPuzzle(
    * ------------------------------------------------------------------ */
 
   // Watch for puzzle changes and reset board when puzzle changes
-  watch(puzzle, () => {
+  watch(puzzle, async () => {
     if (boardApi.value) {
-      resetBoard();
+      await resetBoard();
     }
   }, { immediate: true });
 
   // Watch for boardApi to become available and reset board if puzzle is already set
-  watch(boardApi, () => {
+  watch(boardApi, async () => {
     if (boardApi.value && puzzle.value) {
-      resetBoard();
+      await resetBoard();
     }
   });
 

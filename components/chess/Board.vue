@@ -11,6 +11,7 @@ import { RightClickAnnotator } from "~/utils/cm-chessboard/RightClickAnnotator.j
 import { Chess } from "chess.js";
 import type { ChessBoardAPI } from "~/types/types";
 import { PlayerColor } from "~/types/types";
+import { useChessSounds } from "~/composables/sounds";
 
 const props = defineProps<{
   viewOnly: boolean;
@@ -31,6 +32,7 @@ export type CmMoveEvent = {
 const boardEl = ref<HTMLElement | null>(null);
 let board: Chessboard | null = null;
 const chess = new Chess();
+const sounds = useChessSounds();
 
 // Store pending promotion move info
 let pendingPromotionMove: { from: string; to: string } | null = null;
@@ -78,6 +80,7 @@ function onUserMove(event: any) {
       // Remove all arrows
       board?.removeArrows();
       board?.removeMarkers();
+
       return true;
 
     case INPUT_EVENT_TYPE.validateMoveInput:
@@ -137,8 +140,8 @@ function onUserMove(event: any) {
               });
 
               if (moveResult) {
-                // Update board to reflect the new position
-                board?.setPosition(chess.fen());
+                // Update board to reflect the new position with animation
+                board?.setPosition(chess.fen(), true);
 
                 const lan = moveResult.lan;
 
@@ -184,8 +187,10 @@ function onUserMove(event: any) {
         return false;
       }
 
-      // Update board to reflect the new position
-      board?.setPosition(chess.fen());
+      // Update board to reflect the new position with animation
+      board?.setPosition(chess.fen(), true);
+      sounds.playMove();
+
 
       const lan = result.lan;
 
@@ -204,12 +209,12 @@ function onUserMove(event: any) {
 
 // *** Exposed API for parent ***
 const boardApi: ChessBoardAPI = {
-  setPosition(fen: string) {
+  setPosition(fen: string, animated = false) {
     chess.load(fen);
-    board?.setPosition(fen);
+    board?.setPosition(fen, animated);
   },
 
-  makeMove(move: string) {
+  async makeMove(move: string) {
     let result;
     try {
       result = chess.move(move);
@@ -218,7 +223,27 @@ const boardApi: ChessBoardAPI = {
     }
 
     if (!result) return undefined;
-    board?.setPosition(chess.fen());
+
+    // Use movePiece for simple moves, setPosition for complex moves (promotions, castling, etc.)
+    const from = result.from;
+    const to = result.to;
+    const isSimpleMove = !result.promotion && !result.captured && result.san.indexOf('O-O') === -1;
+
+    if (isSimpleMove) {
+      // For simple moves, use movePiece which animates the piece movement
+      await board?.movePiece(from, to, true);
+    } else {
+      // For complex moves (promotions, captures, castling), use setPosition with animation
+      await board?.setPosition(chess.fen(), true);
+    }
+
+    // Play appropriate sound
+    if (result.captured) {
+      sounds.playCapture();
+    } else {
+      sounds.playMove();
+    }
+
     return move;
   },
 
@@ -232,10 +257,10 @@ const boardApi: ChessBoardAPI = {
     board?.setPosition("8/8/8/8/8/8/8/8");
   },
 
-  undoLastMove() {
+  async undoLastMove() {
     const undone = chess.undo();
     if (undone) {
-      board?.setPosition(chess.fen());
+      await board?.setPosition(chess.fen(), false);
     }
   },
 
@@ -256,6 +281,14 @@ const boardApi: ChessBoardAPI = {
 
   getCheckmate() {
     return chess.isCheckmate();
+  },
+
+  addMarker(type: any, square: string) {
+    board?.addMarker(type, square);
+  },
+
+  removeMarkers(type?: any, square?: string) {
+    board?.removeMarkers(type, square);
   },
 };
 </script>
