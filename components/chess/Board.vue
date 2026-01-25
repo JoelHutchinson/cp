@@ -37,6 +37,9 @@ const sounds = useChessSounds();
 // Store pending promotion move info
 let pendingPromotionMove: { from: string; to: string } | null = null;
 
+// Flag to track if move input is disabled
+let moveInputEnabled = true;
+
 // *** Internal mapping between cm-chessboard COLOR and PlayerColor ***
 // This keeps the component self-contained and allows easy library switching
 const colorToPlayerColor = (color: typeof COLOR[keyof typeof COLOR]): PlayerColor => {
@@ -73,6 +76,11 @@ onBeforeUnmount(() => {
 
 // *** Handle user move ***
 function onUserMove(event: any) {
+  // Block moves if input is disabled
+  if (!moveInputEnabled) {
+    return false;
+  }
+
   switch (event.type) {
     case INPUT_EVENT_TYPE.moveInputStarted:
       // Accept initial click/drag
@@ -289,6 +297,14 @@ const boardApi: ChessBoardAPI = {
 
   removeMarkers(type?: any, square?: string) {
     board?.removeMarkers(type, square);
+  },
+
+  enableMoveInput() {
+    moveInputEnabled = true;
+  },
+
+  disableMoveInput() {
+    moveInputEnabled = false;
   },
 };
 </script>

@@ -36,6 +36,9 @@ export function useChessPuzzle(
     () => solutionMovesMadeStr.value === puzzle.value.moves
   );
 
+  // Flag to track if enemy move is being played
+  const isEnemyMoveInProgress = ref(false);
+
   const isViewOnly = computed(() => {
     return (
       solutionMovesMadeStr.value !== viewMovesMadeStr.value ||
@@ -167,12 +170,20 @@ export function useChessPuzzle(
           if (reply) {
             // Make the reply move directly on the board
             if (boardApi.value) {
+              // Disable move input while playing enemy move
+              isEnemyMoveInProgress.value = true;
+              boardApi.value.disableMoveInput();
+              
               // Clear tick/cross markers before making the reply move
               boardApi.value.removeMarkers(MARKER_TYPE.tickCircle);
               boardApi.value.removeMarkers(MARKER_TYPE.crossCircle);
               await boardApi.value.makeMove(reply);
               solutionMovesMade.value.push(reply);
               viewMovesMade.value.push(reply);
+              
+              // Re-enable move input after enemy move completes
+              boardApi.value.enableMoveInput();
+              isEnemyMoveInProgress.value = false;
             }
           }
         }, 500);

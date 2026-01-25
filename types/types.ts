@@ -87,6 +87,8 @@ export type ChessBoardAPI = {
   getCheckmate: () => boolean;
   addMarker: (type: any, square: string) => void;
   removeMarkers: (type?: any, square?: string) => void;
+  enableMoveInput: () => void;
+  disableMoveInput: () => void;
 };
 
 export type CmMoveEvent = {
