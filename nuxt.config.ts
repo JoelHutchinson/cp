@@ -28,7 +28,7 @@ export default defineNuxtConfig({
     "@nuxtjs/supabase",
     "@nuxt/image",
     "@nuxt/test-utils/module",
-    "@nuxtjs/seo",
+    "nuxt-security",
   ],
   supabase: {
     redirectOptions: {
